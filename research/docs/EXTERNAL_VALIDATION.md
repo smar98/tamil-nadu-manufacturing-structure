@@ -105,13 +105,25 @@ revisit records and state samples are small. **PASS (machinery) / EXPLAINED (fra
 paper should report this reproduction as evidence the pipeline is correct and the first-visit
 choice as a stated design decision.
 
+## 6b. ASUSE published RSEs (Tables 46-48) — replication attempted, infeasible from public files
+
+A full replication of MoSPI's published ASUSE RSEs was attempted (2026-07-13) under the
+locked method in `ASUSE_UNCERTAINTY_FIELD_MAP.md`. Point estimates and sample counts
+reproduce the published tables exactly (Table 46's TN establishment total to the rupee; all
+seven gate cells' sample n exactly), but the published RSEs miss by −0.70 to +4.74 points in
+inconsistent directions. Diagnosis: the official variance calculation uses listing-schedule
+(LSU) design information absent from the public ESU unit files. Consequence: the project
+cites MoSPI's published RSEs as uncertainty context and publishes no project-computed
+establishment-side standard errors; the attempt itself is documented as a demonstrated
+limitation of the public-use files. **EXPLAINED (limitation demonstrated, not a data error).**
+
 ## 7. Known gaps that remain (not resolvable by reconciliation)
 
-1. No design-based variances for ASUSE/ASI outcome cells or Layer 5 decompositions (MoSPI
-   publishes no ASI state RSEs — confirmed: the 2023-24 release contains only the RSE
-   formula and a qualitative disclaimer). Paper-grade fix: compute ASUSE design-based SEs
-   from the survey's strata/sub-sample fields; for ASI, state the limitation and note MoSPI's
-   own reliability disclaimer.
+1. No design-based variances for ASUSE/ASI outcome cells or Layer 5 decompositions. For
+   ASUSE this is now a demonstrated public-file limitation (§6b): exact replication of
+   MoSPI's RSEs requires non-public LSU data, so published Tables 46-49 serve as the
+   uncertainty context instead. For ASI, MoSPI publishes no state RSEs at all (confirmed:
+   the 2023-24 release contains only the RSE formula and a qualitative disclaimer).
 2. The Karnataka ASUSE emoluments delta (+3.47%) is unexplained at the estimator level.
 3. ASUSE-ASI frame overlap remains documentation-based, untested.
 
