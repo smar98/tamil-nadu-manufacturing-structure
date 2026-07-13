@@ -16,6 +16,22 @@
     "status": "pass"
   },
   {
+    "check": "ASUSE TN manufacturing hired workers",
+    "reconstructed": 1078923.9686,
+    "published": 1078944,
+    "relative_error": 1.8565745766210314e-05,
+    "tolerance": 0.001,
+    "status": "pass"
+  },
+  {
+    "check": "ASUSE TN manufacturing annual emoluments per hired worker",
+    "reconstructed": 140586.45439781583,
+    "published": 140133,
+    "relative_error": 0.0032358858928006437,
+    "tolerance": 0.01,
+    "status": "pass"
+  },
+  {
     "check": "ASUSE TN manufacturing OAE GVA per worker",
     "reconstructed": 75819.96598535213,
     "published": 75693,
@@ -41,9 +57,9 @@
   },
   {
     "check": "PLFS TN male manufacturing share",
-    "reconstructed": 16.281249728560056,
+    "reconstructed": 16.296520215006613,
     "published": 16.3,
-    "relative_error": 0.0011503234012236203,
+    "relative_error": 0.00021348374192564905,
     "tolerance": 0.005,
     "status": "pass"
   },
@@ -73,10 +89,154 @@
   },
   {
     "check": "ASUSE TN all-activity GVA-per-worker RSE",
-    "reconstructed": 2.8699939534125445,
+    "reconstructed": 2.8479459544311525,
     "published": 2.64,
-    "relative_error": 0.08711892174717589,
+    "relative_error": 0.0787674069814971,
     "tolerance": 0.15,
+    "status": "pass"
+  },
+  {
+    "check": "PLFS Table 36 India no written contract",
+    "reconstructed": 0.5801015465851758,
+    "published": 0.58,
+    "absolute_error": 0.00010154658517580462,
+    "tolerance": 0.000500001,
+    "tolerance_basis": "Published to one decimal percentage point; tolerance is half the displayed unit.",
+    "status": "pass"
+  },
+  {
+    "check": "PLFS Table 36 India no paid leave",
+    "reconstructed": 0.4733797170133037,
+    "published": 0.473,
+    "absolute_error": 0.00037971701330374863,
+    "tolerance": 0.000500001,
+    "tolerance_basis": "Published to one decimal percentage point; tolerance is half the displayed unit.",
+    "status": "pass"
+  },
+  {
+    "check": "PLFS Table 36 India no social security",
+    "reconstructed": 0.5337814252800758,
+    "published": 0.534,
+    "absolute_error": 0.00021857471992425825,
+    "tolerance": 0.000500001,
+    "tolerance_basis": "Published to one decimal percentage point; tolerance is half the displayed unit.",
+    "status": "pass"
+  },
+  {
+    "check": "PLFS Table 36 Tamil Nadu no written contract",
+    "reconstructed": 0.5039172871643167,
+    "published": 0.504,
+    "absolute_error": 8.271283568328514e-05,
+    "tolerance": 0.000500001,
+    "tolerance_basis": "Published to one decimal percentage point; tolerance is half the displayed unit.",
+    "status": "pass"
+  },
+  {
+    "check": "PLFS Table 36 Tamil Nadu no paid leave",
+    "reconstructed": 0.41400508343325665,
+    "published": 0.414,
+    "absolute_error": 5.0834332566696006e-06,
+    "tolerance": 0.000500001,
+    "tolerance_basis": "Published to one decimal percentage point; tolerance is half the displayed unit.",
+    "status": "pass"
+  },
+  {
+    "check": "PLFS Table 36 Tamil Nadu no social security",
+    "reconstructed": 0.4800207498775078,
+    "published": 0.48,
+    "absolute_error": 2.074987750783075e-05,
+    "tolerance": 0.000500001,
+    "tolerance_basis": "Published to one decimal percentage point; tolerance is half the displayed unit.",
+    "status": "pass"
+  },
+  {
+    "check": "PLFS Table 37 enterprise size 1 share",
+    "reconstructed": 0.6333584758665716,
+    "published": 0.633,
+    "absolute_error": 0.0003584758665715615,
+    "tolerance": 0.000500001,
+    "tolerance_basis": "Published to one decimal percentage point; tolerance is half the displayed unit.",
+    "status": "pass"
+  },
+  {
+    "check": "PLFS Table 37 enterprise size 2 share",
+    "reconstructed": 0.10904293194734115,
+    "published": 0.109,
+    "absolute_error": 4.2931947341146026e-05,
+    "tolerance": 0.000500001,
+    "tolerance_basis": "Published to one decimal percentage point; tolerance is half the displayed unit.",
+    "status": "pass"
+  },
+  {
+    "check": "PLFS Table 37 enterprise size 3 share",
+    "reconstructed": 0.06473328165748528,
+    "published": 0.065,
+    "absolute_error": 0.00026671834251472404,
+    "tolerance": 0.000500001,
+    "tolerance_basis": "Published to one decimal percentage point; tolerance is half the displayed unit.",
+    "status": "pass"
+  },
+  {
+    "check": "PLFS Table 37 enterprise size 4 share",
+    "reconstructed": 0.185160706136024,
+    "published": 0.185,
+    "absolute_error": 0.00016070613602400807,
+    "tolerance": 0.000500001,
+    "tolerance_basis": "Published to one decimal percentage point; tolerance is half the displayed unit.",
+    "status": "pass"
+  },
+  {
+    "check": "PLFS Table 37 enterprise size 9 share",
+    "reconstructed": 0.007704604392577969,
+    "published": 0.008,
+    "absolute_error": 0.00029539560742203146,
+    "tolerance": 0.000500001,
+    "tolerance_basis": "Published to one decimal percentage point; tolerance is half the displayed unit.",
+    "status": "pass"
+  },
+  {
+    "check": "PLFS Table 37 sample total",
+    "reconstructed": 110937,
+    "published": 110937,
+    "absolute_error": 0,
+    "tolerance": 0,
+    "tolerance_basis": "Published unweighted sample count; exact match required.",
+    "status": "pass"
+  },
+  {
+    "check": "PLFS Table 51 manufacturing casual earnings",
+    "reconstructed": 443.2901622232872,
+    "published": 443,
+    "absolute_error": 0.2901622232872114,
+    "tolerance": 0.500001,
+    "tolerance_basis": "Published to the nearest rupee; tolerance is half the displayed unit.",
+    "status": "pass"
+  },
+  {
+    "check": "PLFS Table 51 manufacturing casual earnings sample person-days",
+    "reconstructed": 8771,
+    "published": 8771,
+    "absolute_error": 0,
+    "tolerance": 0,
+    "tolerance_basis": "Published unweighted sample count; exact match required.",
+    "status": "pass"
+  },
+  {
+    "check": "PLFS TN rural manufacturing share paired-subsample check",
+    "reconstructed": 12.16933604610447,
+    "published": 12.17,
+    "absolute_error": 0.0006639538955290902,
+    "tolerance": 0.005000001,
+    "tolerance_basis": "Published to 0.01 percentage point; tolerance is half the displayed unit.",
+    "status": "pass"
+  },
+  {
+    "check": "PLFS TN rural manufacturing share RSE",
+    "reconstructed": 5.807745770267388,
+    "published": 5.81,
+    "absolute_error": 0.002254229732611357,
+    "tolerance": 0.005000001,
+    "tolerance_basis": "Published to 0.01 percentage point; tolerance is half the displayed unit.",
     "status": "pass"
   }
 ]

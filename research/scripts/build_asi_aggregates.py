@@ -197,6 +197,8 @@ def employment_values(frame: pd.DataFrame, year: int) -> pd.DataFrame:
             "contract_workers": 5,
             "workers": 6,
             "supervisory_workers": 7,
+            "other_employees": 8,
+            "unpaid_family_members": 9,
             "employees": 10,
         }
         total_row = 10
@@ -556,9 +558,9 @@ def main() -> int:
 
     panel = pd.concat(outputs, ignore_index=True).sort_values(["sector_id", "state", "year"])
     panel["year_label"] = panel["year"].map(lambda year: f"{year}-{str(year + 1)[-2:]}")
-    panel.to_csv(OUTPUT_CSV, index=False)
-
     public = panel.loc[panel["stability"].ne("suppress")].copy()
+    public.to_csv(OUTPUT_CSV, index=False)
+
     records = json.loads(public.replace({np.nan: None}).to_json(orient="records"))
     metadata = {
         "title": "Annual Survey of Industries policy outcome aggregates",
