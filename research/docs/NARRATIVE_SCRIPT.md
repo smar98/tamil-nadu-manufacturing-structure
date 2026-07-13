@@ -98,11 +98,19 @@ see how much of the gap survives."*
 
 The verdict:
 
-> Industry mix explains only a sixth to a third of the gap with Gujarat, Maharashtra and
-> Karnataka. Most of the gap survives the fair test: within the same broad industries, a
-> factory worker in Tamil Nadu is associated with substantially less value added than one in
-> those states. Against Telangana the story flips — Tamil Nadu's apparent pay advantage there
-> is almost entirely its industry mix.
+> Industry mix explains between a seventh and a half of the gap with Gujarat, Maharashtra
+> and Karnataka, depending on how finely you slice the industries. The majority of the gap
+> survives the fair test in every specification: within the same industries, a factory
+> worker in Tamil Nadu is associated with substantially less value added than one in those
+> states — in most industries, covering most of the workforce, and in every one of the last
+> sixteen years. Against Telangana the story flips — Tamil Nadu's apparent pay advantage
+> there is almost entirely its industry mix.
+
+Robustness backing (ROBUSTNESS_WITHIN_INDUSTRY.md): within-component 54–86% across 7-group,
+24-industry and industry×size specifications vs IN/GJ/MH/KA; TN below peer in 16–22 of ~23
+industries (74–97% of employment); gap negative all 16 years 2008–2023; capital intensity a
+partial channel only (electronics counterexample). The four unprovables (sub-NIC2
+composition, prices, no decomposition SEs, no causal design) go in this act's "How we know".
 
 Exhibit: the decomposition, one comparator at a time (never a league table), animated split
 of raw gap → mix component + within component.
@@ -168,9 +176,10 @@ and usually much closer"), reproducibility pointer.
 
 ## Design direction (binding for implementation)
 
-Field-brief language: warm paper ground, one humanist sans (variable weight), muted
-multi-accent semantic palette (each survey keeps one hue everywhere; TN accent constant
-across all exhibits), hand-built SVG only, generous whitespace, thin rules. Scrollytelling:
+Visual identity: see DESIGN.md (original direction from fresh research; the earlier
+"field-brief" default is retired). Structural invariants that survive any restyle: each
+survey keeps one hue everywhere; the TN accent is constant across all exhibits; hand-built
+SVG only; direct labelling over legends. Scrollytelling:
 sticky exhibit panes with step-triggered state changes driven by IntersectionObserver — no
 scroll-jacking, native scroll always; graceful no-JS fallback (all steps render stacked).
 Every chart: axis labels, units, direct labelling over legends where possible, suppressed
