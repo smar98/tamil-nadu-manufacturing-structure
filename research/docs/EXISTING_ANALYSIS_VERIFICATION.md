@@ -122,10 +122,15 @@ performs the project's statistical analysis.
 2. Cite ASI Statement 13A/14A and TN DES Table 4.10 beside any factory size-class exhibit;
    cite ASUSE Tables 34/36 beside Layer 3 ASUSE overall values (which are gates, not
    findings).
-3. F3's public wording must acknowledge the ES wage-share corroboration.
+3. F3's public wording may cite the ES only for the *direction* (TN's labour share highest
+   among peers). The ES's levels (15%/30%) could not be reconciled with official ASI 2023-24
+   totals, while ours reconcile almost exactly — see `EXTERNAL_VALIDATION.md` §5. Never cite
+   the ES levels as corroboration.
 4. The genuinely unpublished results — ASUSE state size distribution, state × NIC2
    per-person ratios, adjusted decompositions, manufacturing-specific worker outcomes with
    intervals — carry the novelty weight.
-5. Open verification item: when ASI 2023–24 Summary Results become downloadable, reconcile
-   the project's ASI size distribution against Statement 14A (band-mapping approximation and
-   the multi-unit equal-allocation caveat apply).
+5. RESOLVED 2026-07-13: the ASI 2023–24 Summary Results were located on microdata.gov.in
+   (catalog 256) and the project's per-return size distribution reconciles with Statement 14A
+   near-exactly (100+ unit share 28.42% vs 28.43%); the equal-allocation series differs by
+   the documented multi-unit adjustment, now quantified. Full register:
+   `EXTERNAL_VALIDATION.md`.

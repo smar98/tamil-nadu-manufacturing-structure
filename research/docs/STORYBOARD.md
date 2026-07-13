@@ -119,9 +119,10 @@ mandatory. No causal wording anywhere: gaps are "associated with", never "caused
   current rupees, 2023–24.
 - **Comparison geography:** India + four core peers + Kerala (sensitivity).
 - **Caveat:** "GVA per person is not efficiency or welfare: capital intensity, product mix,
-  prices and markups all move it. The labour-share contrast is corroborated by the TN
-  Economic Survey 2025–26 (§4.3), which reports TN's factory wage share at roughly twice
-  Gujarat's and Maharashtra's."
+  prices and markups all move it. The labour-share *direction* (Tamil Nadu highest among
+  peers) is consistent with official ASI 2023–24 totals and with the TN Economic Survey
+  2025–26 (§4.3); the Survey's published share levels use a base it does not specify and are
+  not comparable with the levels shown here (see External Validation §5)."
 - **Transition:** "Establishment accounts say what is produced and paid out. Workers say
   what they actually receive."
 - **Outcome emphasis:** F3's "larger slice of a smaller pie" is this section's memorable
