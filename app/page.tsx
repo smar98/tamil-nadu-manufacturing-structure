@@ -505,35 +505,49 @@ function MiddleDiagnostic({ survey, classification }: { survey: string; classifi
                 const published = defRows
                   .filter((row) => row.employment_share !== null)
                   .sort((a, b) => a.employment_share! - b.employment_share!);
-                const lastLabelX = [-Infinity, -Infinity, -Infinity];
-                const levelFor = (cx: number) => {
-                  let best = 0;
-                  for (let l = 1; l < 3; l += 1) {
-                    if (lastLabelX[l] < lastLabelX[best]) best = l;
+                const peers = published.filter((row) => row.geography_id !== "33");
+                /* Peer dots closer than the width of a label share one joined
+                   label, so clusters read as a group instead of colliding. */
+                const clusters: { xs: number[]; codes: string[] }[] = [];
+                for (const row of peers) {
+                  const cx = x(row.employment_share!);
+                  const code = GEO_CODE[row.geography_id] ?? row.geography_label;
+                  const last = clusters[clusters.length - 1];
+                  if (last && cx - last.xs[last.xs.length - 1] < 30) {
+                    last.xs.push(cx);
+                    last.codes.push(code);
+                  } else {
+                    clusters.push({ xs: [cx], codes: [code] });
                   }
-                  lastLabelX[best] = cx;
-                  return best;
-                };
-                return published.map((row) => {
-                  const isTn = row.geography_id === "33";
-                  const level = isTn ? 0 : levelFor(x(row.employment_share!));
-                  return (
-                    <g key={row.geography_id}>
-                      <circle cx={x(row.employment_share!)} cy={y + 16} r={isTn ? 8 : 6} fill={isTn ? "var(--tn)" : "var(--grey-faint)"} stroke={isTn ? "none" : "var(--grey-fill)"} />
+                }
+                const tnRowHere = published.find((row) => row.geography_id === "33");
+                return (
+                  <g>
+                    {peers.map((row) => (
+                      <circle key={row.geography_id} cx={x(row.employment_share!)} cy={y + 16} r={6} fill="var(--grey-faint)" stroke="var(--grey-fill)" />
+                    ))}
+                    {clusters.map((cluster) => (
                       <text
-                        x={x(row.employment_share!)}
-                        y={isTn ? y + 44 : y - 2 - level * 13}
+                        key={cluster.codes.join("-")}
+                        x={(cluster.xs[0] + cluster.xs[cluster.xs.length - 1]) / 2}
+                        y={y - 2}
                         textAnchor="middle"
                         fontSize="11.5"
-                        fontWeight={isTn ? 600 : 400}
-                        fill={isTn ? "var(--tn)" : "var(--grey-text)"}
+                        fill="var(--grey-text)"
                       >
-                        {GEO_CODE[row.geography_id] ?? row.geography_label}
-                        {isTn ? ` ${pct(row.employment_share!, 0)}` : ""}
+                        {cluster.codes.join(" · ")}
                       </text>
-                    </g>
-                  );
-                });
+                    ))}
+                    {tnRowHere && (
+                      <g>
+                        <circle cx={x(tnRowHere.employment_share!)} cy={y + 16} r={8} fill="var(--tn)" />
+                        <text x={x(tnRowHere.employment_share!)} y={y + 44} textAnchor="middle" fontSize="11.5" fontWeight={600} fill="var(--tn)">
+                          TN {pct(tnRowHere.employment_share!, 0)}
+                        </text>
+                      </g>
+                    )}
+                  </g>
+                );
               })()}
               {tnRow?.employment_share == null && (
                 <text x={left} y={y + 44} fontSize="12" fontStyle="italic" fill="var(--ink-3)">
