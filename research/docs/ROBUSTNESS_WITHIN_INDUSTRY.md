@@ -72,9 +72,11 @@ Fixed capital per employee, 2023, TN as ratio of peer: all-manufacturing **0.36�
 Within sectors the pattern splits: textiles (0.61–0.76×), food processing (0.44–0.46×) and
 life sciences (0.63–0.74×) are less capital-intense where they are less productive — there,
 low capital per worker is a plausible proximate channel for the GVA gap. But
-electronics-core and electrical-electronics run **more** capital per employee than every
-peer (1.3–2.0×) while still producing 32–45% less value per person — capital shallowness
-cannot be the whole story. Site treatment: capital intensity is presented as a descriptive
+electrical-electronics runs **more** capital per employee than every peer (1.30–1.52× vs
+GJ/MH/KA/TG) while producing 32–45% less value per person than those states, and
+electronics-core runs more capital than Gujarat, Maharashtra and Telangana (1.36–1.95×;
+Karnataka is the exception at 0.87×) while producing 39–43% less value than MH/KA/TG (parity
+with Gujarat) — capital shallowness cannot be the whole story. Site treatment: capital intensity is presented as a descriptive
 channel ("Tamil Nadu's factories work with about a third of Gujarat's capital per person"),
 never as a completed explanation.
 

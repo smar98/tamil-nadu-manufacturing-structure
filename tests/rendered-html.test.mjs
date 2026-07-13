@@ -2,12 +2,14 @@ import assert from "node:assert/strict";
 import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 
-test("static export renders the structural snapshot", async () => {
+test("static export renders the full narrative without a loading state", async () => {
   const html = await readFile(new URL("../out/index.html", import.meta.url), "utf8");
-  assert.match(html, /<title>Tamil Nadu Manufacturing: A Structural Snapshot<\/title>/i);
-  assert.match(html, /Loading the manufacturing structure/i);
+  assert.match(html, /<title>India(?:&#x27;|')s Factory State: Tamil Nadu(?:&#x27;|')s Manufacturing Paradox, 2023-24<\/title>/i);
+  assert.match(html, /more than in any other state/i);
+  assert.match(html, /gross value added/i);
+  assert.match(html, /not published \(sample too small\)/i);
   assert.match(html, /\/tamil-nadu-manufacturing-structure\/_next\//i);
-  assert.doesNotMatch(html, /Your site is taking shape|react-loading-skeleton/i);
+  assert.doesNotMatch(html, /Loading the 2023-24 manufacturing evidence|react-loading-skeleton/i);
 });
 
 test("all published-table reconciliation gates pass", async () => {
@@ -671,13 +673,16 @@ test("the committed ASI aggregate CSV excludes suppress-grade cells", async () =
 
 test("the interface states the estimand and the non-claims", async () => {
   const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
-  assert.match(page, /Not a tracked/);
-  assert.match(page, /return to registration/i);
-  assert.match(page, /Not identified/);
-  assert.match(page, /cannot estimate a registration effect/i);
-  assert.match(page, /independently describes/i);
-  assert.match(page, /does not measure firm transitions/i);
+  // Descriptive, not causal.
+  assert.match(page, /identifies\s+causes or evaluates any policy/i);
+  assert.match(page, /gap remaining under a common industry/i);
+  assert.match(page, /no identified cause/i);
+  // Three separate survey universes that cannot be merged into one firm ladder.
+  assert.match(page, /cannot be merged into one firm ladder/i);
+  assert.match(page, /No common identifier links ASUSE, ASI or PLFS/i);
   assert.match(page, /abnormal shortage of medium firms/i);
+  // Suppressed values render as an explicit unavailability label, never zero/blank.
+  assert.match(page, /not published \(sample too small\)/i);
 });
 
 test("the public data directory contains only the canonical payload", async () => {

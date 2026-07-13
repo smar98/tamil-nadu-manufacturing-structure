@@ -1,0 +1,164 @@
+"use client";
+
+/* Client islands. Everything on the page renders complete, final-state HTML on
+   the server; these components only add behavior on top (scroll-step switching,
+   the hero count-up, tab switching). With JavaScript off the page stays fully
+   readable: steps and states render stacked, tabs render as stacked panels. */
+
+import { useEffect, useRef, useState, type ReactNode } from "react";
+
+const reducedMotion = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/** Sticky exhibit pane + stepped prose. stepToState maps a step index to the
+    exhibit state it should display (defaults to the identity mapping). */
+export function Scrolly({
+  steps,
+  states,
+  stepToState,
+  ariaLabel,
+}: {
+  steps: ReactNode[];
+  states: ReactNode[];
+  stepToState?: number[];
+  ariaLabel: string;
+}) {
+  const [active, setActive] = useState(0);
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const stepEls = Array.from(root.querySelectorAll<HTMLElement>("[data-step]"));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActive(Number((entry.target as HTMLElement).dataset.step));
+          }
+        }
+      },
+      { rootMargin: "-45% 0px -45% 0px" },
+    );
+    stepEls.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  const stateIndex = stepToState ? stepToState[active] : active;
+
+  return (
+    <div className="scrolly" ref={rootRef} role="group" aria-label={ariaLabel}>
+      <div className="scrolly-steps">
+        {steps.map((step, index) => (
+          <div
+            key={index}
+            data-step={index}
+            className={`scrolly-step${index === active ? " active" : ""}`}
+          >
+            {step}
+          </div>
+        ))}
+      </div>
+      <div className="scrolly-sticky">
+        <div className="scrolly-pane">
+          {states.map((state, index) => (
+            <div
+              key={index}
+              className={`scrolly-state${index === stateIndex ? " active" : ""}`}
+              aria-hidden={index !== stateIndex}
+            >
+              {state}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Counts up once on first view. Server-renders the final value so the number
+    is correct without JavaScript and for crawlers. */
+export function CountUp({ value, className }: { value: number; className?: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const done = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || done.current || reducedMotion()) return;
+    const observer = new IntersectionObserver((entries) => {
+      if (!entries.some((entry) => entry.isIntersecting) || done.current) return;
+      done.current = true;
+      observer.disconnect();
+      const duration = 1400;
+      const start = performance.now();
+      const tick = (now: number) => {
+        const progress = Math.min(1, (now - start) / duration);
+        const eased = 1 - (1 - progress) ** 4;
+        el.textContent = Math.round(value * eased).toLocaleString("en-US");
+        if (progress < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [value]);
+
+  return (
+    <span ref={ref} className={className}>
+      {value.toLocaleString("en-US")}
+    </span>
+  );
+}
+
+/** Accessible tab switcher. Without JavaScript all panels render stacked with
+    their own headings; with it, one panel shows at a time. */
+export function Tabs({
+  labels,
+  panels,
+  defaultIndex = 0,
+  ariaLabel,
+}: {
+  labels: string[];
+  panels: ReactNode[];
+  defaultIndex?: number;
+  ariaLabel: string;
+}) {
+  const [selected, setSelected] = useState(defaultIndex);
+
+  /* Visibility is CSS-driven: with the `js` class on <html>, inactive panels
+     hide; without JavaScript the tablist hides and all panels render stacked,
+     each captioned by its data-label. */
+  return (
+    <div className="tabset">
+      <div role="tablist" aria-label={ariaLabel} className="tab-labels">
+        {labels.map((label, index) => (
+          <button
+            key={label}
+            role="tab"
+            aria-selected={index === selected}
+            style={
+              index === selected
+                ? { borderColor: "var(--ink)", color: "var(--ink)", fontWeight: 600 }
+                : undefined
+            }
+            onClick={() => setSelected(index)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+      {panels.map((panel, index) => (
+        <div
+          key={index}
+          role="tabpanel"
+          className="tabpanel"
+          data-label={labels[index]}
+          data-active={index === selected || undefined}
+        >
+          {panel}
+        </div>
+      ))}
+    </div>
+  );
+}
