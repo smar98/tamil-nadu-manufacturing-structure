@@ -1,0 +1,538 @@
+{
+  "meta": {
+    "title": "Tamil Nadu Manufacturing: A Structural Snapshot",
+    "built_from": [
+      "ASUSE 2023-24",
+      "ASI 2023-24",
+      "PLFS 2023-24"
+    ],
+    "price_basis": "Current rupees; no time-series growth claim is made.",
+    "comparison_warning": "The three surveys cover different statistical units and overlapping but non-identical reference periods. Comparisons diagnose structure; they do not track firm transitions.",
+    "disclosure": "Only weighted aggregates are exported. No respondent-level record is published."
+  },
+  "headline": {
+    "unincorporated_establishments": 1391656,
+    "own_account_share": 0.8040729893019539,
+    "hired_worker_share": 0.19592701069804608,
+    "registered_factories": 29899,
+    "productivity_ratio_registered_to_oae": 11.094423346753075,
+    "productivity_ratio_registered_to_hwe": 4.482838767873702
+  },
+  "tiers": {
+    "oae": {
+      "label": "Own-account enterprise",
+      "sample_establishments": 6592,
+      "estimated_establishments": 1118993,
+      "estimated_workers": 1364631,
+      "workers_per_establishment": 1.2195172069447113,
+      "gva_per_worker": 75693,
+      "female_worker_share": 0.6504966467394688,
+      "reconstructed_gva_per_worker": 75819.96598535213
+    },
+    "hwe": {
+      "label": "Hired-worker enterprise",
+      "sample_establishments": 3933,
+      "estimated_establishments": 272660,
+      "estimated_workers": 1426792,
+      "workers_per_establishment": 5.232852698832877,
+      "gva_per_worker": 187330,
+      "female_worker_share": 0.3167890477687251,
+      "reconstructed_gva_per_worker": 188166.8969166631
+    },
+    "asi": {
+      "label": "Registered factory",
+      "sample_factories": 7711,
+      "estimated_factories": 29899,
+      "persons_engaged": 2888489,
+      "persons_per_factory": 96.60698065151941,
+      "gva_per_person_engaged": 839770.1863857805,
+      "female_direct_worker_share": 0.3746642383397988,
+      "contract_worker_share": 0.2739897019469555,
+      "rd_factory_share": 0.0204401598108667,
+      "training_factory_share": 0.072135275123937
+    }
+  },
+  "asuse_sectors": [
+    {
+      "nic2": 14,
+      "label": "Apparel",
+      "sample_establishments": 3975,
+      "estimated_establishments": 538293,
+      "hwe_share": 0.08994934357161487,
+      "workers_per_establishment": 1.533995053051786,
+      "gva_per_worker": 104528.76325123139,
+      "female_worker_share": 0.7119509784192681,
+      "computer_use_share": 0.006949330847878084,
+      "internet_use_share": 0.1525263632371697,
+      "accounts_share": 0.007443469615364989,
+      "bank_account_share": 0.585906620824756
+    },
+    {
+      "nic2": 13,
+      "label": "Textiles",
+      "sample_establishments": 1224,
+      "estimated_establishments": 228913,
+      "hwe_share": 0.19491610960049216,
+      "workers_per_establishment": 2.408534673106327,
+      "gva_per_worker": 122368.53964293003,
+      "female_worker_share": 0.4067454408888592,
+      "computer_use_share": 0.016061979865775008,
+      "internet_use_share": 0.10203351278953313,
+      "accounts_share": 0.018181310834486777,
+      "bank_account_share": 0.5406177925293894
+    },
+    {
+      "nic2": 10,
+      "label": "Food products",
+      "sample_establishments": 1743,
+      "estimated_establishments": 180260,
+      "hwe_share": 0.28880115190378164,
+      "workers_per_establishment": 2.4873140747553335,
+      "gva_per_worker": 153605.19841211443,
+      "female_worker_share": 0.39272420344861236,
+      "computer_use_share": 0.02434682354871071,
+      "internet_use_share": 0.24213594377971503,
+      "accounts_share": 0.015134713236679068,
+      "bank_account_share": 0.6598464197635583
+    },
+    {
+      "nic2": 12,
+      "label": "Tobacco",
+      "sample_establishments": 472,
+      "estimated_establishments": 111969,
+      "hwe_share": 0.0051343125974133595,
+      "workers_per_establishment": 1.0671409052286072,
+      "gva_per_worker": 31355.608697624295,
+      "female_worker_share": 0.8722943378687696,
+      "computer_use_share": 0.0,
+      "internet_use_share": 0.003046652066237911,
+      "accounts_share": 0.0,
+      "bank_account_share": 0.27963002588172736
+    },
+    {
+      "nic2": 32,
+      "label": "Other manufacturing",
+      "sample_establishments": 649,
+      "estimated_establishments": 105449,
+      "hwe_share": 0.15356194918335123,
+      "workers_per_establishment": 1.6157577767043918,
+      "gva_per_worker": 102608.98659304039,
+      "female_worker_share": 0.4983946190403507,
+      "computer_use_share": 0.007123344071781922,
+      "internet_use_share": 0.06293221756911102,
+      "accounts_share": 0.002052667415333075,
+      "bank_account_share": 0.621802516915253
+    },
+    {
+      "nic2": 16,
+      "label": "Wood products",
+      "sample_establishments": 491,
+      "estimated_establishments": 51248,
+      "hwe_share": 0.3442750815219712,
+      "workers_per_establishment": 2.1472606202152624,
+      "gva_per_worker": 173291.16096101596,
+      "female_worker_share": 0.21018427946110535,
+      "computer_use_share": 0.02962862992656929,
+      "internet_use_share": 0.16704199424903818,
+      "accounts_share": 9.444305991915935e-05,
+      "bank_account_share": 0.6378375082996961
+    },
+    {
+      "nic2": 25,
+      "label": "Fabricated metals",
+      "sample_establishments": 475,
+      "estimated_establishments": 40834,
+      "hwe_share": 0.6606971504312553,
+      "workers_per_establishment": 2.92643435244563,
+      "gva_per_worker": 199368.83016617683,
+      "female_worker_share": 0.06655242058670616,
+      "computer_use_share": 0.030846724564477852,
+      "internet_use_share": 0.28662532075707176,
+      "accounts_share": 0.018700070886307877,
+      "bank_account_share": 0.8203183550158518
+    },
+    {
+      "nic2": 23,
+      "label": "Non-metallic minerals",
+      "sample_establishments": 465,
+      "estimated_establishments": 27370,
+      "hwe_share": 0.6023297575857737,
+      "workers_per_establishment": 4.7509523943454015,
+      "gva_per_worker": 178266.20709607346,
+      "female_worker_share": 0.31659135461800747,
+      "computer_use_share": 0.025461243390224642,
+      "internet_use_share": 0.18713979383648408,
+      "accounts_share": 0.011279603522245834,
+      "bank_account_share": 0.6395915079234368
+    },
+    {
+      "nic2": 18,
+      "label": "Printing",
+      "sample_establishments": 182,
+      "estimated_establishments": 17486,
+      "hwe_share": 0.49407713850015833,
+      "workers_per_establishment": 2.5101137583975848,
+      "gva_per_worker": 185325.78430788906,
+      "female_worker_share": 0.20163656632415186,
+      "computer_use_share": 0.6645183030262187,
+      "internet_use_share": 0.7304882265071232,
+      "accounts_share": 0.030900893517587083,
+      "bank_account_share": 0.8905600150315058
+    },
+    {
+      "nic2": 22,
+      "label": "Rubber & plastics",
+      "sample_establishments": 121,
+      "estimated_establishments": 13862,
+      "hwe_share": 0.3056653096340653,
+      "workers_per_establishment": 3.183337025954591,
+      "gva_per_worker": 170236.36501564976,
+      "female_worker_share": 0.44201024302965036,
+      "computer_use_share": 0.10918842883963435,
+      "internet_use_share": 0.2293701902069174,
+      "accounts_share": 0.040847311545331375,
+      "bank_account_share": 0.5047100704869254
+    },
+    {
+      "nic2": 31,
+      "label": "Furniture",
+      "sample_establishments": 128,
+      "estimated_establishments": 12480,
+      "hwe_share": 0.6189161905125772,
+      "workers_per_establishment": 3.053538752684196,
+      "gva_per_worker": 238609.04467221478,
+      "female_worker_share": 0.04417611537735966,
+      "computer_use_share": 0.018522796869312772,
+      "internet_use_share": 0.16408499150172806,
+      "accounts_share": 0.022422173213975043,
+      "bank_account_share": 0.799311003419181
+    },
+    {
+      "nic2": 17,
+      "label": "Paper",
+      "sample_establishments": 106,
+      "estimated_establishments": 11281,
+      "hwe_share": 0.3988418400314105,
+      "workers_per_establishment": 3.4863014960313845,
+      "gva_per_worker": 126273.50471107099,
+      "female_worker_share": 0.4846292232663762,
+      "computer_use_share": 0.1284135031695634,
+      "internet_use_share": 0.25576461389520355,
+      "accounts_share": 0.02541664466775209,
+      "bank_account_share": 0.6503325154405787
+    },
+    {
+      "nic2": 24,
+      "label": "Basic metals",
+      "sample_establishments": 75,
+      "estimated_establishments": 10605,
+      "hwe_share": 0.6148499688251233,
+      "workers_per_establishment": 2.749706264756013,
+      "gva_per_worker": 229375.43456666564,
+      "female_worker_share": 0.13252671613050362,
+      "computer_use_share": 0.025894483780506433,
+      "internet_use_share": 0.21862176916103054,
+      "accounts_share": 0.007919868076789467,
+      "bank_account_share": 0.8175126472098105
+    },
+    {
+      "nic2": 33,
+      "label": "Repair & installation",
+      "sample_establishments": 107,
+      "estimated_establishments": 9881,
+      "hwe_share": 0.2750648844862752,
+      "workers_per_establishment": 1.9166360420486648,
+      "gva_per_worker": 191402.53687440362,
+      "female_worker_share": 0.04868521957201167,
+      "computer_use_share": 0.029625105492760102,
+      "internet_use_share": 0.31376469999373974,
+      "accounts_share": 0.007710420979488929,
+      "bank_account_share": 0.5787624728990599
+    },
+    {
+      "nic2": 15,
+      "label": "Leather & footwear",
+      "sample_establishments": 59,
+      "estimated_establishments": 8980,
+      "hwe_share": 0.18648109879331687,
+      "workers_per_establishment": 1.7828103093277818,
+      "gva_per_worker": 149249.08763880932,
+      "female_worker_share": 0.556370965559898,
+      "computer_use_share": 0.0012861232347248731,
+      "internet_use_share": 0.2075720499876794,
+      "accounts_share": 0.01643843658236012,
+      "bank_account_share": 0.4904081430241194
+    },
+    {
+      "nic2": 20,
+      "label": "Chemicals",
+      "sample_establishments": 92,
+      "estimated_establishments": 6662,
+      "hwe_share": 0.31284117273316886,
+      "workers_per_establishment": 3.5206115829081956,
+      "gva_per_worker": 131999.12462872485,
+      "female_worker_share": 0.6271219109032962,
+      "computer_use_share": 0.043430584789063205,
+      "internet_use_share": 0.17556978009714588,
+      "accounts_share": 0.012964702700293035,
+      "bank_account_share": 0.5599522000567067
+    },
+    {
+      "nic2": 28,
+      "label": "Machinery",
+      "sample_establishments": 55,
+      "estimated_establishments": 4898,
+      "hwe_share": 0.6667442627268394,
+      "workers_per_establishment": 4.095839784075794,
+      "gva_per_worker": 380150.64692467154,
+      "female_worker_share": 0.06883400309848453,
+      "computer_use_share": 0.2580336115753014,
+      "internet_use_share": 0.39371914949219217,
+      "accounts_share": 0.12268763978877156,
+      "bank_account_share": 0.9473901162001341
+    },
+    {
+      "nic2": 11,
+      "label": "Beverages",
+      "sample_establishments": 50,
+      "estimated_establishments": 2842,
+      "hwe_share": 0.6422487946114799,
+      "workers_per_establishment": 5.862635183290627,
+      "gva_per_worker": 203594.28140453575,
+      "female_worker_share": 0.3850226868011891,
+      "computer_use_share": 0.2287808444584853,
+      "internet_use_share": 0.5904533496643998,
+      "accounts_share": 0.08917334461982308,
+      "bank_account_share": 0.9016953240334742
+    }
+  ],
+  "asi_sectors": [
+    {
+      "id": "automobile-core",
+      "label": "Motor vehicles",
+      "estimated_factories": 1369,
+      "persons_engaged": 315007,
+      "gva_per_person_engaged": 1482432.2522920992,
+      "female_direct_worker_share": 0.102742817521222,
+      "contract_worker_share": 0.4731749551497847,
+      "rd_factory_share": 0.0693013085854244,
+      "training_factory_share": 0.192850281816907,
+      "sample_factories": 488,
+      "stability": "high"
+    },
+    {
+      "id": "electronics-core",
+      "label": "Electronics",
+      "estimated_factories": 224,
+      "persons_engaged": 117930,
+      "gva_per_person_engaged": 974324.1538798442,
+      "female_direct_worker_share": 0.4084477386720294,
+      "contract_worker_share": 0.6488046768888751,
+      "rd_factory_share": 0.0593631948208139,
+      "training_factory_share": 0.1691851052393196,
+      "sample_factories": 102,
+      "stability": "high"
+    },
+    {
+      "id": "food-processing",
+      "label": "Food processing",
+      "estimated_factories": 3959,
+      "persons_engaged": 206748,
+      "gva_per_person_engaged": 803703.984167257,
+      "female_direct_worker_share": 0.3784564003587423,
+      "contract_worker_share": 0.2217812902022813,
+      "rd_factory_share": 0.0246726540917569,
+      "training_factory_share": 0.0368091787842319,
+      "sample_factories": 897,
+      "stability": "high"
+    },
+    {
+      "id": "leather-footwear",
+      "label": "Leather & footwear",
+      "estimated_factories": 1160,
+      "persons_engaged": 143543,
+      "gva_per_person_engaged": 356604.1096610238,
+      "female_direct_worker_share": 0.6549449088695345,
+      "contract_worker_share": 0.0623777262444525,
+      "rd_factory_share": 0.0035913192682297,
+      "training_factory_share": 0.0510765407077019,
+      "sample_factories": 260,
+      "stability": "high"
+    },
+    {
+      "id": "life-sciences",
+      "label": "Life sciences",
+      "estimated_factories": 362,
+      "persons_engaged": 50921,
+      "gva_per_person_engaged": 1111938.0549794948,
+      "female_direct_worker_share": 0.3214491219191691,
+      "contract_worker_share": 0.2878358221130211,
+      "rd_factory_share": 0.1850457234925219,
+      "training_factory_share": 0.1726734803620726,
+      "sample_factories": 174,
+      "stability": "high"
+    },
+    {
+      "id": "textiles-apparel",
+      "label": "Textiles & apparel",
+      "estimated_factories": 8503,
+      "persons_engaged": 863911,
+      "gva_per_person_engaged": 411530.1900220008,
+      "female_direct_worker_share": 0.4777208946187139,
+      "contract_worker_share": 0.0992420168645146,
+      "rd_factory_share": 0.0026094390222538,
+      "training_factory_share": 0.0534693879445278,
+      "sample_factories": 2180,
+      "stability": "high"
+    }
+  ],
+  "plfs": {
+    "sample_workers": 10224,
+    "sample_manufacturing_workers": 1642,
+    "manufacturing_share": 15.969919999421494,
+    "male_manufacturing_share": 16.281249728560056,
+    "female_manufacturing_share": 15.436269188256457,
+    "rural_manufacturing_share": 12.16933604610447,
+    "urban_manufacturing_share": 21.732820689370456,
+    "manufacturing_status_shares": {
+      "self_employed": 0.28802009035828885,
+      "regular_wage": 0.5920630271888633,
+      "casual_labour": 0.11991688245284783
+    }
+  },
+  "uncertainty": {
+    "asuse_all_activity_gva_per_worker": 167401.68207143585,
+    "asuse_all_activity_rse_percent": 2.8699939534125445,
+    "asuse_manufacturing_gva_per_worker": 133244.33674732404,
+    "asuse_manufacturing_rse_percent": 2.4854870870882713,
+    "method": "MoSPI ASUSE 2023-24 Appendix B, section 6 SRSWR ratio approximation"
+  },
+  "published": {
+    "asuse": {
+      "oae_establishments": 1118993,
+      "hwe_establishments": 272663,
+      "all_establishments": 1391656,
+      "oae_productivity": 75693,
+      "hwe_productivity": 187330,
+      "all_productivity": 132755,
+      "all_workers": 2791450,
+      "source": "ASUSE 2023-24 full report, Tables 5, 30 and 36"
+    },
+    "plfs": {
+      "manufacturing_share": 15.97,
+      "male_manufacturing_share": 16.3,
+      "female_manufacturing_share": 15.44,
+      "rural_manufacturing_share": 12.17,
+      "urban_manufacturing_share": 21.73,
+      "source": "PLFS 2023-24 annual report, Table 27"
+    }
+  },
+  "validation": [
+    {
+      "check": "ASUSE TN manufacturing OAE establishments",
+      "reconstructed": 1118993,
+      "published": 1118993,
+      "relative_error": 0.0,
+      "tolerance": 0.001,
+      "status": "pass"
+    },
+    {
+      "check": "ASUSE TN manufacturing HWE establishments",
+      "reconstructed": 272660,
+      "published": 272663,
+      "relative_error": 1.1002592944403898e-05,
+      "tolerance": 0.001,
+      "status": "pass"
+    },
+    {
+      "check": "ASUSE TN manufacturing OAE GVA per worker",
+      "reconstructed": 75819.96598535213,
+      "published": 75693,
+      "relative_error": 0.0016773808060471878,
+      "tolerance": 0.01,
+      "status": "pass"
+    },
+    {
+      "check": "ASUSE TN manufacturing HWE GVA per worker",
+      "reconstructed": 188166.8969166631,
+      "published": 187330,
+      "relative_error": 0.004467500756222173,
+      "tolerance": 0.01,
+      "status": "pass"
+    },
+    {
+      "check": "PLFS TN manufacturing share",
+      "reconstructed": 15.969919999421494,
+      "published": 15.97,
+      "relative_error": 5.009428835732998e-06,
+      "tolerance": 0.005,
+      "status": "pass"
+    },
+    {
+      "check": "PLFS TN male manufacturing share",
+      "reconstructed": 16.281249728560056,
+      "published": 16.3,
+      "relative_error": 0.0011503234012236203,
+      "tolerance": 0.005,
+      "status": "pass"
+    },
+    {
+      "check": "PLFS TN female manufacturing share",
+      "reconstructed": 15.436269188256457,
+      "published": 15.44,
+      "relative_error": 0.00024163288494447,
+      "tolerance": 0.005,
+      "status": "pass"
+    },
+    {
+      "check": "PLFS TN rural manufacturing share",
+      "reconstructed": 12.16933604610447,
+      "published": 12.17,
+      "relative_error": 5.455660604183157e-05,
+      "tolerance": 0.005,
+      "status": "pass"
+    },
+    {
+      "check": "PLFS TN urban manufacturing share",
+      "reconstructed": 21.732820689370456,
+      "published": 21.73,
+      "relative_error": 0.00012980622965741618,
+      "tolerance": 0.005,
+      "status": "pass"
+    },
+    {
+      "check": "ASUSE TN all-activity GVA-per-worker RSE",
+      "reconstructed": 2.8699939534125445,
+      "published": 2.64,
+      "relative_error": 0.08711892174717589,
+      "tolerance": 0.15,
+      "status": "pass"
+    }
+  ],
+  "sources": [
+    {
+      "id": "asuse",
+      "title": "Annual Survey of Unincorporated Sector Enterprises 2023-24",
+      "coverage": "Unincorporated non-agricultural establishments; October 2023-September 2024",
+      "use": "Enterprise tier, workers, GVA per worker, operating characteristics and NIC sector",
+      "url": "https://microdata.gov.in/NADA/index.php/catalog/238",
+      "tables": "Published Tables 5, 30 and 36; public-use Blocks 2, 2.1-2.3, 7.1 and 8"
+    },
+    {
+      "id": "asi",
+      "title": "Annual Survey of Industries 2023-24",
+      "coverage": "Registered factories and other establishments in ASI scope; accounting year 2023-24",
+      "use": "Registered factory counts, persons engaged, GVA and workforce structure",
+      "url": "https://microdata.gov.in/NADA/index.php/catalog/256",
+      "tables": "Public-use Blocks A-J; formulas benchmarked against official ASI tables"
+    },
+    {
+      "id": "plfs",
+      "title": "Periodic Labour Force Survey 2023-24",
+      "coverage": "Usually working persons (principal plus subsidiary status); July 2023-June 2024",
+      "use": "Independent worker-side manufacturing share and employment status",
+      "url": "https://microdata.gov.in/NADA/index.php/catalog/213",
+      "tables": "Published Table 27; public-use first-visit person file"
+    }
+  ]
+}

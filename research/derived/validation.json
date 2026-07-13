@@ -1,0 +1,82 @@
+[
+  {
+    "check": "ASUSE TN manufacturing OAE establishments",
+    "reconstructed": 1118993,
+    "published": 1118993,
+    "relative_error": 0.0,
+    "tolerance": 0.001,
+    "status": "pass"
+  },
+  {
+    "check": "ASUSE TN manufacturing HWE establishments",
+    "reconstructed": 272660,
+    "published": 272663,
+    "relative_error": 1.1002592944403898e-05,
+    "tolerance": 0.001,
+    "status": "pass"
+  },
+  {
+    "check": "ASUSE TN manufacturing OAE GVA per worker",
+    "reconstructed": 75819.96598535213,
+    "published": 75693,
+    "relative_error": 0.0016773808060471878,
+    "tolerance": 0.01,
+    "status": "pass"
+  },
+  {
+    "check": "ASUSE TN manufacturing HWE GVA per worker",
+    "reconstructed": 188166.8969166631,
+    "published": 187330,
+    "relative_error": 0.004467500756222173,
+    "tolerance": 0.01,
+    "status": "pass"
+  },
+  {
+    "check": "PLFS TN manufacturing share",
+    "reconstructed": 15.969919999421494,
+    "published": 15.97,
+    "relative_error": 5.009428835732998e-06,
+    "tolerance": 0.005,
+    "status": "pass"
+  },
+  {
+    "check": "PLFS TN male manufacturing share",
+    "reconstructed": 16.281249728560056,
+    "published": 16.3,
+    "relative_error": 0.0011503234012236203,
+    "tolerance": 0.005,
+    "status": "pass"
+  },
+  {
+    "check": "PLFS TN female manufacturing share",
+    "reconstructed": 15.436269188256457,
+    "published": 15.44,
+    "relative_error": 0.00024163288494447,
+    "tolerance": 0.005,
+    "status": "pass"
+  },
+  {
+    "check": "PLFS TN rural manufacturing share",
+    "reconstructed": 12.16933604610447,
+    "published": 12.17,
+    "relative_error": 5.455660604183157e-05,
+    "tolerance": 0.005,
+    "status": "pass"
+  },
+  {
+    "check": "PLFS TN urban manufacturing share",
+    "reconstructed": 21.732820689370456,
+    "published": 21.73,
+    "relative_error": 0.00012980622965741618,
+    "tolerance": 0.005,
+    "status": "pass"
+  },
+  {
+    "check": "ASUSE TN all-activity GVA-per-worker RSE",
+    "reconstructed": 2.8699939534125445,
+    "published": 2.64,
+    "relative_error": 0.08711892174717589,
+    "tolerance": 0.15,
+    "status": "pass"
+  }
+]

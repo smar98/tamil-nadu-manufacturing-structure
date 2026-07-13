@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use this project, please cite it as below."
+title: "Tamil Nadu Manufacturing: A Structural Snapshot"
+type: software
+authors:
+  - family-names: Mardia
+    given-names: Sanchit
+repository-code: "https://github.com/smar98/tamil-nadu-manufacturing-structure"
+url: "https://smar98.github.io/tamil-nadu-manufacturing-structure/"
+version: 1.0.0
+date-released: 2026-07-13
+license: MIT
