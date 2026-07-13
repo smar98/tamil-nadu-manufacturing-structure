@@ -44,6 +44,8 @@ research/derived/validation.json
 
 The two manufacturing-structure JSON files must be byte-identical. The build fails before writing them if a published-table gate fails.
 
+The canonical payload contains Layers 1–5, including 78 raw and 78 composition-adjusted peer-comparison rows (72 stable, 6 mechanically suppressed Kerala ASI adjustments). `npm test` runs 10 tests; the Layer 5 payload-contract test runs against the canonical payload and must pass rather than skip.
+
 Expected gates include:
 
 - 1,118,993 Tamil Nadu manufacturing OAEs;
