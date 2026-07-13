@@ -46,6 +46,21 @@ The two manufacturing-structure JSON files must be byte-identical. The build fai
 
 The canonical payload contains Layers 1–5, including 78 raw and 78 composition-adjusted peer-comparison rows (72 stable, 6 mechanically suppressed Kerala ASI adjustments). `npm test` runs 10 tests; the Layer 5 payload-contract test runs against the canonical payload and must pass rather than skip.
 
+### Layer 6 exploratory appendix
+
+A separate standalone script builds the disclosure-safe ASUSE reported-problems appendix
+(exploratory correlations, not part of the canonical payload):
+
+```bash
+python3 research/scripts/build_asuse_problems_appendix.py
+```
+
+It reads only `research/data/raw/ASUSE_DATA_2023_24_CSV.zip` and writes
+`research/derived/asuse_problems_appendix.json`. Its self-check reconciles weighted
+establishment totals against the published Layer 1 gates and enforces the Layer 3
+disclosure rule on every published cell. The run is deterministic. Documentation:
+`research/docs/LAYER6_ASUSE_PROBLEMS_APPENDIX.md`.
+
 Expected gates include:
 
 - 1,118,993 Tamil Nadu manufacturing OAEs;
