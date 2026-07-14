@@ -111,6 +111,50 @@ export function CountUp({ value, className }: { value: number; className?: strin
   );
 }
 
+/** Fixed side rail listing the page's sections; highlights the one in view.
+    Hidden below 1360px and without JavaScript (the route map after the hero
+    covers jumping there). */
+export function SectionNav({ sections }: { sections: { id: string; label: string }[] }) {
+  const [current, setCurrent] = useState<string | null>(null);
+  const [pastHero, setPastHero] = useState(false);
+
+  useEffect(() => {
+    const els = sections
+      .map((section) => document.getElementById(section.id))
+      .filter((el): el is HTMLElement => el !== null);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setCurrent(entry.target.id);
+        }
+      },
+      { rootMargin: "-35% 0px -55% 0px" },
+    );
+    els.forEach((el) => observer.observe(el));
+    /* The rail stays hidden while the drenched hero fills the screen — it
+       would float unreadably over the madder ground. */
+    const hero = document.querySelector(".hero");
+    const heroObserver = new IntersectionObserver((entries) => {
+      for (const entry of entries) setPastHero(!entry.isIntersecting);
+    });
+    if (hero) heroObserver.observe(hero);
+    return () => {
+      observer.disconnect();
+      heroObserver.disconnect();
+    };
+  }, [sections]);
+
+  return (
+    <nav className={`siterail${pastHero ? " vis" : ""}`} aria-label="Sections of this page">
+      {sections.map((section) => (
+        <a key={section.id} href={`#${section.id}`} aria-current={current === section.id || undefined}>
+          {section.label}
+        </a>
+      ))}
+    </nav>
+  );
+}
+
 /** Accessible tab switcher. Without JavaScript all panels render stacked with
     their own headings; with it, one panel shows at a time. */
 export function Tabs({

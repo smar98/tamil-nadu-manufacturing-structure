@@ -68,10 +68,22 @@ svg text { font-family: var(--franklin); }
 .column { max-width: var(--measure); margin-inline: auto; padding-inline: 1.25rem; }
 .exhibit-column { max-width: var(--exhibit-max); margin-inline: auto; padding-inline: 1.25rem; }
 
-.act { padding-block: clamp(4rem, 9vh, 7rem) 0; }
+.act { padding-block: clamp(3.5rem, 8vh, 6rem) 0; }
 
+/* Act separator: a single-hue Madras check — two crossing thread patterns,
+   madder on paper, the selvedge strip between sections. */
 .act-rule {
-  border: 0; border-top: 1px solid var(--rule);
+  border: 0;
+  height: 9px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      oklch(0.46 0.155 27 / 0.5) 0 2px,
+      transparent 2px 12px,
+      oklch(0.46 0.155 27 / 0.22) 12px 14px,
+      transparent 14px 26px
+    ),
+    repeating-linear-gradient(0deg, oklch(0.46 0.155 27 / 0.28) 0 1px, transparent 1px 3px);
   max-width: var(--exhibit-max);
   margin: 0 auto clamp(2.5rem, 6vh, 4rem);
 }
@@ -105,8 +117,22 @@ strong { font-weight: 600; }
   display: grid;
   align-content: center;
   padding: clamp(3rem, 10vh, 6rem) 1.25rem;
+  position: relative;
 }
-.hero-inner { max-width: 62rem; margin-inline: auto; width: 100%; }
+/* Woven Madras-check texture over the drenched madder: two thread directions,
+   barely lighter and barely darker than the ground. */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(90deg, oklch(1 0 0 / 0.045) 0 2px, transparent 2px 54px),
+    repeating-linear-gradient(0deg, oklch(1 0 0 / 0.045) 0 2px, transparent 2px 54px),
+    repeating-linear-gradient(90deg, transparent 0 24px, oklch(0.24 0.1 27 / 0.14) 24px 28px, transparent 28px 54px),
+    repeating-linear-gradient(0deg, transparent 0 24px, oklch(0.24 0.1 27 / 0.14) 24px 28px, transparent 28px 54px);
+  pointer-events: none;
+}
+.hero-inner { max-width: 62rem; margin-inline: auto; width: 100%; position: relative; }
 .hero-count {
   font-family: var(--franklin);
   font-variant-numeric: tabular-nums lining-nums;
@@ -156,8 +182,8 @@ strong { font-weight: 600; }
   padding-top: 0.55rem;
   margin-top: 1.1rem;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem 1.1rem;
+  flex-direction: column;
+  gap: 0.3rem;
 }
 .recon .mark { font-weight: 600; }
 .recon .mark.pass { color: var(--check); }
@@ -251,8 +277,10 @@ strong { font-weight: 600; }
 /* ---------- scrollytelling ---------- */
 
 .scrolly { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(1.5rem, 4vw, 3.5rem); max-width: var(--exhibit-max); margin-inline: auto; padding-inline: 1.25rem; }
-.scrolly-steps { display: flex; flex-direction: column; gap: 55vh; padding-block: 20vh 30vh; }
-.scrolly-step { max-width: 46ch; }
+/* Each step fills most of the viewport and centers its text, so the active
+   step sits level with the vertically-centered sticky exhibit. */
+.scrolly-steps { display: flex; flex-direction: column; gap: 0; padding-block: 0 6vh; }
+.scrolly-step { max-width: 46ch; min-height: 92svh; display: flex; flex-direction: column; justify-content: center; }
 .scrolly-step p { margin-bottom: 1rem; }
 .scrolly-sticky {
   position: sticky;
@@ -271,14 +299,17 @@ strong { font-weight: 600; }
 /* No JS: states render stacked, steps read in sequence. */
 html:not(.js) .scrolly { grid-template-columns: 1fr; }
 html:not(.js) .scrolly-steps { gap: 1.5rem; padding-block: 0; }
+html:not(.js) .scrolly-step { min-height: 0; }
 html:not(.js) .scrolly-sticky { position: static; height: auto; }
 html:not(.js) .scrolly-state { margin-bottom: 2rem; }
 
 @media (max-width: 760px) {
   .scrolly { grid-template-columns: 1fr; }
   .js .scrolly-sticky { position: sticky; top: 0; height: auto; max-height: 62svh; background: var(--paper); z-index: 2; border-bottom: 1px solid var(--rule-faint); padding-block: 0.75rem; order: -1; overflow-y: auto; }
-  .scrolly-steps { gap: 40vh; padding-block: 8vh 18vh; }
+  .scrolly-step { min-height: 62svh; justify-content: flex-start; padding-top: 2rem; }
+  .scrolly-steps { padding-block: 0 10vh; }
   html:not(.js) .scrolly-steps { gap: 1.5rem; padding-block: 0; }
+  html:not(.js) .scrolly-step { min-height: 0; padding-top: 0; }
 }
 
 /* Step emphasis: the active step darkens, others recede (fade, don't delete). */
@@ -355,9 +386,22 @@ figure svg { display: block; width: 100%; height: auto; }
 
 /* ---------- policy ledger (Act VI) ---------- */
 
-.instrument { border-top: 1px solid var(--rule); padding: 1.3rem 0 1.5rem; }
-.instrument h3 { font-size: 1.1875rem; margin-bottom: 0.4rem; }
-.instrument .facts { font-family: var(--franklin); font-size: 0.9063rem; color: var(--ink-2); }
+.instrument-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0 3rem;
+  max-width: var(--exhibit-max);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+@media (min-width: 700px) { .instrument-grid { grid-template-columns: 1fr 1fr; } }
+.instrument { border-top: 2px solid var(--ink); padding: 0.9rem 0 1.5rem; }
+.instrument h3 { font-size: 1.125rem; margin-bottom: 0.35rem; }
+.instrument .desc { font-family: var(--franklin); font-size: 0.9063rem; color: var(--ink-2); min-height: 3.2em; }
+.instrument .source-line { font-family: var(--franklin); font-size: 0.75rem; color: var(--ink-3); margin-top: 0.5rem; }
+.instrument details { font-family: var(--franklin); font-size: 0.8438rem; color: var(--ink-2); margin-top: 0.7rem; }
+.instrument details summary { cursor: pointer; font-weight: 600; color: var(--ink-3); font-size: 0.8125rem; }
+.instrument details[open] summary { margin-bottom: 0.4rem; }
 .ladder {
   display: flex; flex-wrap: wrap; gap: 0.35rem;
   font-family: var(--franklin); font-size: 0.75rem; font-weight: 600;
@@ -366,6 +410,65 @@ figure svg { display: block; width: 100%; height: auto; }
 .ladder span { border: 1px solid var(--rule); padding: 0.15rem 0.55rem; color: var(--ink-2); }
 .ladder span.on { border-color: var(--check); color: var(--check); }
 .ladder span.off { color: var(--ink-3); border-style: dashed; }
+
+/* ---------- the finding up front + route map (after the hero) ---------- */
+
+.bluf { padding-block: clamp(2.5rem, 6vh, 4rem) 0; }
+.bluf-kicker {
+  font-family: var(--franklin);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--tn);
+  margin-bottom: 0.7rem;
+}
+.route {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.6rem;
+  font-family: var(--franklin);
+  font-size: 0.8438rem;
+}
+.route a {
+  border: 1px solid var(--rule);
+  padding: 0.4rem 0.8rem;
+  text-decoration: none;
+  color: var(--ink-2);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.route a:hover { border-color: var(--tn); color: var(--tn); }
+.route a .n { font-size: 0.75rem; color: var(--tn); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* ---------- section rail (wide screens only) ---------- */
+
+.siterail {
+  display: none;
+  position: fixed;
+  left: 1.1rem;
+  top: 50%;
+  translate: 0 -50%;
+  z-index: 5;
+  font-family: var(--franklin);
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+@media (min-width: 1360px) { .js .siterail { display: block; } }
+.siterail { opacity: 0; pointer-events: none; transition: opacity var(--t-fast) var(--ease-out); }
+.siterail.vis { opacity: 1; pointer-events: auto; }
+.siterail a {
+  display: block;
+  padding: 0.28rem 0 0.28rem 0.8rem;
+  border-left: 2px solid var(--rule-faint);
+  color: var(--ink-3);
+  text-decoration: none;
+  max-width: 11rem;
+}
+.siterail a:hover { color: var(--ink); }
+.siterail a[aria-current="true"] { border-left-color: var(--tn); color: var(--tn); font-weight: 600; }
 
 /* ---------- footer / colophon ---------- */
 

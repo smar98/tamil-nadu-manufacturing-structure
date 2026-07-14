@@ -8,7 +8,13 @@ test("static export renders the full narrative without a loading state", async (
   assert.match(html, /more than in any other state/i);
   assert.match(html, /gross value added/i);
   assert.match(html, /not published \(sample too small\)/i);
+  assert.match(html, /The finding, up front/i);
+  assert.match(html, /= India, same measure/i);
+  assert.doesNotMatch(html, /hero-count">[\d,]+\.\d/);
+  assert.match(html, /Annual Survey of Unincorporated Sector Enterprises/i);
+  assert.match(html, /Sanchit Mardia/i);
   assert.match(html, /\/tamil-nadu-manufacturing-structure\/_next\//i);
+  assert.doesNotMatch(html, /NaN/);
   assert.doesNotMatch(html, /Loading the 2023-24 manufacturing evidence|react-loading-skeleton/i);
 });
 
@@ -675,12 +681,12 @@ test("the interface states the estimand and the non-claims", async () => {
   const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
   // Descriptive, not causal.
   assert.match(page, /identifies\s+causes or evaluates any policy/i);
-  assert.match(page, /gap remaining under a common industry/i);
-  assert.match(page, /no identified cause/i);
+  assert.match(page, /gap remaining\s+under a common industry/i);
+  assert.match(page, /this data cannot answer/i);
   // Three separate survey universes that cannot be merged into one firm ladder.
-  assert.match(page, /cannot be merged into one firm ladder/i);
-  assert.match(page, /No common identifier links ASUSE, ASI or PLFS/i);
-  assert.match(page, /abnormal shortage of medium firms/i);
+  assert.match(page, /cannot be merged into one ladder from workshop to\s+factory/i);
+  assert.match(page, /No common identifier links the three surveys/i);
+  assert.match(page, /abnormally few mid-size firms/i);
   // Suppressed values render as an explicit unavailability label, never zero/blank.
   assert.match(page, /not published \(sample too small\)/i);
 });

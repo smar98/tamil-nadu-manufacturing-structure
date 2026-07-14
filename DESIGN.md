@@ -118,3 +118,30 @@ No cream/warm-paper band; no Field Brief tokens; no side-stripe borders; no grad
 no uppercase tracked eyebrows; no numbered section markers; no hero-metric template; no
 identical card grids; no legends where direct labels fit; no league tables of states (one
 comparator at a time in Act IV); no "SHOCKING gap" register — the ledger never shouts.
+
+## 2026-07-14 additions (from Sanchit's full-page voice-note review)
+
+- **Madras check motif.** His idea, adopted: a single-hue woven check (crossing
+  thread lines in madder) is the act separator (`.act-rule`), and a barely-there
+  two-direction weave overlays the drenched hero (`.hero::before`). Single hue
+  only — multicolour plaid would tip into costume. The hatch remains reserved
+  for suppression; the check is structural, never semantic.
+- **The finding, up front.** A BLUF panel directly after the hero (`.bluf`):
+  the whole argument in one paragraph, then a numbered route map of the seven
+  sections (`.route`). The numbers are a real sequence (the argument's order),
+  which is what earns them.
+- **Section rail.** Fixed left rail (`.siterail`) on ≥1360px viewports,
+  JS-only, hidden while the hero is on screen (unreadable over madder).
+  Narrative labels, not headings: "Not the missing middle", "Same industries,
+  less value".
+- **Scrolly geometry.** Steps are now full-viewport flex-centred
+  (`min-height: 92svh; justify-content: center`), so the active step sits level
+  with the vertically-centred sticky exhibit. This was the alignment complaint.
+- **Instrument cards.** Policy instruments render as a 2×2 grid
+  (`.instrument-grid`): name, one-line design, evidence-ladder chips, and the
+  documents' figures behind a native `<details>`. Border-top rules, not boxes.
+- **Reconciliation lines.** `.recon` is now one item per line (column flex) —
+  the wrapped-flex version packed unevenly.
+- **Currency.** Rupee figures in prose carry USD in brackets (₹83/USD, FY24
+  average, noted in colophon). Chart labels stay rupee-only — dual-currency
+  tick labels collide.
