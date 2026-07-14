@@ -259,11 +259,15 @@ successor announced June 2026, not yet published). The four instruments and
 the **evidence ladder** on each card: *objective stated → instrument verified
 → output reported → outcome measured → impact known*. Every instrument stops
 at "output reported" — the documents record what programmes aim at and
-disburse, never what they cause. The site's claim is deliberately narrow: the
-measured gaps (value per worker, pay levels, contract coverage) sit in one
-place, and the stated objectives (getting bigger, hiring more, attracting
-investment, credit volume) in another. That is a reading of stated objectives,
-not an evaluation — and it is labelled as ours.
+disburse, never what they cause. The site's claim is deliberately narrow: in
+the documents we reviewed, the measured gaps (value per worker, pay levels,
+contract coverage) sit in one place, and the stated objectives (getting
+bigger, hiring more, attracting investment, credit volume) in another. Two
+innocent explanations are stated alongside it: policy runs wider than
+published documents, and an employment-first strategy may accept lower value
+per worker as the price of labour-absorbing manufacturing — a choice, not an
+oversight. It is a question about emphasis, labelled as our reading, not an
+evaluation.
 
 (Note: we date the policy documents rather than referencing the political
 context; our evidence base ends at the 2025-26 Policy Notes and the June 2026

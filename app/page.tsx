@@ -1061,9 +1061,10 @@ export default function Home() {
             within the same industries, a Tamil Nadu factory worker is associated with far less
             value added than one in Gujarat, Maharashtra or Karnataka, in every year since
             2008-09. Meanwhile Tamil Nadu’s workers take the largest share of factory value
-            added in the country — the largest slice of the smallest pie. And none of the
-            state’s current, verifiable policy instruments names the weak quantity, value
-            per worker, as an objective.
+            added in the country — the largest slice of the smallest pie. In the current
+            policy documents we could review, the state’s instruments aim at growing and
+            hiring; we did not find value per worker stated as an objective — which may be a
+            deliberate emphasis on employment, or a limit of what published documents show.
           </p>
           <p>The rest of this page is the evidence for each of those sentences, in order.</p>
           <nav className="route" aria-label="Jump to a section">
@@ -1595,7 +1596,7 @@ export default function Home() {
             problem that caps what workers can earn: pay cannot durably rise ahead of the value
             each worker’s factory adds, and that value is what Tamil Nadu trails everyone
             on. Raising the floor for workers, in this data, runs through raising value per
-            worker — the one quantity examined here that no current policy instrument names.
+            worker.
           </p>
           <HowWeKnow>
             <p>
@@ -1657,22 +1658,28 @@ export default function Home() {
         </div>
         <div className="column" style={{ marginTop: "2rem" }}>
           <p>
-            Set the instruments beside the measurements. Every verified instrument rewards{" "}
-            <strong>getting bigger</strong> or <strong>hiring more</strong> — reasonable aims,
-            and ones where the data shows Tamil Nadu has no unusual shortfall. What no current
-            instrument names as an objective is the quantity this data finds weakest, value added
-            per worker, or the pay and coverage levels where the state trails its southern
-            neighbours. Timing matters for reading this fairly: the state has also been between
-            general industrial policies since April 2025, when the 2021 policy lapsed; its
-            successor was announced in June 2026 but is not yet published, and the MSME
-            instruments above are as stated in the 2025-26 Policy Notes.
+            Set the instruments beside the measurements. Every instrument we could verify
+            rewards <strong>getting bigger</strong> or <strong>hiring more</strong> —
+            reasonable aims, and ones where the data shows Tamil Nadu has no unusual shortfall.
+            In the documents we reviewed, we did not find value added per worker, wage levels,
+            or contract and benefit coverage stated as objectives. There are at least two
+            innocent readings of that. Policy runs wider than published documents, and
+            objectives may be tracked in places we could not see. And a strategy built on
+            labour-absorbing manufacturing may treat lower value per worker as an accepted
+            price of mass employment rather than a target it forgot — a choice, not an
+            oversight. Timing also matters: the state has been between general industrial
+            policies since April 2025, when the 2021 policy lapsed; its successor was announced
+            in June 2026 but is not yet published, and the MSME instruments above are as stated
+            in the 2025-26 Policy Notes.
           </p>
           <p className="definition">
-            To be precise about what this section claims: it reads stated objectives. It passes
-            no verdict on whether any programme works, because policy documents record what
-            programmes aim at, disburse and build, never what they cause. The observation is
-            simply that the measured gaps sit in one place and the stated objectives in another.
-            The reading is ours; the documents themselves draw no such comparison.
+            To be precise about what this section claims: it reads stated objectives in
+            published documents, nothing more. It passes no verdict on whether any programme
+            works, because policy documents record what programmes aim at, disburse and build,
+            never what they cause. The observation is simply that the measured gaps sit in one
+            place and the stated objectives in another — a question about emphasis, not an
+            accusation of neglect. The reading is ours; the documents themselves draw no such
+            comparison.
           </p>
           <HowWeKnow>
             <p>
