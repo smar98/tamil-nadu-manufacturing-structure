@@ -338,4 +338,4 @@ Aggregate-only diagnostics produced these accepted findings:
 - PLFS industry and enterprise-size support is inadequate for a consistent adjusted peer panel. Depending on outcome and peer, common coverage falls well below 95%, including zero jointly publishable broad-industry cells for several Telangana comparisons.
 - Kerala fails the tested ASI industry and joint support gates because transport-equipment cells are not jointly publishable; this is why every sensitivity row remains subject to the same mechanical gate.
 
-The diagnostic scripts and JSON files under `/Users/sanch/.claude/jobs/09445a65/tmp/` are temporary evidence, not build inputs. The implementation must calculate support from the canonical local survey inputs rather than read those temporary files.
+The exploratory support diagnostics were run as temporary scratch scripts and are not build inputs. The implementation must calculate support from the canonical local survey inputs rather than read those temporary files.

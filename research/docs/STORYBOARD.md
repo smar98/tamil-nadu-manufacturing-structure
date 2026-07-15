@@ -151,8 +151,8 @@ mandatory. No causal wording anywhere: gaps are "associated with", never "caused
   variances unavailable), and a persisting within-industry gap has no identified cause."
 - **Transition:** "These are the demonstrated gaps. The last section asks what the state's
   current policy instruments say about them."
-- **Outcome emphasis:** this is the emotional centre of the site per the user's priority —
-  job quality (F4) gets the largest visual weight.
+- **Outcome emphasis:** this is the emotional centre of the site and its primary
+  substantive interest — job quality (F4) gets the largest visual weight.
 - **Policy evidence vs interpretation:** none here; deferred to Section 7.
 
 ## Section 7 — Findings and instruments (Layer 6)

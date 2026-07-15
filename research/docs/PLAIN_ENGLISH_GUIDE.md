@@ -186,8 +186,7 @@ the measure "broader than take-home pay").
 **Labour share** = labour-cost proxy ÷ GVA. Tamil Nadu's is 43.3% — the
 highest among all comparators by 7.4 to 12.1 percentage points.
 
-The arithmetic you (Sanchit) worked out on the voice note is exactly right,
-and the site now states it your way: TN's workers are *not* paid more than
+The right way to read this: TN's workers are *not* paid more than
 workers elsewhere (pay is near the national average); their ordinary pay is a
 large fraction of the unusually small value their factories add. High share ×
 small pie = middling pay. The labour share being highest is mostly a

@@ -10,3 +10,6 @@ next-env.d.ts
 # Access-controlled MoSPI unit records stay local.
 /research/data/raw/
 tsconfig.tsbuildinfo
+
+# Local-only working notes -- not for the public repo.
+/HANDOFF.md

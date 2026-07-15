@@ -1,10 +1,9 @@
-# Layer 6 policy-evidence notes (recovered)
+# Layer 6 policy-evidence notes (working notes)
 
-**Provenance:** recovered on 2026-07-13 from the prior Claude Code session transcript
-(`09445a65`, "the missing middle" conversation) that performed the original policy-document
-review. Every quotation and printed-page reference below was accepted in that session but
+**Provenance:** working notes from the original policy-document review (2026-07). Every
+quotation and printed-page reference below was accepted in that review but
 **must be re-verified against the source PDFs before it is published in the Layer 6 matrix.**
-Nothing here is a build input; this file exists so the detailed findings survive interruption.
+Nothing here is a build input; this file preserves the detailed findings.
 
 ## What the prior review established
 

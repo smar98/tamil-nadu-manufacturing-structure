@@ -3,7 +3,7 @@
 ## RESOLUTION 2026-07-13: addendum withdrawn — exact replication infeasible from public files
 
 The implementation stopped at the validation gates, as this file required. Diagnosis
-(verified evidence in the session scratchpad `diag/` outputs): with the estimation universe
+(verified in the replication diagnostics): with the estimation universe
 aligned to the published tables exactly — all seven gate cells match the published sample
 counts precisely, and the Table 46 establishment total reproduces the published 4,524,484 to
 the rupee — the Appendix B §6 formula still misses the published RSEs by −0.70 to +4.74

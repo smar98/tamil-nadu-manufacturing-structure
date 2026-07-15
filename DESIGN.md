@@ -119,9 +119,9 @@ no uppercase tracked eyebrows; no numbered section markers; no hero-metric templ
 identical card grids; no legends where direct labels fit; no league tables of states (one
 comparator at a time in Act IV); no "SHOCKING gap" register — the ledger never shouts.
 
-## 2026-07-14 additions (from Sanchit's full-page voice-note review)
+## 2026-07-14 additions (full-page design review)
 
-- **Madras check motif.** His idea, adopted: a single-hue woven check (crossing
+- **Madras check motif.** A single-hue woven check (crossing
   thread lines in madder) is the act separator (`.act-rule`), and a barely-there
   two-direction weave overlays the drenched hero (`.hero::before`). Single hue
   only — multicolour plaid would tip into costume. The hatch remains reserved
