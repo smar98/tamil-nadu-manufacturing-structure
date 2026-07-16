@@ -2,7 +2,7 @@
 
 Laundry list of empirical findings available for the Layer 6 policy-evidence matrix and the
 final narrative. All numbers are read directly from the canonical Layers 1–5 payload
-(`public/data/manufacturing-structure.json`, SHA-256 `a4fd25ae…`). Nothing is cut yet; the
+(`public/data/manufacturing-structure.json`, SHA-256 `eef71cb8…`). Nothing is cut yet; the
 Status column records current intent and can be revised. Every finding is descriptive; none
 identifies a cause. Gaps are Tamil Nadu minus comparator, 2023–24, current prices.
 
@@ -11,7 +11,7 @@ comparator. "Mix" = share of the common-support raw gap attributed to the indust
 component in the Layer 5 pairwise decomposition (not comparable across comparators as a
 league table).
 
-## Approved headline candidates (user review 2026-07-13: keep all)
+## Approved headline candidates
 
 | # | Finding | Key numbers | Mapped instrument | Status |
 |---|---|---|---|---|
@@ -22,7 +22,7 @@ league table).
 | F5 | Regular monthly manufacturing earnings are middling | TN ₹17,277; ≈ India (+187), GJ +412, MH −3,701, KA −1,500, TG −5,523, KL −2,127 | Context for payroll/formalisation instruments | Headline |
 | F6 | 20-worker threshold diagnostic: employment structure around the payroll-subsidy threshold plus social-security coverage by enterprise size | Layer 1 bands 10–19/20–49; Layer 4 job quality by PLFS enterprise size. Explicitly a threshold diagnostic, not an evaluation | EPF payroll subsidy | Headline |
 | F7 | The unincorporated sector is a relative strength | ASUSE GVA per worker TN ₹133,244: IN +19,044, KA +13,928, TG +13,516, GJ −9,775, MH −5,891, KL −54,155. Hired-worker emoluments TN ₹140,586 mid-pack: IN +3,574, KA +8,839, GJ −11,911, MH −5,355, TG −23,626, KL −39,850 | MSME lending; livelihood instruments; hook for ASUSE problems appendix | Headline |
-| F8 | Expired Industrial Policy 2021 targets vs current instruments | 2021 targets (p.4) historical; validity to 31 Mar 2025 (p.7); successor check pending (web verification in progress) | Frames the whole matrix | Headline |
+| F8 | Expired Industrial Policy 2021 targets vs current instruments | 2021 targets (printed p.4) historical; validity to 31 Mar 2025 (printed p.3); no enacted or notified successor found as of July 2026 after the bounded source check | Frames the whole matrix | Headline |
 
 ## Secondary findings (keep in the list; likely supporting text or appendix)
 

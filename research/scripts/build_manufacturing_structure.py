@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import math
+import re
 import zipfile
 from pathlib import Path
 
@@ -1199,6 +1200,316 @@ def peer_comparisons_adjusted(
     return rows
 
 
+def validate_layer5_contract(structure_v1: dict, checks: list[dict]) -> None:
+    """Fail before publication if the locked Layer 5 contract drifts."""
+    raw_rows = structure_v1.get("peer_comparisons_raw")
+    adjusted_rows = structure_v1.get("peer_comparisons_adjusted")
+    if not isinstance(raw_rows, list) or len(raw_rows) != 78:
+        raise AssertionError("Layer 5 requires exactly 78 raw comparison rows")
+    if not isinstance(adjusted_rows, list) or len(adjusted_rows) != 78:
+        raise AssertionError("Layer 5 requires exactly 78 adjusted comparison rows")
+
+    comparators = {row["id"]: row for row in LAYER5_COMPARATORS}
+    comparator_ids = set(comparators)
+    raw_specs = {row["outcome"]: row for row in LAYER5_RAW_OUTCOMES}
+    raw_keys = {(row.get("outcome"), row.get("comparator_id")) for row in raw_rows}
+    expected_raw_keys = {
+        (outcome, comparator_id)
+        for outcome in raw_specs
+        for comparator_id in comparator_ids
+    }
+    if len(raw_keys) != len(raw_rows) or raw_keys != expected_raw_keys:
+        raise AssertionError("Layer 5 raw outcome/comparator coverage is incomplete or duplicated")
+
+    source_arrays = {
+        "value_addition": structure_v1["value_addition"],
+        "establishment_compensation": structure_v1["establishment_compensation"],
+        "worker_earnings": structure_v1["worker_earnings"],
+        "worker_job_quality": structure_v1["worker_job_quality"],
+    }
+    uncertainty_fields = ["standard_error", "rse", "ci95_lower", "ci95_upper"]
+    proportion_outcomes = {
+        specification["outcome"]
+        for specification in LAYER5_RAW_OUTCOMES
+        if specification.get("is_proportion", False)
+    }
+
+    def require_finite(value, label: str) -> None:
+        if not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value):
+            raise AssertionError(f"{label} must be finite")
+
+    def require_close(actual: float, expected: float, label: str) -> None:
+        if abs(actual - expected) > 1e-8 * max(1.0, abs(expected)):
+            raise AssertionError(f"Layer 5 {label} drift")
+
+    for row in raw_rows:
+        specification = raw_specs[row["outcome"]]
+        comparator = comparators[row["comparator_id"]]
+        expected_metadata = {
+            "survey": specification["survey"],
+            "year": "2023-24",
+            "outcome_label": specification["label"],
+            "outcome_family": specification["family"],
+            "unit": specification["unit"],
+            "comparator_label": comparator["label"],
+            "comparator_type": comparator["type"],
+        }
+        if any(row.get(field) != expected for field, expected in expected_metadata.items()):
+            raise AssertionError(
+                f"Layer 5 raw metadata drift for {row['outcome']} / {row['comparator_id']}"
+            )
+        tn_source = layer5_source_row(
+            source_arrays[specification["source"]], specification, TN
+        )
+        comparator_source = layer5_source_row(
+            source_arrays[specification["source"]], specification, row["comparator_id"]
+        )
+        value_field = specification["value_field"]
+        tn_estimate = tn_source.get(value_field)
+        comparator_estimate = comparator_source.get(value_field)
+        if row.get("tn_estimate") != tn_estimate:
+            raise AssertionError(f"Layer 5 Tamil Nadu source drift for {row['outcome']}")
+        if row.get("comparator_estimate") != comparator_estimate:
+            raise AssertionError(
+                f"Layer 5 comparator source drift for {row['outcome']} / {row['comparator_id']}"
+            )
+        expected_stability = (
+            "suppressed"
+            if tn_source["stability"] == "suppressed"
+            or comparator_source["stability"] == "suppressed"
+            or tn_estimate is None
+            or comparator_estimate is None
+            else "low_precision"
+            if specification["survey"] == "plfs"
+            and "low_precision" in {tn_source["stability"], comparator_source["stability"]}
+            else "stable"
+        )
+        if row.get("stability") != expected_stability:
+            raise AssertionError(
+                f"Layer 5 raw stability drift for {row['outcome']} / {row['comparator_id']}"
+            )
+        if expected_stability != "suppressed" and row.get("suppression_reason") is not None:
+            raise AssertionError("Unsuppressed Layer 5 raw rows must not have a suppression reason")
+        if row.get("is_proportion") != (row["outcome"] in proportion_outcomes):
+            raise AssertionError(f"Layer 5 proportion flag drift for {row['outcome']}")
+        for field in uncertainty_fields:
+            expected_tn = tn_source.get(field) if row["survey"] == "plfs" else None
+            expected_comparator = comparator_source.get(field) if row["survey"] == "plfs" else None
+            if row.get(f"tn_{field}") != expected_tn or row.get(f"comparator_{field}") != expected_comparator:
+                raise AssertionError(
+                    f"Layer 5 uncertainty drift for {row['outcome']} / {row['comparator_id']}"
+                )
+        if any(re.search(r"gap.*(standard_error|rse|ci|interval)", key, re.I) for key in row):
+            raise AssertionError("Layer 5 must not derive uncertainty intervals for gaps")
+        if row.get("stability") == "suppressed":
+            if any(row.get(field) is not None for field in ["absolute_gap", "relative_ratio", "relative_gap_percent"]):
+                raise AssertionError("Suppressed Layer 5 raw gaps must remain null")
+            if not row.get("suppression_reason"):
+                raise AssertionError("Suppressed Layer 5 raw rows require a reason")
+            continue
+        for field in ["tn_estimate", "comparator_estimate", "absolute_gap"]:
+            require_finite(row.get(field), f"Layer 5 raw {field}")
+        tolerance = 1e-12 * max(1.0, abs(row["absolute_gap"]))
+        if abs(row["absolute_gap"] - (row["tn_estimate"] - row["comparator_estimate"])) > tolerance:
+            raise AssertionError("Layer 5 raw gap identity failed")
+        if row["is_proportion"]:
+            if row.get("relative_ratio") is not None or row.get("relative_gap_percent") is not None:
+                raise AssertionError("Layer 5 proportions must not publish relative ratios")
+        elif row["comparator_estimate"] > 0:
+            require_finite(row.get("relative_ratio"), "Layer 5 raw relative ratio")
+            require_finite(row.get("relative_gap_percent"), "Layer 5 raw relative gap")
+
+    raw_by_key = {
+        (row["outcome"], row["comparator_id"]): row
+        for row in raw_rows
+    }
+    adjusted_specs = {
+        (specification["outcome"], dimension): specification
+        for specification in LAYER5_ADJUSTMENT_OUTCOMES
+        for dimension in specification["dimensions"]
+    }
+    adjusted_keys = {
+        (row.get("outcome"), row.get("adjustment_dimension"), row.get("comparator_id"))
+        for row in adjusted_rows
+    }
+    expected_adjusted_keys = {
+        (outcome, dimension, comparator_id)
+        for outcome, dimension in adjusted_specs
+        for comparator_id in comparator_ids
+    }
+    if len(adjusted_keys) != len(adjusted_rows) or adjusted_keys != expected_adjusted_keys:
+        raise AssertionError("Layer 5 adjusted outcome/dimension/comparator coverage is incomplete or duplicated")
+
+    classifications = {
+        "industry": "project_broad_industry_7",
+        "size": "common_size_4",
+        "industry_size": "broad_industry_7_x_common_size_4",
+    }
+    null_when_suppressed = [
+        "full_raw_tn", "full_raw_comparator", "full_raw_gap", "common_support_tn",
+        "common_support_comparator", "common_support_raw_gap", "standardized_tn",
+        "standardized_comparator", "adjusted_gap", "composition_component",
+        "within_component", "decomposition_residual",
+    ]
+    finite_when_stable = [
+        *null_when_suppressed, "tn_denominator_coverage", "comparator_denominator_coverage",
+    ]
+    for row in adjusted_rows:
+        dimension = row["adjustment_dimension"]
+        specification = adjusted_specs[(row["outcome"], dimension)]
+        comparator = comparators[row["comparator_id"]]
+        expected_metadata = {
+            "survey": specification["survey"],
+            "year": "2023-24",
+            "outcome_label": specification["label"],
+            "unit": specification["unit"],
+            "comparator_label": comparator["label"],
+            "comparator_type": comparator["type"],
+        }
+        if any(row.get(field) != expected for field, expected in expected_metadata.items()):
+            raise AssertionError(
+                f"Layer 5 adjusted metadata drift for {row['outcome']} / "
+                f"{dimension} / {row['comparator_id']}"
+            )
+        if row.get("classification") != classifications[dimension]:
+            raise AssertionError("Layer 5 adjusted classification drift")
+        expected_cell_count = len(layer5_cell_definitions(pd.DataFrame({
+            "nic2": pd.Series(dtype="int64"),
+            "size_band": pd.Series(dtype="object"),
+        }), dimension))
+        if row.get("total_cell_count") != expected_cell_count:
+            raise AssertionError("Layer 5 adjusted total-cell count drift")
+        if row.get("uncertainty_available") is not False:
+            raise AssertionError("Layer 5 adjusted uncertainty must remain unavailable")
+        for field in ["tn_denominator_coverage", "comparator_denominator_coverage"]:
+            require_finite(row.get(field), f"Layer 5 adjusted {field}")
+            if not 0 <= row[field] <= 1:
+                raise AssertionError("Layer 5 adjusted denominator coverage must be in [0, 1]")
+        if not isinstance(row.get("retained_cell_count"), int) or row["retained_cell_count"] < 0:
+            raise AssertionError("Layer 5 adjusted retained-cell count is invalid")
+        if row.get("stability") == "suppressed":
+            if any(row.get(field) is not None for field in null_when_suppressed):
+                raise AssertionError("Suppressed Layer 5 adjusted estimates must remain null")
+            if row.get("components") != [] or not row.get("suppression_reason"):
+                raise AssertionError("Suppressed Layer 5 adjusted rows require no components and a reason")
+            continue
+        if row.get("stability") != "stable" or row.get("suppression_reason") is not None:
+            raise AssertionError("Layer 5 adjusted stability value is invalid")
+        for field in finite_when_stable:
+            require_finite(row.get(field), f"Layer 5 adjusted {field}")
+        raw = raw_by_key[(row["outcome"], row["comparator_id"])]
+        for adjusted_field, raw_field in [
+            ("full_raw_tn", "tn_estimate"),
+            ("full_raw_comparator", "comparator_estimate"),
+            ("full_raw_gap", "absolute_gap"),
+        ]:
+            if row[adjusted_field] != raw[raw_field]:
+                raise AssertionError(f"Layer 5 adjusted {adjusted_field} drift")
+        if row["tn_denominator_coverage"] < LAYER5_MIN_COVERAGE or row["comparator_denominator_coverage"] < LAYER5_MIN_COVERAGE:
+            raise AssertionError("Layer 5 adjusted denominator support is below threshold")
+        if not isinstance(row.get("retained_cell_count"), int) or row["retained_cell_count"] < 2:
+            raise AssertionError("Layer 5 adjusted rows require at least two retained cells")
+        components = row.get("components")
+        if not isinstance(components, list) or len(components) != row["retained_cell_count"]:
+            raise AssertionError("Layer 5 adjusted component count drift")
+        component_fields = [
+            "tn_cell_rate", "comparator_cell_rate", "tn_weight", "comparator_weight",
+            "common_weight", "cell_composition_component", "cell_within_component",
+        ]
+        for component in components:
+            for field in component_fields:
+                require_finite(component.get(field), f"Layer 5 component {field}")
+            for field in ["tn_weight", "comparator_weight", "common_weight"]:
+                if not 0 <= component[field] <= 1:
+                    raise AssertionError(f"Layer 5 component {field} must be in [0, 1]")
+            require_close(
+                component["common_weight"],
+                0.5 * (component["tn_weight"] + component["comparator_weight"]),
+                "component common weight",
+            )
+            require_close(
+                component["cell_composition_component"],
+                0.5
+                * (component["tn_weight"] - component["comparator_weight"])
+                * (component["tn_cell_rate"] + component["comparator_cell_rate"]),
+                "cell composition component",
+            )
+            require_close(
+                component["cell_within_component"],
+                component["common_weight"]
+                * (component["tn_cell_rate"] - component["comparator_cell_rate"]),
+                "cell within component",
+            )
+        for field in ["tn_weight", "comparator_weight", "common_weight"]:
+            if abs(math.fsum(component[field] for component in components) - 1.0) > 1e-9:
+                raise AssertionError(f"Layer 5 {field} values must sum to one")
+        derived_values = {
+            "common_support_tn": math.fsum(
+                component["tn_weight"] * component["tn_cell_rate"]
+                for component in components
+            ),
+            "common_support_comparator": math.fsum(
+                component["comparator_weight"] * component["comparator_cell_rate"]
+                for component in components
+            ),
+            "standardized_tn": math.fsum(
+                component["common_weight"] * component["tn_cell_rate"]
+                for component in components
+            ),
+            "standardized_comparator": math.fsum(
+                component["common_weight"] * component["comparator_cell_rate"]
+                for component in components
+            ),
+            "composition_component": math.fsum(
+                component["cell_composition_component"] for component in components
+            ),
+            "within_component": math.fsum(
+                component["cell_within_component"] for component in components
+            ),
+        }
+        derived_values["common_support_raw_gap"] = (
+            derived_values["common_support_tn"]
+            - derived_values["common_support_comparator"]
+        )
+        derived_values["adjusted_gap"] = (
+            derived_values["standardized_tn"]
+            - derived_values["standardized_comparator"]
+        )
+        for field, expected in derived_values.items():
+            require_close(row[field], expected, field.replace("_", " "))
+        tolerance = 1e-8 * max(1.0, abs(row["common_support_raw_gap"]))
+        if abs(row["adjusted_gap"] - row["within_component"]) > tolerance:
+            raise AssertionError("Layer 5 adjusted-gap identity failed tolerance")
+        if abs(row["common_support_raw_gap"] - row["composition_component"] - row["within_component"]) > tolerance:
+            raise AssertionError("Layer 5 decomposition identity failed tolerance")
+        if abs(row["decomposition_residual"]) > tolerance:
+            raise AssertionError("Layer 5 decomposition residual failed tolerance")
+
+    if len(checks) != 28 or any(check.get("status") != "pass" for check in checks):
+        raise AssertionError("Publication requires exactly 28 passing legacy validation gates")
+
+    identifier_pattern = re.compile(
+        r"^(?:(?:respondent|household|person)(?:$|_(?:id|identifier|serial(?:_no)?|"
+        r"no|key|link(?:age)?|hash|uuid))|(?:fsu|psu)(?:$|_(?:serial(?:_no)?|id|code|no))|"
+        r"district(?:$|_(?:code|id|identifier|serial(?:_no)?|no))|dispatch.*(?:serial|_id|"
+        r"_identifier|_no)|dsl|sample_est(?:ablishment)?(?:$|_(?:id|identifier|serial(?:_no)?|"
+        r"no))|.*_design)$",
+        re.I,
+    )
+
+    def reject_identifier_keys(value) -> None:
+        if isinstance(value, dict):
+            for key, item in value.items():
+                if identifier_pattern.search(str(key)):
+                    raise AssertionError(f"Prohibited identifier field exported: {key}")
+                reject_identifier_keys(item)
+        elif isinstance(value, list):
+            for item in value:
+                reject_identifier_keys(item)
+
+    reject_identifier_keys(structure_v1)
+
+
 def outcome_rows(
     frame: pd.DataFrame,
     survey: str,
@@ -1993,7 +2304,7 @@ def main() -> int:
                 "The three surveys cover different statistical units and overlapping but non-identical "
                 "reference periods. Comparisons diagnose structure; they do not track firm transitions."
             ),
-            "disclosure": "Only weighted aggregates are exported. No respondent-level record is published.",
+            "disclosure": "Public outputs include weighted aggregates, labels, unweighted sample counts, validation results and disclosure flags, but no respondent-level records or linkage identifiers.",
         },
         "headline": {
             "unincorporated_establishments": PUBLISHED["asuse"]["all_establishments"],
@@ -2045,6 +2356,7 @@ def main() -> int:
         ],
     }
 
+    validate_layer5_contract(output["structure_v1"], checks)
     output = json_safe(output)
     payload = json.dumps(output, indent=2, allow_nan=False) + "\n"
     (PROCESSED / "manufacturing-structure.json").write_text(payload)

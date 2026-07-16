@@ -20,7 +20,7 @@ const franklin = Libre_Franklin({
 const siteUrl = "https://smar98.github.io/tamil-nadu-manufacturing-structure/";
 const title = "India's Factory State: Tamil Nadu's Manufacturing Paradox, 2023-24";
 const description =
-  "Tamil Nadu employs more factory workers than any state in India and produces nearly the least value per worker. Three government surveys, read side by side and reconciled against the government's own published tables, on what that gap is - and what it is not.";
+  "Tamil Nadu has India's largest registered-factory workforce and the lowest GVA per person engaged among the comparison geographies shown. Three official surveys, read side by side with 28 specified validation checks, show what that descriptive gap is and is not.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

@@ -1,9 +1,8 @@
 # Existing-analysis verification
 
-Overlap verdict for the project against already-published analyses, per the handoff's
-existing-analysis verification requirement. Each source was checked with a bounded,
-source-specific verification (2026-07-13); academic sources rely on the prior workflow's
-adversarially verified claims and were not re-run. Classification scale: **exact
+Overlap verdict for the project against already-published analyses. Each source was checked
+with a bounded, source-specific verification (2026-07-13); academic sources rely on the
+reviewed claims recorded here and were not re-run. Classification scale: **exact
 duplication** / **partial overlap** / **contextual background** / (feeds the) **genuine
 contribution**.
 

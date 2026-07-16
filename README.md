@@ -16,13 +16,14 @@ Tamil Nadu has a large owner-operated manufacturing base and a registered
 factory sector operating at a much larger average scale. The comparison is a
 cross-sectional structural snapshot. It does **not** establish:
 
-- a shortage of medium-sized firms relative to a benchmark;
 - the probability that a small establishment becomes a factory;
 - that registration or hiring causes higher productivity; or
 - which constraint, if any, prevents a particular firm from growing.
 
-The label "missing middle" is therefore treated as an untested hypothesis, not
-as the result of this analysis.
+Within registered ASI units, the project tests four middle definitions (`10–249`,
+`10–99`, `20–249` and `50–249`) under equal-allocation and whole-return sizing
+treatments. Tamil Nadu does not show an unusually small middle within those bounded
+tests. This is not a continuous ASUSE-to-ASI firm-growth ladder.
 
 ## Definitions
 
@@ -64,8 +65,10 @@ python3 research/scripts/build_manufacturing_structure.py
 npm test
 ```
 
-The builder stops unless ten predeclared ASUSE and PLFS reconciliation checks
-pass. ASI formulas have a separate publication-benchmark audit.
+The builder stops before writing unless all 28 predeclared reconciliation checks
+pass and the fail-closed Layer 5 contract validates row coverage, permitted
+adjustments, source preservation, support, decompositions, suppression and
+identifier exclusion. ASI formulas also have a separate publication-benchmark audit.
 
 ## Repository map
 
@@ -83,7 +86,8 @@ pass. ASI formulas have a separate publication-benchmark audit.
 ## Data protection
 
 No FSU, household, person, establishment or factory identifier is committed.
-Raw NADA archives are excluded by `.gitignore`; only weighted aggregates and
-validation results are public. The code is MIT licensed. Government source
-data remain subject to their original terms. Citation metadata are in
-`CITATION.cff`.
+Raw NADA archives are excluded by `.gitignore`. Public artifacts contain weighted
+aggregates, labels, unweighted sample counts, validation results and disclosure
+flags, but no respondent-level records or linkage identifiers. The code is MIT
+licensed. Government source data remain subject to their original terms. Citation
+metadata are in `CITATION.cff`.

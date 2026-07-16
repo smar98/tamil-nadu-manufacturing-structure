@@ -5,11 +5,14 @@
    the hero count-up, tab switching). With JavaScript off the page stays fully
    readable: steps and states render stacked, tabs render as stacked panels. */
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, useSyncExternalStore, type KeyboardEvent, type ReactNode } from "react";
 
 const reducedMotion = () =>
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const subscribeToHydration = () => () => {};
+const clientIsHydrated = () => true;
+const serverIsHydrated = () => false;
 
 /** Sticky exhibit pane + stepped prose. stepToState maps a step index to the
     exhibit state it should display (defaults to the identity mapping). */
@@ -25,6 +28,7 @@ export function Scrolly({
   ariaLabel: string;
 }) {
   const [active, setActive] = useState(0);
+  const enhanced = useSyncExternalStore(subscribeToHydration, clientIsHydrated, serverIsHydrated);
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -66,7 +70,7 @@ export function Scrolly({
             <div
               key={index}
               className={`scrolly-state${index === stateIndex ? " active" : ""}`}
-              aria-hidden={index !== stateIndex}
+              aria-hidden={enhanced ? index !== stateIndex : undefined}
             >
               {state}
             </div>
@@ -145,7 +149,12 @@ export function SectionNav({ sections }: { sections: { id: string; label: string
   }, [sections]);
 
   return (
-    <nav className={`siterail${pastHero ? " vis" : ""}`} aria-label="Sections of this page">
+    <nav
+      className={`siterail${pastHero ? " vis" : ""}`}
+      aria-label="Sections of this page"
+      aria-hidden={!pastHero}
+      inert={!pastHero}
+    >
       {sections.map((section) => (
         <a key={section.id} href={`#${section.id}`} aria-current={current === section.id || undefined}>
           {section.label}
@@ -169,6 +178,24 @@ export function Tabs({
   ariaLabel: string;
 }) {
   const [selected, setSelected] = useState(defaultIndex);
+  const baseId = useId();
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+
+  const selectAndFocus = (index: number) => {
+    setSelected(index);
+    tabRefs.current[index]?.focus();
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
+    let next: number | null = null;
+    if (event.key === "ArrowRight") next = (index + 1) % labels.length;
+    if (event.key === "ArrowLeft") next = (index - 1 + labels.length) % labels.length;
+    if (event.key === "Home") next = 0;
+    if (event.key === "End") next = labels.length - 1;
+    if (next === null) return;
+    event.preventDefault();
+    selectAndFocus(next);
+  };
 
   /* Visibility is CSS-driven: with the `js` class on <html>, inactive panels
      hide; without JavaScript the tablist hides and all panels render stacked,
@@ -179,14 +206,19 @@ export function Tabs({
         {labels.map((label, index) => (
           <button
             key={label}
+            ref={(element) => { tabRefs.current[index] = element; }}
+            id={`${baseId}-tab-${index}`}
             role="tab"
             aria-selected={index === selected}
+            aria-controls={`${baseId}-panel-${index}`}
+            tabIndex={index === selected ? 0 : -1}
             style={
               index === selected
                 ? { borderColor: "var(--ink)", color: "var(--ink)", fontWeight: 600 }
                 : undefined
             }
             onClick={() => setSelected(index)}
+            onKeyDown={(event) => handleKeyDown(event, index)}
           >
             {label}
           </button>
@@ -195,7 +227,9 @@ export function Tabs({
       {panels.map((panel, index) => (
         <div
           key={index}
+          id={`${baseId}-panel-${index}`}
           role="tabpanel"
+          aria-labelledby={`${baseId}-tab-${index}`}
           className="tabpanel"
           data-label={labels[index]}
           data-active={index === selected || undefined}

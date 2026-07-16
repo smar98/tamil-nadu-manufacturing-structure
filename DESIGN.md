@@ -1,9 +1,9 @@
 # Design — "India's factory state"
 
-Original direction, 2026-07-14, synthesized from fresh research into The Pudding, NYT
-graphics, FT visual journalism, Reuters Graphics, ProPublica and independent data essays
-(findings in HANDOFF; agents' per-piece reports in session records). Supersedes every prior
-default. PRODUCT.md governs audience and register (brand; the page is the product).
+Original direction, 2026-07-14, synthesized from research into The Pudding, NYT
+graphics, FT visual journalism, Reuters Graphics, ProPublica and independent data essays.
+Supersedes prior visual defaults. PRODUCT.md governs audience and register (brand; the page
+is the product).
 
 ## The identity in one line
 

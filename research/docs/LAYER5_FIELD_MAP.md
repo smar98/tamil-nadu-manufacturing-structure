@@ -302,6 +302,8 @@ Only jointly stable component cells may appear. Do not include suppressed cell e
 
 ## Validation contract
 
+`build_manufacturing_structure.py` enforces this contract in `validate_layer5_contract()` before `json_safe()` and before any canonical payload or validation-ledger write. The 28-item public reconciliation ledger remains unchanged; Layer 5 is a separate fail-closed publication boundary.
+
 Implementation is not complete until all checks pass:
 
 1. every raw Tamil Nadu and comparator estimate exactly matches its source Layer 3 or Layer 4 overall row;

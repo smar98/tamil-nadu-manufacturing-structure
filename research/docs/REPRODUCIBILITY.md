@@ -42,9 +42,9 @@ research/derived/manufacturing-structure.json
 research/derived/validation.json
 ```
 
-The two manufacturing-structure JSON files must be byte-identical. The build fails before writing them if a published-table gate fails.
+The two manufacturing-structure JSON files must be byte-identical. Before any payload or validation-ledger write, the builder requires exactly 28 passing predeclared reconciliation gates and validates the complete Layer 5 contract: 78 raw rows, 78 adjusted rows, declared coverage, source and PLFS-interval preservation, permitted adjustment dimensions, support thresholds, decomposition identities, suppression nulling and identifier exclusion.
 
-The canonical payload contains Layers 1–5, including 78 raw and 78 composition-adjusted peer-comparison rows (72 stable, 6 mechanically suppressed Kerala ASI adjustments). `npm test` runs 10 tests; the Layer 5 payload-contract test runs against the canonical payload and must pass rather than skip.
+The canonical payload contains Layers 1–5, including 78 raw and 78 composition-adjusted peer-comparison rows (72 stable, 6 mechanically suppressed Kerala ASI adjustments). The Layer 5 payload-contract test runs against the canonical payload and must pass rather than skip.
 
 ### Layer 6 exploratory appendix
 
@@ -107,7 +107,7 @@ ASI historical return records --> build_asi_aggregates.py -+--> disclosure-filte
                                   +--> validate_asi_aggregates.py --> benchmark ledger
 ```
 
-Raw survey archives remain local. Public outputs contain weighted aggregates, labels, unweighted sample counts and disclosure flags only.
+Raw survey archives remain local. Public outputs contain weighted aggregates, labels, unweighted sample counts, validation results and disclosure flags, but no respondent-level records or linkage identifiers.
 
 ## Integrity and expected outputs
 
@@ -117,13 +117,15 @@ Raw survey archives remain local. Public outputs contain weighted aggregates, la
 - ASI benchmark ledger: `research/derived/asi_benchmark_validation.json`
 - Canonical web payload: `public/data/manufacturing-structure.json`
 
-The repository never requires an API key, cookie or authorization header at runtime. Data acquisition is deliberately outside the code because NADA access must occur through the user’s authorized account.
+The repository never requires an API key, cookie or authorization header at runtime. Data acquisition is deliberately outside the code because NADA access must occur through an authorized account.
 
 ## Environment
 
-- Python 3.11 or newer
-- NumPy `>=1.26,<3`
-- pandas `>=2.2,<3`
+The canonical payload was rebuilt with the publication environment:
+
+- CPython `3.9.6`
+- NumPy `2.0.2`
+- pandas `2.3.3`
 - Node.js `>=22.13.0`
 
-`package-lock.json` pins the JavaScript dependency graph. Python package ranges are intentionally narrow; record exact installed versions with `pip freeze` when producing an archival replication.
+`package-lock.json` pins the JavaScript dependency graph, and `research/data/requirements.txt` pins the Python packages used for publication.

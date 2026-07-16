@@ -61,6 +61,18 @@ a:hover { text-decoration-color: var(--tn); }
 
 ::selection { background: oklch(0.46 0.155 27 / 0.18); }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 svg text { font-family: var(--franklin); }
 
 /* ---------- reading column & section structure ---------- */
@@ -142,7 +154,9 @@ strong { font-weight: 600; }
   line-height: 1;
   display: block;
 }
-.hero h1 {
+.hero h1 { margin: 0; }
+.hero-title {
+  display: block;
   font-size: clamp(1.6rem, 3.6vw, 2.5rem);
   font-weight: 500;
   max-width: 24ch;
@@ -355,6 +369,10 @@ html:not(.js) .tabpanel::before {
   max-width: 70ch;
 }
 figure svg { display: block; width: 100%; height: auto; }
+@media (max-width: 760px) {
+  figure.dense-chart { overflow-x: auto; overscroll-behavior-inline: contain; }
+  figure.dense-chart svg { min-width: 45rem; }
+}
 
 .axis-line { stroke: var(--rule); stroke-width: 1; }
 .gridline { stroke: var(--rule-faint); stroke-width: 1; }
@@ -379,6 +397,14 @@ figure svg { display: block; width: 100%; height: auto; }
   vertical-align: bottom;
 }
 .ledger-table td { border-bottom: 1px solid var(--rule-faint); padding: 0.55rem 0.9rem 0.55rem 0; vertical-align: top; }
+.ledger-table tbody th {
+  border-bottom: 1px solid var(--rule-faint);
+  padding: 0.55rem 0.9rem 0.55rem 0;
+  vertical-align: top;
+  color: var(--ink);
+  font-size: inherit;
+  font-weight: 400;
+}
 .ledger-table th.num, .ledger-table td.num { text-align: right; }
 .ledger-table th.num:last-child, .ledger-table td.num:last-child { padding-right: 0; }
 .ledger-table tr.tn-row td { color: var(--tn); font-weight: 600; }
