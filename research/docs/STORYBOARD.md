@@ -1,7 +1,7 @@
 # Public-site storyboard (v1)
 
-Authoritative narrative specification for the frontend rebuild, per the handoff's
-storyboarding gate. Each section specifies: the public question, the one empirical claim its
+Authoritative narrative specification for the frontend rebuild. Each section specifies: the
+public question, the one empirical claim its
 exhibit supports, the denominator and statistical unit, the comparison geography, the caveat
 placed next to the claim, and the transition. Implementation (Next.js) may be delegated;
 headlines and claims may not be invented or strengthened during implementation. The final
@@ -9,7 +9,7 @@ claim audit checks the built site against this file, the canonical payload and
 `EXISTING_ANALYSIS_VERIFICATION.md`.
 
 Global rules: outcomes lead, structure explains. Every number displayed must exist in the
-canonical payload (SHA `a4fd25ae…`) or the appendix JSON. Every exhibit shows unweighted
+canonical payload (SHA `eef71cb8…`) or the appendix JSON. Every exhibit shows unweighted
 sample counts where the payload provides them, marks suppressed cells as unavailable (never
 zero), and carries the survey-universe label. Layer 5 adjusted rows are never ranked across
 comparators. Citation duties from `EXISTING_ANALYSIS_VERIFICATION.md` §"Consequences" are

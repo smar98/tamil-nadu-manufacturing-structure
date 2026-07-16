@@ -6,7 +6,7 @@ The v1 question is:
 
 > How is Tamil Nadu’s manufacturing employment distributed across establishment sizes and industries, and how do value addition, compensation, worker earnings and job quality compare with India and other manufacturing states?
 
-The current builder covers establishment size, employment composition, establishment-side value addition and compensation, PLFS worker earnings and job quality, and raw plus composition-adjusted peer comparisons. Layers 1–5 are canonically generated and validated; policy interpretation (Layer 6) remains a later task.
+The current builder covers establishment size, employment composition, establishment-side value addition and compensation, PLFS worker earnings and job quality, and raw plus composition-adjusted peer comparisons. Layers 1–5 are canonically generated and validated. Layer 6 is a bounded synthesis of verified policy documents against those descriptive findings; it is not an impact evaluation.
 
 The statistical unit is survey-specific. ASUSE observes covered unincorporated establishments, ASI observes sample returns in the registered-factory statistical universe, and PLFS observes people in sampled households. A firm can own multiple establishments, and an ASI return can cover multiple reported units. The output therefore does not treat every record as a firm.
 

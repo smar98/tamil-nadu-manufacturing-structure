@@ -2,6 +2,20 @@ import assert from "node:assert/strict";
 import { readFile, readdir } from "node:fs/promises";
 import test from "node:test";
 
+function exportedKeys(value, keys = []) {
+  if (Array.isArray(value)) {
+    for (const item of value) exportedKeys(item, keys);
+  } else if (value && typeof value === "object") {
+    for (const [key, item] of Object.entries(value)) {
+      keys.push(key);
+      exportedKeys(item, keys);
+    }
+  }
+  return keys;
+}
+
+const identifierKeyPattern = /^(?:(?:respondent|household|person)(?:$|_(?:id|identifier|serial(?:_no)?|no|key|link(?:age)?|hash|uuid))|(?:fsu|psu)(?:$|_(?:serial(?:_no)?|id|code|no))|district(?:$|_(?:code|id|identifier|serial(?:_no)?|no))|dispatch.*(?:serial|_id|_identifier|_no)|dsl|sample_est(?:ablishment)?(?:$|_(?:id|identifier|serial(?:_no)?|no))|.*_design)$/i;
+
 test("static export renders the full narrative without a loading state", async () => {
   const html = await readFile(new URL("../out/index.html", import.meta.url), "utf8");
   assert.match(html, /<title>India(?:&#x27;|')s Factory State: Tamil Nadu(?:&#x27;|')s Manufacturing Paradox, 2023-24<\/title>/i);
@@ -36,10 +50,24 @@ test("the output is aggregate-only and preserves methodological warnings", async
   const data = JSON.parse(raw);
   assert.equal(data.sources.length, 3);
   assert.match(data.meta.comparison_warning, /do not track firm transitions/i);
-  assert.match(data.meta.disclosure, /No respondent-level record/i);
+  assert.match(data.meta.disclosure, /weighted aggregates, labels, unweighted sample counts, validation results and disclosure flags/i);
+  assert.match(data.meta.disclosure, /no respondent-level records or linkage identifiers/i);
   assert.ok(data.asuse_sectors.every((sector) => sector.sample_establishments >= 30));
   assert.ok(data.asi_sectors.every((sector) => sector.sample_factories >= 100));
-  assert.ok(!raw.includes("fsu_serial_no"));
+  assert.equal(exportedKeys(data).find((key) => identifierKeyPattern.test(key)), undefined);
+  for (const key of [
+    "respondent_id",
+    "household_serial_no",
+    "person_uuid",
+    "fsu_serial_no",
+    "district_code",
+    "dispatch_center_serial",
+    "dsl",
+    "sample_establishment_id",
+    "variance_design",
+  ]) {
+    assert.match(key, identifierKeyPattern);
+  }
 });
 
 test("structure_v1 is ordered, disclosure-safe, and internally coherent", async () => {
@@ -474,16 +502,14 @@ test("Layer 4 follows the locked PLFS concepts, design and suppression contract"
   );
 });
 
-test("Layer 5 peer comparisons follow the locked raw and adjustment contract", async (t) => {
+test("Layer 5 peer comparisons follow the locked raw and adjustment contract", async () => {
   const publicPath = process.env.LAYER5_PAYLOAD
     ?? new URL("../public/data/manufacturing-structure.json", import.meta.url);
   const raw = await readFile(publicPath, "utf8");
   const data = JSON.parse(raw);
   const structure = data.structure_v1;
-  if (!structure.peer_comparisons_raw || !structure.peer_comparisons_adjusted) {
-    t.skip("Task 11 has not generated a Layer 5 payload yet");
-    return;
-  }
+  assert.ok(Array.isArray(structure.peer_comparisons_raw), "Layer 5 raw comparisons are required");
+  assert.ok(Array.isArray(structure.peer_comparisons_adjusted), "Layer 5 adjusted comparisons are required");
 
   const rawRows = structure.peer_comparisons_raw;
   const adjustedRows = structure.peer_comparisons_adjusted;
@@ -682,13 +708,42 @@ test("the interface states the estimand and the non-claims", async () => {
   // Descriptive, not causal.
   assert.match(page, /identifies\s+causes or evaluates any policy/i);
   assert.match(page, /gap remaining\s+under a common industry/i);
-  assert.match(page, /this data cannot answer/i);
+  assert.match(page, /These data do not\s+identify its causes/i);
   // Three separate survey universes that cannot be merged into one firm ladder.
   assert.match(page, /cannot be merged into one ladder from workshop to\s+factory/i);
   assert.match(page, /No common identifier links the three surveys/i);
   assert.match(page, /abnormally few mid-size firms/i);
   // Suppressed values render as an explicit unavailability label, never zero/blank.
   assert.match(page, /not published \(sample too small\)/i);
+  // Public claim boundaries.
+  assert.match(page, /lower GVA per person engaged than all six comparison geographies shown/i);
+  assert.match(page, /10–249[\s\S]*10–99[\s\S]*20–249[\s\S]*50–249/i);
+  assert.match(page, /does not\s+control products, capital, technology, management, prices or markups/i);
+  assert.match(page, /No enacted or\s+notified successor was found as of July 2026/i);
+  assert.match(page, /3\.47%/);
+  assert.doesNotMatch(page, /nearly the least|largest slice in the country|worker-exploitation|\bsame work\b|same things/i);
+});
+
+test("the interface exposes native accessibility semantics", async () => {
+  const [page, scrolly, css] = await Promise.all([
+    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/scrolly.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+  ]);
+  assert.match(page, /<h1>[\s\S]*<CountUp[\s\S]*className="hero-title"[\s\S]*<\/h1>/);
+  assert.match(page, /<caption className="sr-only">Results of the 28 predeclared validation checks<\/caption>/);
+  assert.match(page, /<th scope="row">\{check\.check\}<\/th>/);
+  assert.match(page, /Pass ·/);
+  assert.match(page, /<svg aria-hidden="true" focusable="false"/);
+  assert.match(page, /className="dense-chart"/);
+  assert.match(scrolly, /inert=\{!pastHero\}/);
+  assert.match(scrolly, /aria-hidden=\{enhanced \? index !== stateIndex : undefined\}/);
+  assert.match(scrolly, /aria-controls=/);
+  assert.match(scrolly, /aria-labelledby=/);
+  assert.match(scrolly, /tabIndex=\{index === selected \? 0 : -1\}/);
+  for (const key of ["ArrowLeft", "ArrowRight", "Home", "End"]) assert.match(scrolly, new RegExp(key));
+  assert.match(css, /figure\.dense-chart svg \{ min-width: 45rem; \}/);
+  assert.match(css, /\.sr-only/);
 });
 
 test("the public data directory contains only the canonical payload", async () => {

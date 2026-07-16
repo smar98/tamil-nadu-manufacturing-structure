@@ -1,9 +1,8 @@
 # Layer 6 policy-evidence notes (working notes)
 
-**Provenance:** working notes from the original policy-document review (2026-07). Every
-quotation and printed-page reference below was accepted in that review but
-**must be re-verified against the source PDFs before it is published in the Layer 6 matrix.**
-Nothing here is a build input; this file preserves the detailed findings.
+**Provenance:** detailed notes from the policy-document review (2026-07). Claims used in the
+final Layer 6 matrix were re-verified against the source PDFs and are marked accordingly below.
+Nothing here is a build input.
 
 ## What the prior review established
 

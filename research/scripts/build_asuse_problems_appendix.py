@@ -61,8 +61,8 @@ SIZE_GROUPS = [
     {"id": "250+", "label": "250+ workers", "minimum": 250, "maximum": None},
 ]
 
-# Layer 1 published Tamil Nadu manufacturing establishment totals (HANDOFF.md
-# section 8 / PUBLISHED["asuse"] in build_manufacturing_structure.py).
+# Layer 1 published Tamil Nadu manufacturing establishment totals
+# (PUBLISHED["asuse"] in build_manufacturing_structure.py).
 PUBLISHED_TN_TOTALS = {"oae_establishments": 1_118_993, "hwe_establishments": 272_663}
 PUBLISHED_TOLERANCE = 0.01
 

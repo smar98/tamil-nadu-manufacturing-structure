@@ -1,122 +1,193 @@
-"""NIC2-level Kitagawa sensitivity with true employment weights from raw ASI.
-Read-only scratch analysis; output is aggregate-only (no cell values printed for
-payload-suppressed cells). Cells restricted to jointly published payload cells."""
-import sys, json, collections
-sys.path.insert(0, "/Users/sanch/Desktop/tamil-nadu-manufacturing-structure/research/scripts")
+"""Aggregate-only NIC2 sensitivity and panel robustness checks for ASI."""
+from __future__ import annotations
+
+import csv
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+
 import build_manufacturing_structure as B
 
-frame = B.asi_structure_frame()
+RAW_PAYLOAD_TOLERANCE = 1e-12
 GEO = {"33": "TN", "24": "GJ", "27": "MH", "29": "KA", "36": "TG", "32": "KL"}
 PEERS = ["IN", "24", "27", "29", "36", "32"]
 
-p = json.load(open("/Users/sanch/Desktop/tamil-nadu-manufacturing-structure/public/data/manufacturing-structure.json"))
-sv = p["structure_v1"]
-pub_rate = {}  # (geo, nic2) -> published rate (None if suppressed)
-for r in sv["value_addition"]:
-    if r["survey"] == "asi" and r["dimension"] == "industry":
-        pub_rate[(r["geography_id"], r["nic2"])] = r["per_person_value"]
-pub7 = {r["comparator_id"]: r for r in sv["peer_comparisons_adjusted"]
-        if r["survey"] == "asi" and r["outcome"] == "gva_per_person_engaged"
-        and r["adjustment_dimension"] == "industry"}
-pub7x4 = {r["comparator_id"]: r for r in sv["peer_comparisons_adjusted"]
-          if r["survey"] == "asi" and r["outcome"] == "gva_per_person_engaged"
-          and r["adjustment_dimension"] == "industry_size"}
+frame = B.asi_structure_frame()
+with (ROOT.parent / "public" / "data" / "manufacturing-structure.json").open() as handle:
+    payload = json.load(handle)
+structure = payload["structure_v1"]
+
+pub_rate = {
+    (row["geography_id"], row["nic2"]): row["per_person_value"]
+    for row in structure["value_addition"]
+    if row["survey"] == "asi" and row["dimension"] == "industry"
+}
+pub7 = {
+    row["comparator_id"]: row
+    for row in structure["peer_comparisons_adjusted"]
+    if row["survey"] == "asi"
+    and row["outcome"] == "gva_per_person_engaged"
+    and row["adjustment_dimension"] == "industry"
+}
+pub7x4 = {
+    row["comparator_id"]: row
+    for row in structure["peer_comparisons_adjusted"]
+    if row["survey"] == "asi"
+    and row["outcome"] == "gva_per_person_engaged"
+    and row["adjustment_dimension"] == "industry_size"
+}
+
 
 def geo_cells(code):
-    """nic2 -> (employment, gva) using weighted contributions, one geography."""
-    g = frame if code == "IN" else frame.loc[frame["state"].eq(code)]
-    out = {}
-    for nic2, grp in g.groupby("nic2"):
-        E = float((grp["weight"] * grp["employees"]).sum())
-        Y = float((grp["weight"] * grp["gva"]).sum())
-        if E > 0:
-            out[int(nic2)] = (E, Y)
-    return out
+    """Return NIC2 -> (employment, GVA) from weighted contributions."""
+    geography = frame if code == "IN" else frame.loc[frame["state"].eq(code)]
+    cells = {}
+    for nic2, group in geography.groupby("nic2"):
+        employment = float((group["weight"] * group["employees"]).sum())
+        gva = float((group["weight"] * group["gva"]).sum())
+        if employment > 0:
+            cells[int(nic2)] = (employment, gva)
+    return cells
 
-cells_by_geo = {c: geo_cells(c) for c in ["33"] + PEERS}
 
-# cross-check: raw rates vs payload published rates (validates the scratch frame)
-maxdev = 0.0
-for (geo, nic2), rate in pub_rate.items():
-    if rate is None: continue
-    E, Y = cells_by_geo[geo][nic2]
-    maxdev = max(maxdev, abs(Y / E - rate) / rate)
-print(f"cross-check: max relative deviation raw-vs-payload NIC2 rates = {maxdev:.2e}\n")
+cells_by_geo = {code: geo_cells(code) for code in ["33", *PEERS]}
+
+deviations = []
+for (geography, nic2), rate in pub_rate.items():
+    if rate is None:
+        continue
+    employment, gva = cells_by_geo[geography][nic2]
+    scale = max(abs(rate), 1.0)
+    deviations.append(abs(gva / employment - rate) / scale)
+if not deviations:
+    raise AssertionError("No raw/payload NIC2 rates were available for reconciliation")
+max_deviation = max(deviations)
+if max_deviation > RAW_PAYLOAD_TOLERANCE:
+    raise AssertionError(
+        f"Raw/payload NIC2 rate deviation {max_deviation:.2e} exceeds "
+        f"{RAW_PAYLOAD_TOLERANCE:.0e}"
+    )
+print(f"cross-check: max relative deviation raw-vs-payload NIC2 rates = {max_deviation:.2e}\n")
 
 print("=== NIC2-level (24-industry) symmetric Kitagawa, ASI GVA/person, true employment weights ===")
-for c in PEERS:
-    tn, cmp_ = cells_by_geo["33"], cells_by_geo[c]
-    lbl = "IN" if c == "IN" else GEO[c]
-    cells = sorted(i for i in set(tn) & set(cmp_)
-                   if pub_rate.get(("33", i)) is not None and pub_rate.get((c, i)) is not None)
-    Et, Ec = sum(tn[i][0] for i in cells), sum(cmp_[i][0] for i in cells)
-    cov_t = Et / sum(v[0] for v in tn.values())
-    cov_c = Ec / sum(v[0] for v in cmp_.values())
-    wt = {i: tn[i][0] / Et for i in cells}
-    wc = {i: cmp_[i][0] / Ec for i in cells}
-    rt = {i: tn[i][1] / tn[i][0] for i in cells}
-    rc = {i: cmp_[i][1] / cmp_[i][0] for i in cells}
-    gap = sum(wt[i] * rt[i] for i in cells) - sum(wc[i] * rc[i] for i in cells)
-    comp = sum((wt[i] - wc[i]) * (rt[i] + rc[i]) / 2 for i in cells)
-    within = sum((wt[i] + wc[i]) / 2 * (rt[i] - rc[i]) for i in cells)
-    print(f"TN vs {lbl}: cells={len(cells)}/24  emp coverage TN {cov_t:.1%} / cmp {cov_c:.1%}")
-    print(f"  NIC2-24 : gap {gap:>12,.0f}  mix {comp/gap:6.1%}  within {within/gap:6.1%}")
-    for tag, row in (("pub 7grp", pub7.get(c)), ("pub 7x4 ", pub7x4.get(c))):
+for code in PEERS:
+    tn, comparator = cells_by_geo["33"], cells_by_geo[code]
+    label = "IN" if code == "IN" else GEO[code]
+    cells = sorted(
+        nic2
+        for nic2 in set(tn) & set(comparator)
+        if pub_rate.get(("33", nic2)) is not None and pub_rate.get((code, nic2)) is not None
+    )
+    tn_employment = sum(tn[nic2][0] for nic2 in cells)
+    comparator_employment = sum(comparator[nic2][0] for nic2 in cells)
+    tn_coverage = tn_employment / sum(value[0] for value in tn.values())
+    comparator_coverage = comparator_employment / sum(value[0] for value in comparator.values())
+    tn_weight = {nic2: tn[nic2][0] / tn_employment for nic2 in cells}
+    comparator_weight = {
+        nic2: comparator[nic2][0] / comparator_employment for nic2 in cells
+    }
+    tn_rate = {nic2: tn[nic2][1] / tn[nic2][0] for nic2 in cells}
+    comparator_rate = {
+        nic2: comparator[nic2][1] / comparator[nic2][0] for nic2 in cells
+    }
+    gap = sum(tn_weight[nic2] * tn_rate[nic2] for nic2 in cells) - sum(
+        comparator_weight[nic2] * comparator_rate[nic2] for nic2 in cells
+    )
+    composition = sum(
+        (tn_weight[nic2] - comparator_weight[nic2])
+        * (tn_rate[nic2] + comparator_rate[nic2])
+        / 2
+        for nic2 in cells
+    )
+    within = sum(
+        (tn_weight[nic2] + comparator_weight[nic2])
+        / 2
+        * (tn_rate[nic2] - comparator_rate[nic2])
+        for nic2 in cells
+    )
+    print(
+        f"TN vs {label}: cells={len(cells)}/24  emp coverage TN {tn_coverage:.1%} "
+        f"/ cmp {comparator_coverage:.1%}"
+    )
+    print(f"  NIC2-24 : gap {gap:>12,.0f}  mix {composition/gap:6.1%}  within {within/gap:6.1%}")
+    for tag, row in (("pub 7grp", pub7.get(code)), ("pub 7x4 ", pub7x4.get(code))):
         if row and row.get("common_support_raw_gap") is not None:
-            g0 = row["common_support_raw_gap"]
-            print(f"  {tag}: gap {g0:>12,.0f}  mix {row['composition_component']/g0:6.1%}  within {row['within_component']/g0:6.1%}")
+            published_gap = row["common_support_raw_gap"]
+            print(
+                f"  {tag}: gap {published_gap:>12,.0f}  "
+                f"mix {row['composition_component']/published_gap:6.1%}  "
+                f"within {row['within_component']/published_gap:6.1%}"
+            )
         elif row:
-            print(f"  {tag}: SUPPRESSED in published table (reason: {row.get('suppression_reason')})")
-    # how many retained NIC2 cells have TN's rate below the comparator's, employment-weighted
-    below = [i for i in cells if rt[i] < rc[i]]
-    share_emp_below = sum((wt[i] + wc[i]) / 2 for i in below)
-    print(f"  TN rate below {lbl} in {len(below)}/{len(cells)} cells, covering {share_emp_below:.0%} of common-weight employment\n")
+            print(
+                f"  {tag}: SUPPRESSED in published table "
+                f"(reason: {row.get('suppression_reason')})"
+            )
+    below = [nic2 for nic2 in cells if tn_rate[nic2] < comparator_rate[nic2]]
+    share_employment_below = sum(
+        (tn_weight[nic2] + comparator_weight[nic2]) / 2 for nic2 in below
+    )
+    print(
+        f"  TN rate below {label} in {len(below)}/{len(cells)} cells, "
+        f"covering {share_employment_below:.0%} of common-weight employment\n"
+    )
 
-# ---------------------------------------------------------------------------
-# Parts (b) and (c): multi-year persistence and capital intensity, from the
-# committed ASI panel (research/derived/asi_aggregates.csv). Descriptive only.
-# ---------------------------------------------------------------------------
-import csv
 
-rows = list(csv.DictReader(open(
-    "/Users/sanch/Desktop/tamil-nadu-manufacturing-structure/research/derived/asi_aggregates.csv")))
+def number(row, key):
+    value = row[key]
+    return float(value) if value not in ("", None) else None
 
-def _f(r, k):
-    v = r[k]
-    return float(v) if v not in ("", None) else None
 
-panel, cap = {}, {}
-for r in rows:
-    g, e, fc = _f(r, "gva"), _f(r, "employees"), _f(r, "fixed_capital")
-    if g and e:
-        panel[(r["year"], r["state"], r["sector_id"])] = g / e
-    if fc and e:
-        cap[(r["year"], r["state"], r["sector_id"])] = fc / e
+with (ROOT / "derived" / "asi_aggregates.csv").open(newline="") as handle:
+    rows = list(csv.DictReader(handle))
 
-assert round(panel[("2023", "33", "all-manufacturing")]) == 839770  # payload calibration
+panel, capital = {}, {}
+for row in rows:
+    gva = number(row, "gva")
+    employment = number(row, "employees")
+    fixed_capital = number(row, "fixed_capital")
+    if gva is not None and employment is not None and employment > 0:
+        panel[(row["year"], row["state"], row["sector_id"])] = gva / employment
+    if fixed_capital is not None and employment is not None and employment > 0:
+        capital[(row["year"], row["state"], row["sector_id"])] = fixed_capital / employment
 
-print("\n=== (b) all-manufacturing GVA/employee, sign of TN-peer gap, 2008..2023 ===")
-years = [str(y) for y in range(2008, 2024)]
-for c in ["24", "27", "29", "36", "32"]:
-    s = "".join(
-        "-" if (panel.get((y, "33", "all-manufacturing")) or 0)
-        < (panel.get((y, c, "all-manufacturing")) or 9e9) else "+"
-        for y in years)
-    t, k = panel[("2023", "33", "all-manufacturing")], panel[("2023", c, "all-manufacturing")]
-    print(f"TN vs {GEO[c]}: {s}  2023 ratio {t / k:.2f}")
+assert round(panel[("2023", "33", "all-manufacturing")]) == 839770
+
+
+def gap_marker(year, comparator):
+    tn = panel.get((year, "33", "all-manufacturing"))
+    peer = panel.get((year, comparator, "all-manufacturing"))
+    if tn is None or peer is None:
+        return "·"
+    return "-" if tn < peer else "+"
+
+
+print("\n=== (b) all-manufacturing GVA/person engaged, sign of TN-peer gap, 2008..2023 ===")
+years = [str(year) for year in range(2008, 2024)]
+for code in ["24", "27", "29", "36", "32"]:
+    markers = [gap_marker(year, code) for year in years]
+    signs = "".join(markers)
+    tn_2023 = panel.get(("2023", "33", "all-manufacturing"))
+    peer_2023 = panel.get(("2023", code, "all-manufacturing"))
+    ratio = f"{tn_2023 / peer_2023:.2f}" if tn_2023 is not None and peer_2023 is not None else "·"
+    completeness = "complete" if "·" not in markers else "incomplete; no all-years conclusion"
+    print(f"TN vs {GEO[code]}: {signs}  2023 ratio {ratio}  [{completeness}]")
 
 print("\n=== (b2) named sectors 2020-2023 and (c) capital intensity 2023: TN/peer ratios ===")
-sectors = sorted(set(s for (_, _, s) in panel) - {"all-manufacturing"})
-hdr = f"{'sector':<24}" + "".join(f"{GEO[c]:>7}" for c in ["24", "27", "29", "36", "32"])
-for label, table in (("GVA/employee 2023", panel), ("fixed capital/employee 2023", cap)):
+sectors = sorted(set(sector for _, _, sector in panel) - {"all-manufacturing"})
+header = f"{'sector':<24}" + "".join(f"{GEO[code]:>7}" for code in ["24", "27", "29", "36", "32"])
+for label, table in (("GVA/person engaged 2023", panel), ("fixed capital/person engaged 2023", capital)):
     print(f"\n{label}:")
-    print(hdr)
-    for s in ["all-manufacturing"] + sectors:
-        t = table.get(("2023", "33", s))
-        if not t:
+    print(header)
+    for sector in ["all-manufacturing", *sectors]:
+        tn = table.get(("2023", "33", sector))
+        if tn is None:
             continue
-        line = f"{s:<24}"
-        for c in ["24", "27", "29", "36", "32"]:
-            k = table.get(("2023", c, s))
-            line += f"{t / k:>7.2f}" if k else f"{'·':>7}"
+        line = f"{sector:<24}"
+        for code in ["24", "27", "29", "36", "32"]:
+            peer = table.get(("2023", code, sector))
+            line += f"{tn / peer:>7.2f}" if peer is not None and peer != 0 else f"{'·':>7}"
         print(line)
