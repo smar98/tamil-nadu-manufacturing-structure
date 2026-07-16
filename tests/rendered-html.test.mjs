@@ -716,10 +716,11 @@ test("the interface states the estimand and the non-claims", async () => {
   // Suppressed values render as an explicit unavailability label, never zero/blank.
   assert.match(page, /not published \(sample too small\)/i);
   // Public claim boundaries.
-  assert.match(page, /lower GVA per person engaged than all six comparison geographies shown/i);
+  assert.match(page, /add less value per person than those in India overall and in each of the\s+five other manufacturing states/i);
+  assert.match(page, /gross value added \(GVA\) per person\s+engaged/i);
   assert.match(page, /10–249[\s\S]*10–99[\s\S]*20–249[\s\S]*50–249/i);
   assert.match(page, /does not\s+control products, capital, technology, management, prices or markups/i);
-  assert.match(page, /No enacted or\s+notified successor was found as of July 2026/i);
+  assert.match(page, /No enacted or\s+notified\s+successor was found as of July 2026/i);
   assert.match(page, /3\.47%/);
   assert.doesNotMatch(page, /nearly the least|largest slice in the country|worker-exploitation|\bsame work\b|same things/i);
 });

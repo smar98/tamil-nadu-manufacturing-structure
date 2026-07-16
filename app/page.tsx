@@ -1069,10 +1069,11 @@ export default function Home() {
             </span>
           </h1>
           <p className="hero-sub">
-            {perHundred}{" "}of every 100 Indian factory workers work there. Yet Tamil Nadu has
-            lower GVA per person engaged than all six comparison geographies shown. This
-            page measures that descriptive gap, tests bounded explanations for it, and reads a
-            defined set of state policy documents alongside it.
+            {perHundred}{" "}of every 100 Indian factory workers work there. Yet Tamil Nadu’s
+            factories add less value per person than those in India overall and in each of the
+            five other manufacturing states this page compares it with. This page measures that
+            gap, tests the explanations this data can test, and reads the state’s own policy
+            documents alongside it.
           </p>
           <p className="hero-source">
             Computed from Annual Survey of Industries 2023-24 factory returns
@@ -1091,17 +1092,19 @@ export default function Home() {
         <div className="column">
           <p className="bluf-kicker">The finding, up front</p>
           <p>
-            India’s largest registered-factory workforce has the lowest GVA per person engaged
-            among the comparison geographies shown. Within registered ASI units, Tamil Nadu does
-            not have an unusually thin middle under any of four tested definitions (10–249,
-            10–99, 20–249 and 50–249 workers) or under the equal-allocation and whole-return
-            sizing treatments. Broad industry composition accounts for part of the observed gap;
-            most remains under a common broad-industry composition against Gujarat, Maharashtra
-            and Karnataka in the specifications tested. The labour-cost proxy is a higher share
-            of GVA than for the displayed comparators, while reported earnings and protections
-            are mixed. The reviewed policy documents cover investment and sector development,
-            category graduation, EPF-covered hiring support and credit; they do not evaluate the
-            effects of those instruments.
+            India’s largest registered-factory workforce produces the least value per person of
+            the areas this page compares it with. One popular explanation — that Tamil Nadu
+            lacks mid-sized factories, the “missing middle” — does not hold in the
+            registered-factory data: under four different definitions of “mid-sized” (10–249,
+            10–99, 20–249 and 50–249 workers), Tamil Nadu’s middle is not unusually small. A
+            second explanation — that Tamil Nadu simply has different industries — accounts for
+            only part of the gap: re-run the comparison as if both sides had the same broad
+            industry mix, and most of the gap against Gujarat, Maharashtra and Karnataka
+            remains. Meanwhile, spending on labour takes a larger share of factory value in
+            Tamil Nadu than in any comparison area, even though the pay workers themselves
+            report is middling. And the state programmes in the policy documents we reviewed
+            support investment, growing into a bigger size category, hiring, and credit — but
+            none of those documents measures whether any of the programmes works.
           </p>
           <p>The rest of this page is the evidence for each of those sentences, in order.</p>
           <nav className="route" aria-label="Jump to a section">
@@ -1122,16 +1125,17 @@ export default function Home() {
             <div key="s0">
               <p>
                 Being India’s factory-jobs state is an old distinction; Tamil Nadu has held
-                it for years. But compare the selected geographies by a different
-                measure: GVA per person engaged in registered factories.
+                it for years. But line the same places up by a different measure: the value
+                each factory adds for every person engaged in it.
               </p>
               <p className="definition">
-                That measure is <strong>gross value added (GVA) per person engaged</strong> — the
-                value of what a factory ships out, minus the materials and services it buys in,
-                divided by everyone engaged in the factory. It is an establishment-level ratio,
-                not a direct measure of an individual worker’s productivity.
+                The surveys call that measure <strong>gross value added (GVA) per person
+                engaged</strong> — the value of what a factory ships out, minus the materials
+                and services it buys in, divided by everyone engaged in the factory, owners and
+                unpaid family members included. It describes the factory, not the effort or
+                skill of any individual worker.
               </p>
-              <p>Tamil Nadu is lowest among the comparison geographies shown.</p>
+              <p>Tamil Nadu comes last among the areas shown.</p>
             </div>,
             <div key="s1">
               <p>
@@ -1304,10 +1308,11 @@ export default function Home() {
             </div>,
             <div key="s3">
               <p>
-                For registered ASI units, Tamil Nadu’s middle is not unusually thin next to the
-                displayed peers under any of the four definitions. The result also holds under
-                both sizing treatments; it does not describe a continuous path from an ASUSE
-                workshop to an ASI unit.
+                Within registered factories, Tamil Nadu’s middle is not unusually small next to
+                the peers shown, under any of the four definitions. The result also holds under
+                both ways of sizing a factory (below). What it does not show: how often a small
+                workshop grows into a factory — these surveys photograph a single year and
+                cannot follow a firm over time.
               </p>
             </div>,
           ]}
@@ -1380,8 +1385,8 @@ export default function Home() {
             </p>
           </HowWeKnow>
           <p className="handoff">
-            These bounded ASI tests do not show a uniquely missing middle. Next, compare broad
-            industry composition.
+            So the registered-factory data do not show a uniquely missing middle. Next
+            hypothesis: maybe Tamil Nadu simply has different industries.
           </p>
         </div>
       </section>
@@ -1392,16 +1397,21 @@ export default function Home() {
         <div className="column">
           <h2 className="act-title">The fair test</h2>
           <p>
-            Tamil Nadu and Gujarat allocate factory employment differently across broad
-            industries. Comparing their overall averages therefore combines differences in
-            composition with differences in industry-specific rates. The question tested here is:{" "}
-            <strong>how much of the descriptive gap is associated with broad industry composition?</strong>
+            Tamil Nadu and Gujarat spread their factory jobs across very different industries.
+            An overall average therefore mixes two things: <em>which</em> industries each state
+            has, and how much value is added <em>within</em> each industry. The question tested
+            here is:{" "}
+            <strong>how much of the gap is accounted for by the industry mix alone?</strong>
           </p>
           <p className="definition">
-            We re-run each comparison under a common broad-industry composition. A{" "}
-            <strong>Kitagawa decomposition</strong> separates the composition component from the
-            component remaining within the project’s seven broad industry groups. This does not
-            control products, capital, technology, management, prices or markups.
+            So we re-run each comparison as if both states had the same industry mix. The
+            standard statistical tool for this is a <strong>Kitagawa decomposition</strong>: it
+            splits an observed gap into the part that reflects the two states having different
+            industries (the <strong>composition component</strong>) and the part that remains
+            inside the same broad industry groups (the <strong>within component</strong>). One
+            honest limit up front: it works at seven broad industry groups, so it does not
+            control products, capital, technology, management, prices or markups — differences
+            inside a broad group stay in the “within” part.
           </p>
         </div>
         <Scrolly
@@ -1417,13 +1427,13 @@ export default function Home() {
             </div>,
             <div key="s1">
               <p>
-                Under a common broad-industry composition, the composition component accounts
-                for {pct(gjMixShare, 0)} of that gap.
+                Give both states the same industry mix, and {pct(gjMixShare, 0)} of that gap is
+                accounted for — that part reflects which industries each state has.
               </p>
               <p>
-                The remaining {pct(1 - gjMixShare, 0)} is the within-component. It records lower
-                Tamil Nadu GVA per person engaged within the project’s broad groups, without
-                identifying why those rates differ.
+                The remaining {pct(1 - gjMixShare, 0)} survives: even inside the same broad
+                industry groups, Tamil Nadu’s factories add less value per person than
+                Gujarat’s. The data show that this is so, not why.
               </p>
             </div>,
             <div key="s2">
@@ -1469,8 +1479,8 @@ export default function Home() {
             industry-by-size jointly. And Tamil Nadu’s factory value added per person has
             sat below Gujarat’s, Maharashtra’s and Karnataka’s{" "}
             {panel.alwaysBelow ? "in every single year we can compute, 2008-09 through 2023-24" : "for most of the last decade and a half"}.
-            The complete panel therefore does not reduce the pattern to a single unusual year,
-            and broad industry composition accounts for only part of the descriptive gap.
+            That persistence rules out a single unusual year as the explanation, and the
+            industry mix accounts for only part of the gap.
           </p>
           <p>
             Two comparators behave differently, and the page says so. Against Telangana the raw
@@ -1478,10 +1488,10 @@ export default function Home() {
             {tgRaw.common_support_raw_gap !== null ? ` (${lakh(Math.abs(tgRaw.common_support_raw_gap))} per person)` : ""}, so
             there is little to decompose
             {emolAdj && emolAdj.composition_component !== null && emolAdj.common_support_raw_gap !== null
-              ? `; and while Tamil Nadu records higher emoluments per paid person engaged than Telangana on the raw average, ${pct(
+              ? `; and while Tamil Nadu's factories record higher pay per paid person than Telangana's on the raw average, ${pct(
                   emolAdj.composition_component / emolAdj.common_support_raw_gap,
                   0,
-                )} of that gap is the broad-industry composition component`
+                )} of that pay gap reflects which broad industries each state has, not pay differences inside the same broad groups`
               : ""}
             . Against Kerala the decomposition does not reach the required 95% coverage of both
             workforces, so it is {NOT_PUBLISHED}; Kerala stays in the comparator set because
@@ -1534,8 +1544,8 @@ export default function Home() {
             </p>
           </HowWeKnow>
           <p className="handoff">
-            A substantial gap remains under a common broad-industry composition. Next question:
-            how is factory GVA divided?
+            So a substantial gap remains even when both states are given the same industry mix.
+            Next question: how is the value factories add divided up?
           </p>
         </div>
       </section>
@@ -1546,8 +1556,10 @@ export default function Home() {
         <div className="column">
           <h2 className="act-title">The workers’ slice</h2>
           <p>
-            The labour-cost proxy takes a larger share of factory GVA in Tamil Nadu than in
-            each comparison geography shown.
+            Of the value its factories add, Tamil Nadu spends a larger share on labour than any
+            comparison area shown. “Labour cost” here is the survey’s broad measure — pay plus
+            the employer’s provident-fund contributions and staff-welfare spending — so it is
+            wider than what workers take home.
           </p>
         </div>
         <div className="exhibit-column">
@@ -1566,10 +1578,11 @@ export default function Home() {
         </div>
         <div className="column">
           <p>
-            These are different measures. The ASI proxy is a factory-account aggregate that
-            includes employer contributions and welfare; it is not take-home pay. PLFS workers’
-            own reports place regular earnings near the India estimate and show different
-            patterns for self-employment and casual work:
+            A larger share of a smaller pie can still be a modest amount — and the labour-cost
+            measure above comes from factory accounts, not from workers’ pockets. A separate
+            survey (the PLFS) asks workers themselves what they earn. Their answers put Tamil
+            Nadu’s regular monthly factory pay close to the India-wide figure, with
+            self-employment and casual daily work each telling a different story:
           </p>
         </div>
         <div className="exhibit-column">
@@ -1624,12 +1637,12 @@ export default function Home() {
         </div>
         <div className="column">
           <p>
-            The worker evidence is mixed rather than a single welfare verdict. Tamil Nadu’s
-            labour-cost proxy is a larger share of GVA than for the displayed comparators;
-            reported earnings are near some benchmarks and below others; written contracts,
-            paid leave and specified social-security coverage exceed some comparison estimates
-            and trail Karnataka or Telangana on several measures. These descriptive aggregates
-            do not establish exploitation, its absence, or a single route to higher wages.
+            Put together, the worker picture is mixed rather than a single verdict. Labour
+            costs take a larger share of factory value than in any comparison area; the pay
+            workers report is middling; written contracts, paid leave and social-security
+            coverage beat India, Gujarat and Kerala but trail Karnataka and Telangana by double
+            digits. These are descriptions of one year, 2023-24. They do not show that workers
+            are exploited, that they are not, or that any single lever would raise wages.
           </p>
           <HowWeKnow>
             <p>
@@ -1660,10 +1673,13 @@ export default function Home() {
         <div className="column">
           <h2 className="act-title">What the state’s policy aims at</h2>
           <p>
-            Last, the policy ledger: what instruments appear in the bounded set of state
-            documents reviewed? The set covers category graduation, EPF-covered hiring support,
-            investment and sector development, and MSME credit. For each, the cards below give
-            the documented design, reported figures and the limit of the published evidence.
+            Last, the policy ledger: what support programmes for manufacturers appear in the
+            state documents we reviewed? Four kinds: extra capital subsidy for firms that grow
+            into a larger official size category, reimbursement of the employer’s
+            provident-fund contribution for units employing more than 20 people, investment and
+            sector-development programmes, and credit for small enterprises. For each, the
+            cards below give the documented design, the documents’ own reported figures and how
+            far the published evidence goes.
           </p>
         </div>
         <div className="instrument-grid">
@@ -1690,14 +1706,15 @@ export default function Home() {
         </div>
         <div className="column" style={{ marginTop: "2rem" }}>
           <p>
-            Set the reviewed instruments beside the measurements. Their stated designs span
-            investment and sector development, graduation into a larger enterprise category,
-            EPF-covered hiring support and credit. In this document set, we did not find GVA per
-            person engaged, wage levels, or contract and benefit coverage stated as objectives.
-            That is a bounded document finding, not proof that no other policy or administrative
-            target exists. The 2021 Industrial Policy expired on 31 March 2025. No enacted or
-            notified successor was found as of July 2026. The MSME instruments above are stated
-            in the 2025-26 Policy Notes.
+            Set those programmes beside the measurements. Their stated designs support
+            investing, growing into a larger size category, hiring, and borrowing. In the
+            documents we reviewed, we did not find value added per person, wage levels, or
+            contract and benefit coverage stated as objectives. That is a finding about these
+            documents only — policy runs wider than what is published, and other targets may
+            exist in places we could not see. Timing matters too: the state’s general
+            Industrial Policy of 2021 expired on 31 March 2025. No enacted or notified
+            successor was found as of July 2026; a new policy has been announced but not
+            published. The MSME programmes above are as stated in the 2025-26 Policy Notes.
           </p>
           <p className="definition">
             To be precise about what this section claims: it reads stated objectives in
@@ -1745,8 +1762,8 @@ export default function Home() {
         </div>
         <div className="column">
           <Exhibit
-            title="Direct official counterparts usually reconcile within 2%; the specified exceptions and tolerances are shown"
-            sub="All 28 predeclared checks pass their specified tolerances. Not every displayed estimate has a direct official counterpart, so this ledger does not mean that every number was independently reconciled."
+            title="Where our numbers have a direct official counterpart, they usually match within 2% — the exceptions are disclosed"
+            sub="We ran 28 pre-declared checks against the government's own published tables; all pass their stated tolerances. Not every number on this page has a published counterpart to check against, so this ledger does not mean every number was independently verified."
           >
             <details className="howweknow" style={{ borderTop: "none" }}>
               <summary>Open the full 28-gate reconciliation ledger</summary>
