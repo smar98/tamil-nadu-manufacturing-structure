@@ -53,20 +53,43 @@ is ink, paper and greys, plus three muted survey hues used only as identity tags
 FT's functional split (Financier for voice, Metric for evidence), executed with non-cliché
 open faces, self-hosted via `next/font`:
 
-- **Narrative (argument): Source Serif 4** — display at 600/650 weight (clamp ceiling
-  ≤5.5rem, letter-spacing ≥ −0.02em, `text-wrap: balance`), body at 400/1.65 line-height,
-  measure 65–72ch. Handoff lines (the one-sentence bridges between acts) in italic.
-- **Evidence (charts, tables, chips, source lines, methods): Libre Franklin** — the
-  news-graphics Franklin lineage; chart annotation 13–14px/500, `font-variant-numeric:
-  tabular-nums lining-nums` everywhere a number can appear in a column or a counter.
+- **Narrative (argument): Newsreader** (`--serif`) — commissioned by Google Fonts from
+  Production Type for on-screen reading; variable, with the `opsz` axis declared so display
+  sizes get the display cut. Display at 600 weight (clamp ceiling ≤5.5rem, letter-spacing
+  ≥ −0.02em, `text-wrap: balance`), body at 400/1.68 line-height, measure 65–72ch. Handoff
+  lines (the one-sentence bridges between acts) in italic. Lining tabular figures by default.
+- **Evidence (charts, tables, chips, source lines, methods): Archivo** (`--ui`) — a
+  grotesque drawn for high-performance small-size text, with `tnum` that genuinely works.
+  Chart annotation 13–14px/500, `font-variant-numeric: tabular-nums lining-nums` everywhere
+  a number can appear in a column or a counter. Variable 100–900 with a real italic, so it
+  covers the 300-weight hero counter and the italic suppression notes on its own.
 - Numbers inside narrative prose stay in the serif (they are being *argued*); numbers in
-  exhibits are Franklin tabular (they are being *checked*).
+  exhibits are Archivo tabular (they are being *checked*).
+
+  Both faces were replaced in Aug 2026. The predecessors were Source Serif 4 and Libre
+  Franklin; Franklin had to go because it ships **no tabular figures at all**, so the
+  `tabular-nums` declared throughout this spec was silently doing nothing and exhibit
+  columns never actually aligned.
+
+  **How to vet a replacement.** Do not trust a specimen page, and do not trust the presence
+  of a `tnum` feature tag either — shape the digits and compare advance widths. Golos Text
+  was rejected here for exactly that reason: it advertises `tnum` and still returns five
+  different digit widths. The check that settles it:
+
+  ```python
+  import uharfbuzz as hb
+  face = hb.Face(open("font.ttf","rb").read()); font = hb.Font(face)
+  def w(d, feats):
+      b = hb.Buffer(); b.add_str(d); b.guess_segment_properties()
+      hb.shape(font, b, feats); return sum(p.x_advance for p in b.glyph_positions)
+  assert len({w(d, {"tnum": True}) for d in "0123456789"}) == 1
+  ```
 - No eyebrows/kickers, no numbered section scaffolding. Act openings are a thin full-width
   ledger rule + large serif title; the acts' sequence is carried by the scroll itself.
 
 ## The ledger grammar (what makes it ours)
 
-1. **Reconciliation marks.** Under every exhibit, a one-line Franklin source entry in the
+1. **Reconciliation marks.** Under every exhibit, a one-line Archivo source entry in the
    form: `⊙ ASI 2023-24 · matches Statement 7A within 0.25% · n = 29,899 factories`. PASS
    marks in `--check`, FLAG marks in `--flag` with the disclosed reason. This is ProPublica's
    "verification as an action with a disclosed result," printed on the page.
@@ -95,7 +118,7 @@ open faces, self-hosted via `next/font`:
 - Grid: single reading column (max 68ch) with exhibits breaking to a wider measure
   (max 1080px); full-bleed only for Act I and the Act V labour-share moment.
 - Thin ledger rules (1px, ink at 12%) structure sections; no cards, no boxes-in-boxes.
-  "How we know" is a styled native `<details>` at the end of each act — Franklin, slightly
+  "How we know" is a styled native `<details>` at the end of each act — Archivo, slightly
   smaller, full technical depth (estimand, denominator, suppression, uncertainty, citations).
 - Mobile-first at 360px; charts reflow to stacked small multiples rather than shrinking.
 

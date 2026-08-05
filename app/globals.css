@@ -26,8 +26,10 @@
   --flag: oklch(0.62 0.13 75);
   --flag-ink: oklch(0.45 0.11 75);
 
-  --serif: var(--font-serif), "Source Serif 4", Georgia, serif;
-  --franklin: var(--font-franklin), "Libre Franklin", "Helvetica Neue", Arial, sans-serif;
+  /* Newsreader carries the argument; Archivo carries the evidence. Newsreader is
+     tabular by default; Archivo's tnum shapes all ten digits to one width. */
+  --serif: var(--font-serif), Newsreader, Georgia, serif;
+  --ui: var(--font-ui), Archivo, "Helvetica Neue", Arial, sans-serif;
 
   --measure: 68ch;
   --exhibit-max: 1080px;
@@ -73,7 +75,10 @@ a:hover { text-decoration-color: var(--tn); }
   border: 0;
 }
 
-svg text { font-family: var(--franklin); }
+/* Axis and data labels are a column of figures, so they get tabular too. Archivo
+   is proportional until asked. Running prose (.recon, .chart-note) is left
+   proportional on purpose -- tabular figures belong in columns, not sentences. */
+svg text { font-family: var(--ui); font-variant-numeric: tabular-nums lining-nums; }
 
 /* ---------- reading column & section structure ---------- */
 
@@ -146,7 +151,7 @@ strong { font-weight: 600; }
 }
 .hero-inner { max-width: 62rem; margin-inline: auto; width: 100%; position: relative; }
 .hero-count {
-  font-family: var(--franklin);
+  font-family: var(--ui);
   font-variant-numeric: tabular-nums lining-nums;
   font-weight: 300;
   font-size: clamp(3.4rem, 11vw, 5.5rem);
@@ -170,13 +175,13 @@ strong { font-weight: 600; }
 }
 .hero-source {
   margin-top: 3rem;
-  font-family: var(--franklin);
+  font-family: var(--ui);
   font-size: 0.8125rem;
   color: oklch(0.985 0.002 25 / 0.72);
 }
 .hero-scrollcue {
   margin-top: 2.2rem;
-  font-family: var(--franklin);
+  font-family: var(--ui);
   font-size: 0.875rem;
   letter-spacing: 0.01em;
   color: oklch(0.985 0.002 25 / 0.85);
@@ -184,11 +189,11 @@ strong { font-weight: 600; }
 
 /* ---------- ledger primitives ---------- */
 
-.evidence { font-family: var(--franklin); font-variant-numeric: tabular-nums lining-nums; }
+.evidence { font-family: var(--ui); font-variant-numeric: tabular-nums lining-nums; }
 
 /* Reconciliation mark: the printed verification line under every exhibit. */
 .recon {
-  font-family: var(--franklin);
+  font-family: var(--ui);
   font-size: 0.8125rem;
   line-height: 1.55;
   color: var(--ink-3);
@@ -213,7 +218,7 @@ strong { font-weight: 600; }
   max-width: 44ch;
 }
 .exhibit-sub {
-  font-family: var(--franklin);
+  font-family: var(--ui);
   font-size: 0.875rem;
   color: var(--ink-2);
   margin-top: 0.35rem;
@@ -223,7 +228,7 @@ strong { font-weight: 600; }
 
 /* Survey identity tag — small colored square + name, never color alone. */
 .survey-tag {
-  font-family: var(--franklin);
+  font-family: var(--ui);
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.01em;
@@ -243,7 +248,7 @@ strong { font-weight: 600; }
 
 /* Hatched = suppressed; absence made visible. */
 .suppressed-note {
-  font-family: var(--franklin);
+  font-family: var(--ui);
   font-size: 0.8125rem;
   color: var(--ink-3);
   font-style: italic;
@@ -254,7 +259,7 @@ strong { font-weight: 600; }
   border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
   margin: 2.8rem 0 0;
-  font-family: var(--franklin);
+  font-family: var(--ui);
 }
 .howweknow summary {
   cursor: pointer;
@@ -334,7 +339,7 @@ html:not(.js) .scrolly-state { margin-bottom: 2rem; }
 
 .tabset { margin-top: 1.2rem; }
 .tabset > input[type="radio"] { position: absolute; opacity: 0; pointer-events: none; }
-.tab-labels { display: flex; flex-wrap: wrap; gap: 0.4rem; font-family: var(--franklin); font-size: 0.875rem; }
+.tab-labels { display: flex; flex-wrap: wrap; gap: 0.4rem; font-family: var(--ui); font-size: 0.875rem; }
 .tab-labels label,
 .tab-labels button {
   font: inherit;
@@ -352,7 +357,7 @@ html:not(.js) .tab-labels { display: none; }
 html:not(.js) .tabpanel::before {
   content: attr(data-label);
   display: block;
-  font-family: var(--franklin);
+  font-family: var(--ui);
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--ink-2);
@@ -362,7 +367,7 @@ html:not(.js) .tabpanel::before {
 /* ---------- charts ---------- */
 
 .chart-note {
-  font-family: var(--franklin);
+  font-family: var(--ui);
   font-size: 0.8125rem;
   color: var(--ink-2);
   margin-top: 0.5rem;
@@ -382,7 +387,7 @@ figure svg { display: block; width: 100%; height: auto; }
 .ledger-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: var(--franklin);
+  font-family: var(--ui);
   font-size: 0.9063rem;
   font-variant-numeric: tabular-nums lining-nums;
 }
@@ -423,14 +428,14 @@ figure svg { display: block; width: 100%; height: auto; }
 @media (min-width: 700px) { .instrument-grid { grid-template-columns: 1fr 1fr; } }
 .instrument { border-top: 2px solid var(--ink); padding: 0.9rem 0 1.5rem; }
 .instrument h3 { font-size: 1.125rem; margin-bottom: 0.35rem; }
-.instrument .desc { font-family: var(--franklin); font-size: 0.9063rem; color: var(--ink-2); min-height: 3.2em; }
-.instrument .source-line { font-family: var(--franklin); font-size: 0.75rem; color: var(--ink-3); margin-top: 0.5rem; }
-.instrument details { font-family: var(--franklin); font-size: 0.8438rem; color: var(--ink-2); margin-top: 0.7rem; }
+.instrument .desc { font-family: var(--ui); font-size: 0.9063rem; color: var(--ink-2); min-height: 3.2em; }
+.instrument .source-line { font-family: var(--ui); font-size: 0.75rem; color: var(--ink-3); margin-top: 0.5rem; }
+.instrument details { font-family: var(--ui); font-size: 0.8438rem; color: var(--ink-2); margin-top: 0.7rem; }
 .instrument details summary { cursor: pointer; font-weight: 600; color: var(--ink-3); font-size: 0.8125rem; }
 .instrument details[open] summary { margin-bottom: 0.4rem; }
 .ladder {
   display: flex; flex-wrap: wrap; gap: 0.35rem;
-  font-family: var(--franklin); font-size: 0.75rem; font-weight: 600;
+  font-family: var(--ui); font-size: 0.75rem; font-weight: 600;
   margin-top: 0.7rem;
 }
 .ladder span { border: 1px solid var(--rule); padding: 0.15rem 0.55rem; color: var(--ink-2); }
@@ -441,7 +446,7 @@ figure svg { display: block; width: 100%; height: auto; }
 
 .bluf { padding-block: clamp(2.5rem, 6vh, 4rem) 0; }
 .bluf-kicker {
-  font-family: var(--franklin);
+  font-family: var(--ui);
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -454,7 +459,7 @@ figure svg { display: block; width: 100%; height: auto; }
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-top: 1.6rem;
-  font-family: var(--franklin);
+  font-family: var(--ui);
   font-size: 0.8438rem;
 }
 .route a {
@@ -478,7 +483,7 @@ figure svg { display: block; width: 100%; height: auto; }
   top: 50%;
   translate: 0 -50%;
   z-index: 5;
-  font-family: var(--franklin);
+  font-family: var(--ui);
   font-size: 0.75rem;
   line-height: 1.4;
 }
@@ -502,7 +507,7 @@ figure svg { display: block; width: 100%; height: auto; }
   border-top: 1px solid var(--rule);
   margin-top: clamp(4rem, 9vh, 7rem);
   padding: 2.2rem 0 3.5rem;
-  font-family: var(--franklin);
+  font-family: var(--ui);
   font-size: 0.875rem;
   color: var(--ink-2);
 }

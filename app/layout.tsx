@@ -1,19 +1,26 @@
 import type { Metadata } from "next";
-import { Libre_Franklin, Source_Serif_4 } from "next/font/google";
+import { Archivo, Newsreader } from "next/font/google";
 import "./globals.css";
 
-const serif = Source_Serif_4({
+// opsz must be declared explicitly, or every size renders in Newsreader's 16pt
+// text cut and the display headings read flat.
+const serif = Newsreader({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  axes: ["opsz"],
   style: ["normal", "italic"],
   variable: "--font-serif",
   display: "swap",
 });
 
-const franklin = Libre_Franklin({
+// Archivo replaces Libre Franklin, which shipped no tabular figures at all -- so
+// the ledger's `font-variant-numeric: tabular-nums` was a silent no-op and the
+// exhibit columns never actually aligned. Archivo's tnum really does shape all
+// ten digits to one width (verified with HarfBuzz, not from the feature tag:
+// Golos Text advertises tnum and still returns five different widths).
+const ui = Archivo({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  variable: "--font-franklin",
+  style: ["normal", "italic"],
+  variable: "--font-ui",
   display: "swap",
 });
 
@@ -43,7 +50,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${serif.variable} ${franklin.variable}`}>
+    <html lang="en" className={`${serif.variable} ${ui.variable}`}>
       <body>
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js');" }} />
         {children}
