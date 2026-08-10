@@ -22,7 +22,7 @@ test("static export renders the full narrative without a loading state", async (
   assert.match(html, /more than in any other state/i);
   assert.match(html, /gross value added/i);
   assert.match(html, /not published \(sample too small\)/i);
-  assert.match(html, /The finding, up front/i);
+  assert.match(html, /TL;DR/i);
   assert.match(html, /= India, same measure/i);
   assert.doesNotMatch(html, /hero-count">[\d,]+\.\d/);
   assert.match(html, /Annual Survey of Unincorporated Sector Enterprises/i);

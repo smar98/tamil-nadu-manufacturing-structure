@@ -149,7 +149,7 @@ comparator at a time in Act IV); no "SHOCKING gap" register — the ledger never
   two-direction weave overlays the drenched hero (`.hero::before`). Single hue
   only — multicolour plaid would tip into costume. The hatch remains reserved
   for suppression; the check is structural, never semantic.
-- **The finding, up front.** A BLUF panel directly after the hero (`.bluf`):
+- **TL;DR.** A BLUF panel directly after the hero (`.bluf`):
   the whole argument in one paragraph, then a numbered route map of the seven
   sections (`.route`). The numbers are a real sequence (the argument's order),
   which is what earns them.

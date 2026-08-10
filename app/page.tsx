@@ -1087,10 +1087,10 @@ export default function Home() {
         </div>
       </header>
 
-      {/* ---------------- The finding, up front ---------------- */}
+      {/* ---------------- TL;DR ---------------- */}
       <section className="bluf" aria-label="The finding in brief">
         <div className="column">
-          <p className="bluf-kicker">The finding, up front</p>
+          <p className="bluf-kicker">TL;DR</p>
           <p>
             India’s largest registered-factory workforce produces the least value per person of
             the areas this page compares it with. One popular explanation — that Tamil Nadu
