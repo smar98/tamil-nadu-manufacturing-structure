@@ -1106,7 +1106,7 @@ export default function Home() {
             support investment, growing into a bigger size category, hiring, and credit — but
             none of those documents measures whether any of the programmes works.
           </p>
-          <p>The rest of this page is the evidence for each of those sentences, in order.</p>
+          <p>The rest of this page is the evidence for each of those sentences.</p>
           <nav className="route" aria-label="Jump to a section">
             {SECTIONS.map((section, index) => (
               <a key={section.id} href={`#${section.id}`}>
