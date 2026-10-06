@@ -98,7 +98,7 @@ targets: current instruments (MSME Policy Note 2025–26, budget allocations, se
 policies) exist, but no current general manufacturing target framework is verifiable. The
 announced new policy is intent, not an instrument.
 
-## Instrument-to-evidence mapping accepted in the prior session
+## Instrument-to-evidence mapping
 
 | Policy instrument | What government currently reports | What v1 can measure | What remains unanswered |
 |---|---|---|---|
@@ -122,7 +122,7 @@ a **threshold diagnostic**, not a regression-discontinuity evaluation: frames di
 threshold, PLFS sizes are broad categories, recipients are unidentifiable, and reporting may
 respond to legal thresholds.
 
-## Conclusion wording accepted in the prior session
+## Conclusion wording
 
 Supported: Tamil Nadu's current MSME policy architecture explicitly supports micro→small and
 small→medium scaling and subsidizes EPF contributions for eligible establishments employing
@@ -133,7 +133,7 @@ Not supported: that officials consider the missing middle their primary manufact
 problem, or that they prioritize peer-leading wages, contracts, paid leave and job quality.
 Interviews remain necessary to establish which analytical gaps officials face.
 
-## Sources cited in the prior session
+## Sources
 
 - Tamil Nadu Industrial Policy 2021: https://storage.investingintamilnadu.com/Guidance/Uploads/Others/industrial_policy.pdf
 - Tamil Nadu MSME Policy 2021: https://storage.investingintamilnadu.com/Guidance/Uploads/Others/msme_policy_2021.pdf

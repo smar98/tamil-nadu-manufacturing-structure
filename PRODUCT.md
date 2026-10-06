@@ -10,13 +10,11 @@ web
 
 ## Users
 
-Three audiences, one page, stated by the author directly. Primary: policy-adjacent readers —
-a senior Tamil Nadu bureaucrat (Additional Secretary to the CM, Industries) and Harvard
-faculty — reading on a laptop, skeptical by profession, who will check numbers against
-sources they know. Secondary: laypeople with zero background in Indian statistics who must
-be able to follow the entire story without being talked down to. The author (an MPP student
-and researcher) sends the link cold; the page carries the whole first impression with no one
-present to explain it.
+Two audiences, one page. Primary: policy-adjacent readers (state officials and academics)
+reading on a laptop, skeptical by profession, who will check numbers against sources they
+know. Secondary: laypeople with zero background in Indian statistics who must be able to
+follow the entire story without being talked down to. The page carries the whole first
+impression with no one present to explain it.
 
 ## Product Purpose
 

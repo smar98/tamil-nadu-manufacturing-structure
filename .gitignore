@@ -11,5 +11,5 @@ next-env.d.ts
 /research/data/raw/
 tsconfig.tsbuildinfo
 
-# Local-only working notes -- not for the public repo.
+# Local-only notes.
 /HANDOFF.md

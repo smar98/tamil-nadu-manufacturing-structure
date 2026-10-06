@@ -172,12 +172,11 @@ and usually much closer"), reproducibility pointer.
 - Layer 1: headline + prose (layperson).
 - Layer 2: the exhibit with its adjacent caveat and unweighted n (interested reader).
 - Layer 3: "How we know" expandable — estimand, denominator, formulas, suppression rules,
-  uncertainty method, source citations (professor/bureaucrat).
+  uncertainty method, source citations (expert reader).
 
 ## Design direction (binding for implementation)
 
-Visual identity: see DESIGN.md (original direction from fresh research; the earlier
-"field-brief" default is retired). Structural invariants that survive any restyle: each
+Visual identity: see DESIGN.md. Structural invariants that survive any restyle: each
 survey keeps one hue everywhere; the TN accent is constant across all exhibits; hand-built
 SVG only; direct labelling over legends. Scrollytelling:
 sticky exhibit panes with step-triggered state changes driven by IntersectionObserver — no

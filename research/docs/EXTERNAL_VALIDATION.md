@@ -6,8 +6,7 @@ Verdicts: **PASS** (matches within tolerance for the same concept), **EXPLAINED*
 for a documented conceptual/frame reason), **FLAG** (unresolved; must be disclosed).
 
 All checks were computed from the canonical payload, the committed ASI panel, or scratch
-recomputation from raw inputs; official values come from the cited documents (extraction
-agents, 2026-07-13; ASI 2023-24 files archived from microdata.gov.in catalog 256).
+recomputation from raw inputs; official values come from the cited documents (document extraction, 2026-07-13; ASI 2023-24 files archived from microdata.gov.in catalog 256).
 
 ## 1. ASUSE 2023-24 official report, Tables 36 and 34 (state, manufacturing, combined)
 

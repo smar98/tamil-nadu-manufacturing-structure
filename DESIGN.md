@@ -14,8 +14,8 @@ marks under every exhibit. Verification is the aesthetic, not a footnote.
 
 ## Scene
 
-A senior bureaucrat opens the link late at night on a laptop in Chennai; a professor skims
-it between meetings in Cambridge; a layperson reads it on a phone on a train. All three are
+A policy reader opens the link late at night on a laptop; an academic skims it between
+meetings; a layperson reads it on a phone on a train. All three are
 *reading* — long-form, dense numbers, daylight or office light. That forces a light,
 paper-like reading surface with high-contrast ink. One art-directed theme; no dark mode
 (editorial pages are art-directed once, like print).
@@ -135,9 +135,9 @@ WCAG 2.1 AA per PRODUCT.md: body ≥4.5:1, graphical objects ≥3:1 (madder on p
 both), no color-only encodings (TN also bolder stroke + direct label), full keyboard paths
 for `<details>` and any toggles, text alternatives per chart, focus-visible rings in `--tn`.
 
-## Anti-checklist (from the loaded craft bans + retired defaults)
+## Anti-checklist
 
-No cream/warm-paper band; no Field Brief tokens; no side-stripe borders; no gradient text;
+No cream/warm-paper band; no side-stripe borders; no gradient text;
 no uppercase tracked eyebrows; no numbered section markers; no hero-metric template; no
 identical card grids; no legends where direct labels fit; no league tables of states (one
 comparator at a time in Act IV); no "SHOCKING gap" register — the ledger never shouts.
