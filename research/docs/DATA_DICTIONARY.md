@@ -2,20 +2,20 @@
 
 The public payload is `public/data/manufacturing-structure.json`. It contains aggregate records only. Survey-weighted estimates are explicitly named; `sample_count` and other sample fields are unweighted.
 
-## Legacy headline fields
+## Headline fields
 
 | Field | Definition | Unit |
 | --- | --- | --- |
 | `unincorporated_establishments` | Published Tamil Nadu manufacturing establishments in ASUSE scope | count |
 | `own_account_share` | OAE establishments divided by all ASUSE manufacturing establishments | proportion, 0-1 |
 | `hired_worker_share` | HWE establishments divided by all ASUSE manufacturing establishments | proportion, 0-1 |
-| `registered_factories` | Estimated active manufacturing reported units in the legacy ASI calculation | count |
+| `registered_factories` | Estimated active manufacturing reported units in the earlier ASI calculation | count |
 | `workers_per_establishment` | Weighted ASUSE workers divided by weighted establishments | people per establishment |
 | `persons_per_factory` | Weighted ASI persons engaged divided by weighted reported units | people per reported unit |
 | `gva_per_worker` | Annual current-price GVA divided by ASUSE workers | rupees per year |
 | `gva_per_person_engaged` | Annual current-price GVA divided by ASI persons engaged | rupees per year |
 
-The `asuse_sectors`, `asi_sectors` and `plfs` keys are retained for compatibility with the existing interface. New analytical work is under `structure_v1`.
+The `asuse_sectors`, `asi_sectors` and `plfs` keys hold the earlier headline tables. The analytical sections are under `structure_v1`.
 
 ## `structure_v1` shared fields
 
@@ -28,10 +28,10 @@ The `asuse_sectors`, `asi_sectors` and `plfs` keys are retained for compatibilit
 | `geography_type` | `country` or `state` |
 | `sample_unit` | Sample establishments, sample returns, or sample workers |
 | `sample_count` | Unweighted records contributing to the cell |
-| `stability` | `stable` or `suppressed`; Layer 4 also uses `low_precision` |
+| `stability` | `stable` or `suppressed`; PLFS rows also use `low_precision` |
 | `suppression_reason` | Null for stable cells; explicit rule triggered for suppressed cells |
 
-Suppressed estimates and shares are `null`, not zero. Layer 4 also nulls the standard error, RSE and confidence interval.
+Suppressed estimates and shares are `null`. PLFS rows also set the standard error, RSE and confidence interval to `null`.
 
 ## Establishment size
 
@@ -54,7 +54,7 @@ ASI classifications:
 
 ## Missing-middle diagnostics
 
-`structure_v1.middle_diagnostic` aggregates the size distributions under four predeclared definitions: `10-249`, `10-99`, `20-249` and `50-249`. A diagnostic is suppressed if any required constituent size band is suppressed.
+`structure_v1.middle_diagnostic` aggregates the size distributions under four definitions: `10-249`, `10-99`, `20-249` and `50-249`. A diagnostic is suppressed if any required constituent size band is suppressed.
 
 ## Industry employment
 
@@ -73,7 +73,7 @@ ASI classifications:
 | `size_label` | Fewer than 6; 6-9; 10-19; 20+; or unknown |
 | `worker_share` | Weighted share of usually working manufacturing people in the code |
 
-## Layer 3 value addition
+## Value addition (ASUSE and ASI)
 
 `structure_v1.value_addition` contains one row per survey, geography and dimension cell.
 
@@ -89,7 +89,7 @@ ASI classifications:
 
 ASUSE includes only records with market-establishment item 769 for the value-addition outcome. ASI GVA uses the project’s F-J accounting reconstruction.
 
-## Layer 3 establishment compensation
+## Establishment compensation
 
 `structure_v1.establishment_compensation` uses three concepts:
 
@@ -108,7 +108,7 @@ Working-owner ASUSE items 901 and 911 are excluded because working owners are no
 | `labour_cost_proxy_share_of_gva` | ASI broad labour-cost proxy divided by aggregate GVA; present only for `labour_cost_proxy` and null when GVA is non-positive or too concentrated |
 | `aggregate_gva_positive` | Whether aggregate GVA is positive for the proxy-share calculation |
 
-## Layer 4 worker earnings
+## Worker earnings (PLFS)
 
 `structure_v1.worker_earnings` uses current weekly status and contains three separate concepts:
 
@@ -120,13 +120,13 @@ Working-owner ASUSE items 901 and 911 are excluded because working owners are no
 
 Earnings have `overall`, `sex` and `sector` rows. They are not published by enterprise size because Block 6 earning activities are not linked to the Block 5 enterprise-size response.
 
-## Layer 4 worker job quality
+## Worker job quality (PLFS)
 
 `structure_v1.worker_job_quality` covers usual-status regular wage/salaried manufacturing workers, using employed principal-activity particulars before subsidiary particulars. Concepts are `written_contract`, `paid_leave`, `specified_social_security`, `no_social_security` and `unknown_social_security`. The three social-security concepts use the same codes 1-9 denominator and sum to one when all three are published. Each is assessed independently, so a rare unknown category may be suppressed while the specified-benefit and official no-benefit rates remain available. Dimensions are `overall`, `sex`, `sector` and `enterprise_size`; size category `9` is unknown.
 
 Overall rows cover India and all available States/UTs. Subgroup rows cover India, Tamil Nadu, Gujarat, Maharashtra, Karnataka, Telangana and Kerala. The male category follows the official convention and includes sex codes 1 and 3.
 
-## Layer 4 common fields
+## PLFS common fields
 
 | Field | Definition |
 | --- | --- |
@@ -147,7 +147,7 @@ Overall rows cover India and all available States/UTs. Subgroup rows cover India
 | `stability` | `stable` at RSE ≤20%, `low_precision` at 20-30%, otherwise `suppressed`, subject to all hard rules |
 | `suppression_reason` | Semicolon-separated hard-rule failures, or null |
 
-## Layer 5 raw peer comparisons
+## Raw peer comparisons
 
 `structure_v1.peer_comparisons_raw` contains one row for each of 13 outcomes and each comparator: India, Gujarat, Maharashtra, Karnataka, Telangana and Kerala. ASUSE, ASI and PLFS remain separate.
 
@@ -159,21 +159,21 @@ Overall rows cover India and all available States/UTs. Subgroup rows cover India
 | `is_proportion` | Whether the outcome is a 0-1 proportion |
 | `comparator_id`, `comparator_label` | India or peer geography |
 | `comparator_type` | `country`, `core_peer`, or `sensitivity` |
-| `tn_estimate`, `comparator_estimate` | Exact Layer 3 or Layer 4 overall source estimates |
+| `tn_estimate`, `comparator_estimate` | Exact overall source estimates from the value-addition, compensation or PLFS sections |
 | `absolute_gap` | Tamil Nadu estimate minus comparator estimate |
 | `gap_display_unit` | Source rupee unit, or `percentage_points` for a proportion |
 | `relative_ratio` | Tamil Nadu divided by comparator for rupee outcomes with a positive comparator; otherwise null |
 | `relative_gap_percent` | `100 * (relative_ratio - 1)` where the ratio exists |
-| `tn_standard_error`, `comparator_standard_error` | Copied Layer 4 source standard errors for PLFS; null otherwise |
-| `tn_rse`, `comparator_rse` | Copied Layer 4 source RSEs for PLFS; null otherwise |
-| `tn_ci95_lower`, `tn_ci95_upper` | Copied Tamil Nadu Layer 4 interval for PLFS; null otherwise |
-| `comparator_ci95_lower`, `comparator_ci95_upper` | Copied comparator Layer 4 interval for PLFS; null otherwise |
+| `tn_standard_error`, `comparator_standard_error` | Copied PLFS source standard errors; null otherwise |
+| `tn_rse`, `comparator_rse` | Copied PLFS source RSEs; null otherwise |
+| `tn_ci95_lower`, `tn_ci95_upper` | Copied Tamil Nadu PLFS interval; null otherwise |
+| `comparator_ci95_lower`, `comparator_ci95_upper` | Copied comparator PLFS interval; null otherwise |
 | `stability` | `stable`, `low_precision`, or `suppressed` from the two source sides |
 | `suppression_reason` | Source side and reason when either required estimate is unavailable |
 
 No confidence interval, standard error, RSE or significance test is produced for the derived gap.
 
-## Layer 5 adjusted peer comparisons
+## Adjusted peer comparisons
 
 `structure_v1.peer_comparisons_adjusted` contains pairwise symmetric industry, size and permitted ASI industry × size standardisations. `classification` is `project_broad_industry_7`, `common_size_4`, or `broad_industry_7_x_common_size_4`.
 
@@ -190,7 +190,7 @@ No confidence interval, standard error, RSE or significance test is produced for
 | `composition_component` | Symmetric composition contribution to the common-support raw gap |
 | `within_component` | Gap remaining under the common composition; equals `adjusted_gap` within tolerance |
 | `decomposition_residual` | `common_support_raw_gap - composition_component - within_component` |
-| `uncertainty_available` | Always `false` in v1 |
+| `uncertainty_available` | Always `false` in this release |
 | `components` | Retained jointly stable cells; empty for a suppressed row |
 
 Each `components` entry contains `cell_id`, `cell_label`, `tn_cell_rate`, `comparator_cell_rate`, `tn_weight`, `comparator_weight`, `common_weight`, `cell_composition_component` and `cell_within_component`. Suppressed cell estimates and residual information that could reconstruct them are not included.
@@ -199,4 +199,4 @@ A stable adjusted row requires at least two retained cells, at least 95% denomin
 
 ## Validation
 
-Each top-level validation record stores the reconstructed value, official published value, error, tolerance, tolerance basis where applicable, and status. Layer 4 uses absolute half-rounding-unit tolerances and exact sample-count matches. Layer 5 leaves the 28 published-table records unchanged and is covered by focused payload-contract checks. The canonical builder writes no payload unless all gates pass.
+Each top-level validation record stores the reconstructed value, official published value, error, tolerance, tolerance basis where applicable, and status. PLFS checks use absolute half-rounding-unit tolerances and exact sample-count matches. The 28 published-table records are unchanged, and the peer-comparison section is covered by focused payload-contract checks. The canonical builder writes no payload unless all gates pass.

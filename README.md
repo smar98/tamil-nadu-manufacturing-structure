@@ -1,9 +1,11 @@
 # Tamil Nadu Manufacturing: A Structural Snapshot
 
-[Live dashboard](https://smar98.github.io/tamil-nadu-manufacturing-structure/)
+[Live site](https://smar98.github.io/tamil-nadu-manufacturing-structure/)
+
+The published site is titled "India's Factory State: Tamil Nadu's Manufacturing Paradox, 2023-24."
 
 A reproducible comparison of enterprise scale, labor productivity and
-employment form in Tamil Nadu manufacturing in 2023-24. The project layers
+employment form in Tamil Nadu manufacturing in 2023-24. The project combines
 three official MoSPI surveys:
 
 - **ASUSE:** unincorporated manufacturing establishments;
@@ -65,23 +67,35 @@ python3 research/scripts/build_manufacturing_structure.py
 npm test
 ```
 
-The builder stops before writing unless all 28 predeclared reconciliation checks
-pass and the fail-closed Layer 5 contract validates row coverage, permitted
-adjustments, source preservation, support, decompositions, suppression and
-identifier exclusion. ASI formulas also have a separate publication-benchmark audit.
+The builder stops before writing unless all 28 reconciliation checks pass and
+the peer-comparison checks validate row coverage, permitted adjustments, source
+preservation, support, decompositions, suppression and identifier exclusion.
+ASI formulas also have a separate publication-benchmark audit.
+
+## Documentation
+
+| Path | Purpose |
+| --- | --- |
+| [research/docs/METHODOLOGY.md](research/docs/METHODOLOGY.md) | Estimands, formulas and inferential limits |
+| [research/docs/DATA_DICTIONARY.md](research/docs/DATA_DICTIONARY.md) | Field definitions and units |
+| [research/docs/REPRODUCIBILITY.md](research/docs/REPRODUCIBILITY.md) | Exact end-to-end rebuild instructions |
+| [research/docs/EXTERNAL_VALIDATION.md](research/docs/EXTERNAL_VALIDATION.md) | Reconciliation against published official figures |
+| [research/docs/ROBUSTNESS_WITHIN_INDUSTRY.md](research/docs/ROBUSTNESS_WITHIN_INDUSTRY.md) | Robustness checks on the within-industry GVA finding |
+| [research/docs/RELATED_WORK.md](research/docs/RELATED_WORK.md) | Overlap with existing official and academic analyses |
+| [research/docs/POLICY_EVIDENCE.md](research/docs/POLICY_EVIDENCE.md) | Policy instruments, quoted evidence and page references |
+| [research/docs/ASUSE_PROBLEMS_APPENDIX.md](research/docs/ASUSE_PROBLEMS_APPENDIX.md) | Exploratory appendix on problems reported by establishments |
+| [research/docs/LIMITS.md](research/docs/LIMITS.md) | What this project does not show |
+| [research/data/SOURCE_MANIFEST.md](research/data/SOURCE_MANIFEST.md) | Official source for each raw input |
 
 ## Repository map
 
 | Path | Purpose |
 | --- | --- |
-| `app/` | Dashboard interface |
+| `app/` | Site source (Next.js) |
 | `public/data/manufacturing-structure.json` | Disclosure-safe web payload |
 | `research/scripts/` | ASUSE, ASI and PLFS calculation code |
 | `research/derived/` | Auditable aggregate inputs and validation ledgers |
-| `research/docs/METHODOLOGY.md` | Estimands, formulas and inferential limits |
-| `research/docs/RED_TEAM.md` | Adversarial review of every major claim |
-| `research/docs/DATA_DICTIONARY.md` | Field definitions and units |
-| `research/docs/REPRODUCIBILITY.md` | Exact end-to-end rebuild instructions |
+| `research/docs/` | Methods, data dictionary, validation and policy notes |
 
 ## Data protection
 

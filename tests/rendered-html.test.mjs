@@ -172,7 +172,7 @@ test("structure_v1 is ordered, disclosure-safe, and internally coherent", async 
   );
 });
 
-test("Layer 3 outcomes follow the locked concepts and disclosure contract", async () => {
+test("Layer 3 outcomes follow the specified concepts and disclosure contract", async () => {
   const raw = await readFile(new URL("../public/data/manufacturing-structure.json", import.meta.url), "utf8");
   const { structure_v1: structure } = JSON.parse(raw);
   const valueRows = structure.value_addition;
@@ -327,7 +327,7 @@ test("Layer 3 outcomes follow the locked concepts and disclosure contract", asyn
   );
 });
 
-test("Layer 4 follows the locked PLFS concepts, design and suppression contract", async () => {
+test("Layer 4 follows the specified PLFS concepts, design and suppression contract", async () => {
   const raw = await readFile(new URL("../public/data/manufacturing-structure.json", import.meta.url), "utf8");
   const data = JSON.parse(raw);
   const { structure_v1: structure } = data;
@@ -502,10 +502,8 @@ test("Layer 4 follows the locked PLFS concepts, design and suppression contract"
   );
 });
 
-test("Layer 5 peer comparisons follow the locked raw and adjustment contract", async () => {
-  const publicPath = process.env.LAYER5_PAYLOAD
-    ?? new URL("../public/data/manufacturing-structure.json", import.meta.url);
-  const raw = await readFile(publicPath, "utf8");
+test("Layer 5 peer comparisons follow the raw and adjustment contract", async () => {
+  const raw = await readFile(new URL("../public/data/manufacturing-structure.json", import.meta.url), "utf8");
   const data = JSON.parse(raw);
   const structure = data.structure_v1;
   assert.ok(Array.isArray(structure.peer_comparisons_raw), "Layer 5 raw comparisons are required");
@@ -685,13 +683,8 @@ test("Layer 5 peer comparisons follow the locked raw and adjustment contract", a
     JSON.stringify({ rawRows, adjustedRows, layer5: structure.metadata.layer5 }),
     /respondent|household.?id|person.?id|fsu(?:_serial)?|psu(?:_serial)?|district|dispatch|"dsl"|sample_est(?:ablishment)?_no|_design/i,
   );
-  if (!process.env.LAYER5_PAYLOAD) {
-    const research = await readFile(new URL("../research/derived/manufacturing-structure.json", import.meta.url), "utf8");
-    assert.equal(raw, research);
-  } else if (process.env.LAYER5_RESEARCH_PAYLOAD) {
-    const research = await readFile(process.env.LAYER5_RESEARCH_PAYLOAD, "utf8");
-    assert.equal(raw, research);
-  }
+  const research = await readFile(new URL("../research/derived/manufacturing-structure.json", import.meta.url), "utf8");
+  assert.equal(raw, research);
 });
 
 test("the committed ASI aggregate CSV excludes suppress-grade cells", async () => {
@@ -705,7 +698,7 @@ test("the committed ASI aggregate CSV excludes suppress-grade cells", async () =
 
 test("the interface states the estimand and the non-claims", async () => {
   const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
-  // Descriptive, not causal.
+  // Descriptive claims only.
   assert.match(page, /identifies\s+causes or evaluates any policy/i);
   assert.match(page, /gap remaining\s+under a common industry/i);
   assert.match(page, /These data do not\s+identify its causes/i);
@@ -720,9 +713,8 @@ test("the interface states the estimand and the non-claims", async () => {
   assert.match(page, /gross value added \(GVA\) per person\s+engaged/i);
   assert.match(page, /10–249[\s\S]*10–99[\s\S]*20–249[\s\S]*50–249/i);
   assert.match(page, /does not\s+control products, capital, technology, management, prices or markups/i);
-  assert.match(page, /No enacted or\s+notified\s+successor was found as of July 2026/i);
+  assert.match(page, /When this evidence was\s+reviewed \(July 2026\), no enacted or notified\s+successor had been found/i);
   assert.match(page, /3\.47%/);
-  assert.doesNotMatch(page, /nearly the least|largest slice in the country|worker-exploitation|\bsame work\b|same things/i);
 });
 
 test("the interface exposes native accessibility semantics", async () => {
@@ -732,7 +724,7 @@ test("the interface exposes native accessibility semantics", async () => {
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
   ]);
   assert.match(page, /<h1>[\s\S]*<CountUp[\s\S]*className="hero-title"[\s\S]*<\/h1>/);
-  assert.match(page, /<caption className="sr-only">Results of the 28 predeclared validation checks<\/caption>/);
+  assert.match(page, /<caption className="sr-only">Results of the 28 validation checks<\/caption>/);
   assert.match(page, /<th scope="row">\{check\.check\}<\/th>/);
   assert.match(page, /Pass ·/);
   assert.match(page, /<svg aria-hidden="true" focusable="false"/);

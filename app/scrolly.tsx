@@ -135,7 +135,7 @@ export function SectionNav({ sections }: { sections: { id: string; label: string
       { rootMargin: "-35% 0px -55% 0px" },
     );
     els.forEach((el) => observer.observe(el));
-    /* The rail stays hidden while the drenched hero fills the screen — it
+    /* The rail stays hidden while the drenched hero fills the screen; it
        would float unreadably over the madder ground. */
     const hero = document.querySelector(".hero");
     const heroObserver = new IntersectionObserver((entries) => {

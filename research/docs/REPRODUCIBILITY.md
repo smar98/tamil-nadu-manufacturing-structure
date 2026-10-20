@@ -42,14 +42,14 @@ research/derived/manufacturing-structure.json
 research/derived/validation.json
 ```
 
-The two manufacturing-structure JSON files must be byte-identical. Before any payload or validation-ledger write, the builder requires exactly 28 passing predeclared reconciliation gates and validates the complete Layer 5 contract: 78 raw rows, 78 adjusted rows, declared coverage, source and PLFS-interval preservation, permitted adjustment dimensions, support thresholds, decomposition identities, suppression nulling and identifier exclusion.
+The two manufacturing-structure JSON files must be byte-identical. Before any payload or validation-ledger write, the builder requires exactly 28 passing reconciliation gates and validates the peer-comparison contract: 78 raw rows, 78 adjusted rows, declared coverage, source and PLFS-interval preservation, permitted adjustment dimensions, support thresholds, decomposition identities, suppression nulling and identifier exclusion.
 
-The canonical payload contains Layers 1–5, including 78 raw and 78 composition-adjusted peer-comparison rows (72 stable, 6 mechanically suppressed Kerala ASI adjustments). The Layer 5 payload-contract test runs against the canonical payload and must pass rather than skip.
+The canonical payload contains the establishment, value-addition, compensation, PLFS and peer-comparison sections, including 78 raw and 78 composition-adjusted peer-comparison rows (72 stable, 6 suppressed Kerala ASI adjustments). The peer-comparison payload test runs against the canonical payload and must pass rather than skip.
 
-### Layer 6 exploratory appendix
+### ASUSE reported-problems appendix
 
 A separate standalone script builds the disclosure-safe ASUSE reported-problems appendix
-(exploratory correlations, not part of the canonical payload):
+(exploratory correlations, outside the canonical payload):
 
 ```bash
 python3 research/scripts/build_asuse_problems_appendix.py
@@ -57,9 +57,9 @@ python3 research/scripts/build_asuse_problems_appendix.py
 
 It reads only `research/data/raw/ASUSE_DATA_2023_24_CSV.zip` and writes
 `research/derived/asuse_problems_appendix.json`. Its self-check reconciles weighted
-establishment totals against the published Layer 1 gates and enforces the Layer 3
-disclosure rule on every published cell. The run is deterministic. Documentation:
-`research/docs/LAYER6_ASUSE_PROBLEMS_APPENDIX.md`.
+establishment totals against the published totals and applies the establishment
+disclosure rule to every published cell. The run is deterministic. Documentation:
+`research/docs/ASUSE_PROBLEMS_APPENDIX.md`.
 
 Expected gates include:
 
@@ -93,7 +93,7 @@ npm test
 
 Validation requires at least the 2014-15, 2015-16 and 2023-24 archives because those years have committed official benchmark totals.
 
-`build_asi_aggregates.py` keeps suppress-grade cells in memory for classification, then writes only non-suppress rows to `research/derived/asi_aggregates.csv` and the ASI JSON. The CSV is an aggregate analytical input, not respondent-level data. Cells with fewer than 10 sampled returns or excessive GVA concentration are omitted.
+`build_asi_aggregates.py` keeps suppressed cells in memory for classification, then writes only unsuppressed rows to `research/derived/asi_aggregates.csv` and the ASI JSON. The CSV is an aggregate analytical input and contains no respondent-level data. Cells with fewer than 10 sampled returns or excessive GVA concentration are omitted.
 
 ## Data flow
 

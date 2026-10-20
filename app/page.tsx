@@ -1,9 +1,9 @@
-/* India's Factory State — server-rendered narrative site.
-   Every number on this page is read at build time from the canonical payload
+/* India's Factory State: server-rendered narrative site.
+   The statistics computed on this page are read at build time from the payload
    (public/data/manufacturing-structure.json), the committed ASI panel
-   (research/derived/asi_aggregates.csv) or the ASUSE problems appendix. Nothing
-   is a hand-typed statistic; citation text referencing official published
-   tables follows research/docs/EXTERNAL_VALIDATION.md. */
+   (research/derived/asi_aggregates.csv) or the ASUSE problems appendix. The
+   policy cards and the citations of official published tables carry figures
+   typed from their source documents (see research/docs/EXTERNAL_VALIDATION.md). */
 
 import fs from "node:fs";
 import path from "node:path";
@@ -139,7 +139,7 @@ type Payload = {
 const payload = payloadJson as unknown as Payload;
 const sv = payload.structure_v1;
 const appendix = appendixJson as unknown as {
-  reporting_shares: { category_label: string; dimension: string; value: number | null; stability: string }[];
+  reporting_shares: { category_id: string; category_label: string; dimension: string; value: number | null; stability: string }[];
 };
 
 // ---------------------------------------------------------------------------
@@ -272,8 +272,10 @@ const tnEarn = sv.worker_earnings.find(
   (row) => row.concept === "regular_monthly_earnings" && row.dimension === "overall" && row.geography_id === "33",
 )!;
 
-const problemsOverall = appendix.reporting_shares.filter((row) => row.dimension === "overall" && row.value !== null);
-const maxProblemShare = Math.max(...problemsOverall.map((row) => row.value!));
+const problemsOverall = appendix.reporting_shares.filter(
+  (row) => row.dimension === "overall" && row.value !== null && row.category_id !== "other",
+);
+const maxNamedProblemShare = Math.max(...problemsOverall.map((row) => row.value!));
 
 // ---------------------------------------------------------------------------
 // Formatting
@@ -281,13 +283,12 @@ const maxProblemShare = Math.max(...problemsOverall.map((row) => row.value!));
 
 const lakh = (value: number) => {
   const l = value / 100000;
-  const digits = l >= 10 ? 1 : 1;
-  return `₹${l.toFixed(digits)} lakh`;
+  return `₹${l.toFixed(1)} lakh`;
 };
 const rupees = (value: number) => `₹${Math.round(value).toLocaleString("en-US")}`;
 /* US dollar equivalents for international readers, ₹83 to the dollar
    (approximately the 2023-24 average market rate; noted in the colophon).
-   Rounded hard — these are for scale, not accounting. */
+   Rounded hard: these are for scale and not for accounting. */
 const USD_RATE = 83;
 const usd = (value: number) => {
   const dollars = value / USD_RATE;
@@ -343,7 +344,7 @@ function Exhibit({
 function HowWeKnow({ children }: { children: React.ReactNode }) {
   return (
     <details className="howweknow">
-      <summary>How we know — the full technical detail</summary>
+      <summary>How we know: the full technical detail</summary>
       <div className="howweknow-body">{children}</div>
     </details>
   );
@@ -361,7 +362,7 @@ function Hatch({ id }: { id: string }) {
 }
 
 // ---------------------------------------------------------------------------
-// Exhibit: ranked strip (Act I)
+// Exhibit: ranked strip
 // ---------------------------------------------------------------------------
 
 function RankStrip({ annotated }: { annotated: boolean }) {
@@ -426,7 +427,7 @@ function RankStrip({ annotated }: { annotated: boolean }) {
 }
 
 // ---------------------------------------------------------------------------
-// Exhibit: ASUSE size structure (Act III)
+// Exhibit: ASUSE size structure
 // ---------------------------------------------------------------------------
 
 function SizeBars({ showJobs, showIndia }: { showJobs: boolean; showIndia?: boolean }) {
@@ -508,7 +509,7 @@ function SizeBars({ showJobs, showIndia }: { showJobs: boolean; showIndia?: bool
               ) : (
                 <g>
                   {/* Ticks draw first; the value labels carry a paper halo so a
-                      nearby India tick passes behind the digits, not through. */}
+                      nearby India tick passes behind the digits and stays clear of them. */}
                   <rect x={left} y={y} width={Math.max(2, row.unit_share! * colW)} height={22} fill="var(--asuse)" />
                   {showIndia && inRow?.unit_share != null && tick(left + inRow.unit_share * colW)}
                   <text x={labelX(left, row.unit_share!, inRow?.unit_share)} y={y + 15} fontSize="13" fill="var(--ink-2)" stroke="var(--paper)" strokeWidth="3" paintOrder="stroke">
@@ -545,7 +546,7 @@ function SizeBars({ showJobs, showIndia }: { showJobs: boolean; showIndia?: bool
 }
 
 // ---------------------------------------------------------------------------
-// Exhibit: middle diagnostic across states (Act III)
+// Exhibit: middle diagnostic across states
 // ---------------------------------------------------------------------------
 
 const GEO_CODE: Record<string, string> = {
@@ -655,7 +656,7 @@ function MiddleDiagnostic({ survey, classification }: { survey: string; classifi
 }
 
 // ---------------------------------------------------------------------------
-// Exhibit: decomposition split (Act IV)
+// Exhibit: decomposition split
 // ---------------------------------------------------------------------------
 
 function GapSplit({ row, stage }: { row: AdjRow; stage: "raw" | "split" }) {
@@ -785,8 +786,8 @@ function ComparatorPanel({ id }: { id: string }) {
       <div>
         <p className="suppressed-note" style={{ margin: "1.4rem 0" }}>
           {NOT_PUBLISHED} at the required coverage: {row.suppression_reason} {row.comparator_label}{" "}
-          stays in the comparator set — dropping a peer after seeing the results would be
-          cherry-picking — but its decomposition is not shown.
+          remains in the comparator set; its decomposition is not shown because it does not
+          meet the 95% coverage requirement.
         </p>
       </div>
     );
@@ -821,7 +822,7 @@ function ComparatorPanel({ id }: { id: string }) {
 }
 
 // ---------------------------------------------------------------------------
-// Exhibit: labour share, earnings, protections (Act V)
+// Exhibit: labour share, earnings, protections
 // ---------------------------------------------------------------------------
 
 function LabourShareBars() {
@@ -927,7 +928,7 @@ function CiDotPanel({
 }
 
 // ---------------------------------------------------------------------------
-// Exhibit: validation ledger (Act VII)
+// Exhibit: validation ledger
 // ---------------------------------------------------------------------------
 
 function ValidationLedger() {
@@ -945,7 +946,7 @@ function ValidationLedger() {
   return (
     <div className="table-scroll">
       <table className="ledger-table">
-        <caption className="sr-only">Results of the 28 predeclared validation checks</caption>
+        <caption className="sr-only">Results of the 28 validation checks</caption>
         <thead>
           <tr>
             <th scope="col">Published figure the build must reproduce</th>
@@ -972,11 +973,11 @@ function ValidationLedger() {
       </table>
       {rseCheck && (
         <p className="chart-note">
-          The one visibly larger difference is deliberate: the RSE row checks our replication of
+          The one visibly larger difference is expected: the RSE row checks our replication of
           MoSPI’s published sampling-error figure (ours {Number(rseCheck.reconstructed.toPrecision(3))} vs{" "}
           {Number(rseCheck.published.toPrecision(3))} published). The official variance machinery
-          uses listing data that is not public, so that check carries a wider 15% tolerance —
-          the estimate itself has a sampling error of about {Number(rseCheck.published.toPrecision(3))}%,
+          uses listing data that is not public, so that check carries a wider 15% tolerance.
+          The estimate itself has a sampling error of about {Number(rseCheck.published.toPrecision(3))}%,
           which is small.
         </p>
       )}
@@ -985,7 +986,7 @@ function ValidationLedger() {
 }
 
 // ---------------------------------------------------------------------------
-// Policy ledger (Act VI) — from the verified Layer 6 evidence base
+// Policy instruments
 // ---------------------------------------------------------------------------
 
 const INSTRUMENTS = [
@@ -1008,22 +1009,13 @@ const INSTRUMENTS = [
     outputKnown: false,
   },
   {
-    name: "Sector missions and parks",
-    desc: "Sector-specific policies and industrial-park construction, aimed at attracting investment.",
-    docs:
-      "Industries Policy Note 2025-26: sector policies and park construction continue under current budget allocations. The documents report investment sanctions and construction outputs — memoranda signed, parks built — not what those investments went on to produce.",
-    source: "Industries Policy Note 2025-26",
-    aims: "attracting investment",
-    outputKnown: true,
-  },
-  {
     name: "MSME credit",
-    desc: "About ₹2.5 lakh crore ($30 billion) of reported lending to micro, small and medium enterprises.",
+    desc: "The 2025-26 Budget Speech (§116, p. 54) sets a plan for banks to lend ₹2.5 lakh crore ($30 billion) to 10 lakh micro, small and medium enterprises.",
     docs:
-      "The reviewed documents report MSME lending volumes as an aggregate — roughly ₹2.5 lakh crore. They do not report whether that lending made any recipient grow, hire or invest; volume is the last thing measured.",
-    source: "MSME Policy Note 2025-26",
+      "Budget Speech 2025-26, §116, p. 54: banks are to lend to 10 lakh MSMEs, with an outlay of ₹2.5 lakh crore. This is a lending target. The documents we reviewed do not report whether that lending made any recipient grow, hire or invest.",
+    source: "Tamil Nadu Budget Speech 2025-26, §116, p. 54",
     aims: "credit volume",
-    outputKnown: true,
+    outputKnown: false,
   },
 ];
 
@@ -1058,13 +1050,13 @@ export default function Home() {
   return (
     <main>
       <SectionNav sections={SECTIONS} />
-      {/* ---------------- Act I — the paradox ---------------- */}
+      {/* ---------------- Section: the paradox ---------------- */}
       <header className="hero">
         <div className="hero-inner">
           <h1>
             <CountUp value={panel.tnPersons} className="hero-count" />
             <span className="hero-title">
-              people work in Tamil Nadu’s registered factories — more than in any other state
+              people work in Tamil Nadu’s registered factories, more than in any other state
               in India.
             </span>
           </h1>
@@ -1093,18 +1085,19 @@ export default function Home() {
           <p className="bluf-kicker">TL;DR</p>
           <p>
             India’s largest registered-factory workforce produces the least value per person of
-            the areas this page compares it with. One popular explanation — that Tamil Nadu
-            lacks mid-sized factories, the “missing middle” — does not hold in the
+            the areas this page compares it with. One popular explanation (that Tamil Nadu
+            lacks mid-sized factories, the “missing middle”) is not supported by the
             registered-factory data: under four different definitions of “mid-sized” (10–249,
             10–99, 20–249 and 50–249 workers), Tamil Nadu’s middle is not unusually small. A
-            second explanation — that Tamil Nadu simply has different industries — accounts for
+            second explanation (that Tamil Nadu simply has different industries) accounts for
             only part of the gap: re-run the comparison as if both sides had the same broad
             industry mix, and most of the gap against Gujarat, Maharashtra and Karnataka
             remains. Meanwhile, spending on labour takes a larger share of factory value in
             Tamil Nadu than in any comparison area, even though the pay workers themselves
             report is middling. And the state programmes in the policy documents we reviewed
-            support investment, growing into a bigger size category, hiring, and credit — but
-            none of those documents measures whether any of the programmes works.
+            support growing into a bigger size category, hiring, and credit, but
+            none of those documents reports whether the programmes change the outcomes
+            measured here.
           </p>
           <p>The rest of this page is the evidence for each of those sentences.</p>
           <nav className="route" aria-label="Jump to a section">
@@ -1130,16 +1123,16 @@ export default function Home() {
               </p>
               <p className="definition">
                 The surveys call that measure <strong>gross value added (GVA) per person
-                engaged</strong> — the value of what a factory ships out, minus the materials
+                engaged</strong>: the value of what a factory ships out, minus the materials
                 and services it buys in, divided by everyone engaged in the factory, owners and
-                unpaid family members included. It describes the factory, not the effort or
-                skill of any individual worker.
+                unpaid family members included. It describes the factory as a whole and says
+                nothing about the effort or skill of any individual worker.
               </p>
               <p>Tamil Nadu comes last among the areas shown.</p>
             </div>,
             <div key="s1">
               <p>
-                About {lakhUsd(gvaPerPerson("33"))} of value added per person per year — against{" "}
+                About {lakhUsd(gvaPerPerson("33"))} of value added per person per year, against{" "}
                 {lakhUsd(gvaPerPerson("24"))} in Gujarat and {lakhUsd(gvaPerPerson("27"))} in
                 Maharashtra. Among the six comparators only Telangana is close.
               </p>
@@ -1154,14 +1147,14 @@ export default function Home() {
           states={[<RankStrip key="plain" annotated={false} />, <RankStrip key="annotated" annotated />]}
         />
         <div className="column">
-          <p className="handoff">
+          <p className="bridge">
             Where does the gap come from? Start with how India counts its manufacturing. No
             single survey can see all of it.
           </p>
         </div>
       </section>
 
-      {/* ---------------- Act II — three lenses ---------------- */}
+      {/* ---------------- Section: three surveys ---------------- */}
       <section className="act" id="surveys" aria-label="Three surveys">
         <hr className="act-rule" />
         <div className="column">
@@ -1192,7 +1185,7 @@ export default function Home() {
                     <span className="suppressed-note" style={{ fontStyle: "normal" }}>Annual Survey of Unincorporated Sector Enterprises</span>
                   </td>
                   <td>
-                    Unincorporated establishments — the tailor’s shop, the grinding mill,
+                    Unincorporated establishments: the tailor’s shop, the grinding mill,
                     the ten-person workshop
                   </td>
                   <td className="evidence">{int(payload.headline.unincorporated_establishments)} establishments</td>
@@ -1238,14 +1231,14 @@ export default function Home() {
             factory. The same workshop is never observed becoming a factory in this data. When a
             chart on this page switches from one survey to another, its label says so.
           </p>
-          <p className="handoff">
+          <p className="bridge">
             Start with the workshops and factories themselves: is Tamil Nadu’s problem that
             its firms never grow to the middle?
           </p>
         </div>
       </section>
 
-      {/* ---------------- Act III — missing middle ---------------- */}
+      {/* ---------------- Section: missing middle ---------------- */}
       <section className="act" id="middle" aria-label="Testing the missing middle">
         <hr className="act-rule" />
         <div className="column">
@@ -1258,7 +1251,7 @@ export default function Home() {
             <a href="https://www.routledge.com/Globalization-Labour-Markets-and-Inequality-in-India/Mazumdar-Sarkar/p/book/9781003060956">
               Mazumdar and Sarkar 2008
             </a>
-            ). If that were Tamil Nadu’s disease, the fix would be obvious — and the state
+            ). If that were Tamil Nadu’s disease, the fix would be obvious, and the state
             already runs a subsidy aimed at exactly that. The diagnosis is also contested (
             <a href="https://www.aeaweb.org/articles?id=10.1257/jep.28.3.89">Hsieh and Olken 2014</a>
             ), which is one more reason to check it against the data before building a story on
@@ -1273,7 +1266,7 @@ export default function Home() {
                 Count <strong>establishments</strong>, and Tamil Nadu’s workshop economy is
                 overwhelmingly tiny: {pct(singleBand.unit_share!, 0)} of its{" "}
                 {int(payload.headline.unincorporated_establishments)} unincorporated manufacturing
-                establishments — the workshops outside the registered factory system — are one
+                establishments (the workshops outside the registered factory system) are one
                 person working alone.
               </p>
               <p className="definition">
@@ -1285,24 +1278,24 @@ export default function Home() {
               <p>
                 Count <strong>jobs</strong> instead and the picture spreads out: single-person
                 units hold {pct(singleBand.employment_share!, 0)}{" "}of the workshop economy’s
-                jobs, and units of five or more hold most of the rest.
+                jobs, and units of two to four and units of five or more each hold about a third.
               </p>
               <p>
                 The black ticks are India on the same measures. Across India, single-person units
-                are an even larger share of establishments than in Tamil Nadu — tiny workshops
-                dominating the count is normal, not a Tamil Nadu disease.
+                are an even larger share of establishments than in Tamil Nadu: tiny workshops
+                dominating the count is normal across India.
               </p>
             </div>,
             <div key="s2">
               <p>
                 The real question is comparative: does Tamil Nadu have an <em>abnormally thin</em>{" "}
-                middle? We tested four definitions of “the middle” — from 10–99
-                workers to 50–249 — across Tamil Nadu, five peer states and India.
+                middle? We tested four definitions of “the middle”, from 10–99
+                workers to 50–249, across Tamil Nadu, five peer states and India.
               </p>
               <p className="definition">
                 Note the survey switch: the chart now shows registered factories (ASI), where
                 mid-size units are well sampled and publishable. The workshop survey above could
-                not publish its 50-plus bands for exactly the opposite reason — almost nothing
+                not publish its 50-plus bands for exactly the opposite reason: almost nothing
                 unincorporated is that big.
               </p>
             </div>,
@@ -1311,7 +1304,7 @@ export default function Home() {
                 Within registered factories, Tamil Nadu’s middle is not unusually small next to
                 the peers shown, under any of the four definitions. The result also holds under
                 both ways of sizing a factory (below). What it does not show: how often a small
-                workshop grows into a factory — these surveys photograph a single year and
+                workshop grows into a factory, because these surveys photograph a single year and
                 cannot follow a firm over time.
               </p>
             </div>,
@@ -1326,7 +1319,7 @@ export default function Home() {
         <div className="exhibit-column">
           <Exhibit
             title="The verdict survives both ways of sizing a factory"
-            sub="One ASI paper return can cover several factories under the same owner, so 'how big is this factory' needs a rule. Split the return's workers evenly across its units, or keep each return whole (official practice) — the middle looks the same either way."
+            sub="One ASI paper return can cover several factories under the same owner, so 'how big is this factory' needs a rule. Split the return's workers evenly across its units, or keep each return whole (official practice). The middle looks the same either way."
           >
             <Tabs
               ariaLabel="Classification sensitivity"
@@ -1338,7 +1331,7 @@ export default function Home() {
             />
             <Recon
               items={[
-                "whole-return sizing reproduces official Statement 14A (the published ASI table of factories by employment size) to 0.01 percentage points",
+                "whole-return sizing reproduces official Statement 14A (the published ASI table of factories by employment size) to within 0.05 percentage points",
                 "the same diagnostic cannot be run on unincorporated workshops: every Tamil Nadu middle band there is " + NOT_PUBLISHED + ", as it is for most states",
               ]}
             />
@@ -1346,13 +1339,12 @@ export default function Home() {
         </div>
         <div className="column">
           <p>
-            One more thing the workshop data says: Tamil Nadu’s unincorporated sector is
-            unusually likely to be an employer at all — {pct(employerShare, 0)}{" "}of its
-            establishments have at least one hired worker, far above the national average. And its
+            One more thing the workshop data says: about {pct(employerShare, 0)}{" "}of Tamil Nadu’s
+            unincorporated establishments have at least one hired worker. And its
             workshops’ value added per worker{tnAsuseGva ? ` (${rupeesUsd(tnAsuseGva)} a year)` : ""} stands{" "}
             <em>above</em> India’s, Karnataka’s and Telangana’s. Whatever is
-            dragging on Tamil Nadu’s factories, its workshop economy looks comparatively
-            healthy.
+            dragging on Tamil Nadu’s factories, its workshop economy compares favourably on
+            this measure.
           </p>
           <HowWeKnow>
             <p>
@@ -1360,7 +1352,7 @@ export default function Home() {
               (ASUSE: reported workers; ASI: persons engaged). ASI returns may cover multiple units:
               the primary series divides return employment equally across reported units
               (“equal-allocation approximation”), the sensitivity series sizes whole
-              returns, matching official practice — the per-return series reproduces official
+              returns, matching official practice. The per-return series reproduces official
               Statement 14A: Tamil Nadu’s 100+ unit share 28.42% vs 28.43% published, and
               Economic Survey Table 4.11’s 100+ employment shares to 0.1–0.3 points.
               The equal-allocation treatment moves Tamil Nadu’s large-factory employment
@@ -1368,9 +1360,9 @@ export default function Home() {
             </p>
             <p>
               <strong>Suppression.</strong> Cells resting on fewer than 10 sampled units, or where
-              one unit carries more than 70% of the weighted total, are {NOT_PUBLISHED} — rendered
-              hatched, never as zero. The Tamil Nadu Economic Survey publishes ASUSE medium/large
-              cells that rest on ≤9 sampled establishments; this project deliberately does not.
+              one unit carries more than 70% of the weighted total, are {NOT_PUBLISHED} and rendered
+              hatched, with no zero printed. Cells resting on fewer than 10 sampled units are not
+              published here.
             </p>
             <p>
               <strong>Uncertainty.</strong> MoSPI’s published ASUSE relative standard errors
@@ -1384,14 +1376,14 @@ export default function Home() {
               Statement 14A; TN Economic Survey 2025-26 Tables 4.7, 4.10, 4.11.
             </p>
           </HowWeKnow>
-          <p className="handoff">
+          <p className="bridge">
             So the registered-factory data do not show a uniquely missing middle. Next
             hypothesis: maybe Tamil Nadu simply has different industries.
           </p>
         </div>
       </section>
 
-      {/* ---------------- Act IV — the fair test ---------------- */}
+      {/* ---------------- Section: the fair test ---------------- */}
       <section className="act" id="fair-test" aria-label="Industry mix and the fair test">
         <hr className="act-rule" />
         <div className="column">
@@ -1409,8 +1401,8 @@ export default function Home() {
             splits an observed gap into the part that reflects the two states having different
             industries (the <strong>composition component</strong>) and the part that remains
             inside the same broad industry groups (the <strong>within component</strong>). One
-            honest limit up front: it works at seven broad industry groups, so it does not
-            control products, capital, technology, management, prices or markups — differences
+            limit up front: it works at seven broad industry groups, so it does not
+            control products, capital, technology, management, prices or markups. Differences
             inside a broad group stay in the “within” part.
           </p>
         </div>
@@ -1419,26 +1411,26 @@ export default function Home() {
           steps={[
             <div key="s0">
               <p>
-                Take Gujarat. On common ground — the broad industries both states actually
+                Take Gujarat. On common ground (the broad industries both states actually
                 have, which cover{" "}
-                {covLabel(gj)} of the two states’ factory workforces — Gujarat records{" "}
+                {covLabel(gj)} of the two states’ factory workforces), Gujarat records{" "}
                 {lakh(gjGap)} more GVA per person engaged than Tamil Nadu.
               </p>
             </div>,
             <div key="s1">
               <p>
                 Give both states the same industry mix, and {pct(gjMixShare, 0)} of that gap is
-                accounted for — that part reflects which industries each state has.
+                accounted for. That part reflects which industries each state has.
               </p>
               <p>
                 The remaining {pct(1 - gjMixShare, 0)} survives: even inside the same broad
                 industry groups, Tamil Nadu’s factories add less value per person than
-                Gujarat’s. The data show that this is so, not why.
+                Gujarat’s. The data show that this is so and cannot say why.
               </p>
             </div>,
             <div key="s2">
               <p>
-                And it is not one rogue industry: Tamil Nadu’s value added per person trails
+                And the shortfall is spread widely: Tamil Nadu’s value added per person trails
                 Gujarat’s across most of the board, garments and machinery and chemicals
                 alike.
               </p>
@@ -1452,8 +1444,8 @@ export default function Home() {
         />
         <div className="exhibit-column">
           <Exhibit
-            title="The within-industry gap holds against every major comparator"
-            sub="The comparators: India, the two states just behind Tamil Nadu on factory employment (Gujarat and Maharashtra, themselves the top two on total value added), and the three southern neighbours. One comparator at a time — each comparison uses its own common ground, so the panels must not be read as a ranked table."
+            title="The within-industry gap is the larger part against India, Gujarat, Maharashtra and Karnataka"
+            sub="The comparators: India, the two states just behind Tamil Nadu on factory employment (Gujarat and Maharashtra, themselves the top two on total value added), and the three southern neighbours. One comparator at a time: each comparison uses its own common ground, so the panels cannot be read as a ranked table."
           >
             <Tabs
               ariaLabel="Comparator"
@@ -1491,11 +1483,11 @@ export default function Home() {
               ? `; and while Tamil Nadu's factories record higher pay per paid person than Telangana's on the raw average, ${pct(
                   emolAdj.composition_component / emolAdj.common_support_raw_gap,
                   0,
-                )} of that pay gap reflects which broad industries each state has, not pay differences inside the same broad groups`
+                )} of that pay gap reflects which broad industries each state has (the remainder is pay differences inside the same broad groups)`
               : ""}
             . Against Kerala the decomposition does not reach the required 95% coverage of both
-            workforces, so it is {NOT_PUBLISHED}; Kerala stays in the comparator set because
-            dropping a peer after seeing the results would be cherry-picking.
+            workforces, so it is {NOT_PUBLISHED}. Kerala remains in the comparator set; its decomposition
+            is not shown because it does not meet that coverage requirement.
           </p>
           <p>
             What could still differ inside these broad groups? This standardisation does not
@@ -1505,7 +1497,7 @@ export default function Home() {
             Maharashtra’s and Karnataka’s. That pattern is not uniform. In electrical and
             electronics manufacture, Tamil Nadu holds{" "}
             {panel.elec.capitalMin.toFixed(1)}–{panel.elec.capitalMax.toFixed(1)} times the
-            fixed capital per person of Gujarat, Maharashtra and Karnataka — and still
+            fixed capital per person of Gujarat, Maharashtra and Karnataka, and still
             produces {pct(panel.elec.shortfallMin, 0)}–{pct(panel.elec.shortfallMax, 0)} less
             value per person than each of them. Across the observed panel, the descriptive gap is
             broad across industries and persists over sixteen complete years. These data do not
@@ -1523,13 +1515,13 @@ export default function Home() {
             </p>
             <p>
               <strong>Wording discipline.</strong> “Adjusted” means the gap remaining
-              under a common industry mix — a descriptive standardisation, not a causal estimate.
+              under a common industry mix. It is a descriptive standardisation with no causal reading.
               No confidence intervals are published for decomposition rows: the surveys’
               public files do not support design-based variances for these functionals, and we do
               not print intervals we cannot defend.
             </p>
             <p>
-              <strong>Robustness (2026-07-14 battery).</strong> Re-run at 24 NIC 2-digit
+              <strong>Robustness checks.</strong> Re-run at 24 NIC 2-digit
               industries with employment weights recomputed from the raw returns, the
               within-industry share of the gap is 54–86% against India, Gujarat, Maharashtra
               and Karnataka (7 groups: 67–84%; industry×size jointly: 56–81%). Tamil
@@ -1540,25 +1532,25 @@ export default function Home() {
             </p>
             <p>
               <strong>Sources.</strong> ASI 2023-24 unit returns; classification map in the
-              methods repository (LAYER5_FIELD_MAP.md); external checks in EXTERNAL_VALIDATION.md.
+              methods repository (research/docs/METHODOLOGY.md); external checks in EXTERNAL_VALIDATION.md.
             </p>
           </HowWeKnow>
-          <p className="handoff">
+          <p className="bridge">
             So a substantial gap remains even when both states are given the same industry mix.
             Next question: how is the value factories add divided up?
           </p>
         </div>
       </section>
 
-      {/* ---------------- Act V — the workers' slice ---------------- */}
+      {/* ---------------- Section: the workers' slice ---------------- */}
       <section className="act" id="workers" aria-label="Pay, protections and the labour share">
         <hr className="act-rule" />
         <div className="column">
           <h2 className="act-title">The workers’ slice</h2>
           <p>
             Of the value its factories add, Tamil Nadu spends a larger share on labour than any
-            comparison area shown. “Labour cost” here is the survey’s broad measure — pay plus
-            the employer’s provident-fund contributions and staff-welfare spending — so it is
+            comparison area shown. “Labour cost” here is the survey’s broad measure: pay plus
+            the employer’s provident-fund contributions and staff-welfare spending. It is
             wider than what workers take home.
           </p>
         </div>
@@ -1571,15 +1563,14 @@ export default function Home() {
             <Recon
               items={[
                 "direction corroborated by MoSPI's own published totals (our narrow emoluments/GVA measure: TN 37.6% vs official 37.4%) and by the TN Economic Survey's ranking",
-                "the Economic Survey's own levels (§4.3) could not be reconciled to official ASI totals under any definition tested; its levels are therefore never cited here",
               ]}
             />
           </Exhibit>
         </div>
         <div className="column">
           <p>
-            A larger share of a smaller pie can still be a modest amount — and the labour-cost
-            measure above comes from factory accounts, not from workers’ pockets. A separate
+            A larger share of a smaller pie can still be a modest amount, and the labour-cost
+            measure above comes from factory accounts and describes what factories spend. A separate
             survey (the PLFS) asks workers themselves what they earn. Their answers put Tamil
             Nadu’s regular monthly factory pay close to the India-wide figure, with
             self-employment and casual daily work each telling a different story:
@@ -1588,7 +1579,7 @@ export default function Home() {
         <div className="exhibit-column">
           <Exhibit
             title="Factory-state pay is middling: near India's average, above Gujarat, below Maharashtra and the southern peers"
-            sub="Workers' own reports, manufacturing, 2023-24. Three kinds of work are three different measures — kept separate. Whiskers are 95% confidence intervals from the survey design."
+            sub="Workers' own reports, manufacturing, 2023-24. Three kinds of work are three different measures, kept separate. Whiskers are 95% confidence intervals from the survey design."
           >
             <Tabs
               ariaLabel="Earnings concept"
@@ -1611,7 +1602,7 @@ export default function Home() {
             />
           </Exhibit>
           <Exhibit
-            title={`Half of Tamil Nadu's regular salaried manufacturing workers have a written contract — above India, 14 to 19 points below Karnataka or Telangana`}
+            title={`Half of Tamil Nadu's regular salaried manufacturing workers have a written contract, above India and 14 to 18 points below Karnataka or Telangana`}
             sub="Regular salaried manufacturing workers, usual status. Each measure is the share of workers answering yes; whiskers are 95% confidence intervals."
           >
             <Tabs
@@ -1637,22 +1628,22 @@ export default function Home() {
         </div>
         <div className="column">
           <p>
-            Put together, the worker picture is mixed rather than a single verdict. Labour
+            Put together, the worker picture is mixed and does not reduce to a single verdict. Labour
             costs take a larger share of factory value than in any comparison area; the pay
             workers report is middling; written contracts, paid leave and social-security
             coverage beat India, Gujarat and Kerala but trail Karnataka and Telangana by double
-            digits. These are descriptions of one year, 2023-24. They do not show that workers
-            are exploited, that they are not, or that any single lever would raise wages.
+            digits. These are descriptions of one year, 2023-24. They do not show how workers
+            are treated or that any single lever would raise wages.
           </p>
           <HowWeKnow>
             <p>
               <strong>Labour share.</strong> ASI 2023-24; numerator is the labour-cost proxy
-              (emoluments + employer provident-fund contributions + workmen/staff welfare — welfare is not necessarily cash pay), denominator is
+              (emoluments + employer provident-fund contributions + workmen/staff welfare; welfare is not necessarily cash pay), denominator is
               factory GVA, both from the same returns. The narrow emoluments-only share (TN 37.6%)
               reconciles with the share implied by MoSPI’s own published totals (37.4%). The
               TN Economic Survey §4.3 reports much lower levels on an unspecified base that could
-              not be reconciled to official ASI totals under any definition we tested — a
-              difference in concept or deflation that the Survey does not specify — so its levels
+              not be reconciled to official ASI totals under any definition we tested (a
+              difference in concept or deflation that the Survey does not specify), so its levels
               are not used, while its <em>ranking</em> (TN highest among peers) agrees with ours.
             </p>
             <p>
@@ -1660,24 +1651,24 @@ export default function Home() {
               filter for earnings, principal-activity for job quality; standard errors from the
               two-interpenetrating-subsample design; estimates suppressed below 30 respondents, 10
               active first-stage units, effective n of 30, or where one weight exceeds 20% of the
-              cell — suppressed cells read {NOT_PUBLISHED}.
+              cell. Suppressed cells read {NOT_PUBLISHED}.
             </p>
           </HowWeKnow>
-          <p className="handoff">So what does the state’s own policy say about value, pay and protection?</p>
+          <p className="bridge">So what does the state’s own policy say about value, pay and protection?</p>
         </div>
       </section>
 
-      {/* ---------------- Act VI — instruments and the mismatch ---------------- */}
+      {/* ---------------- Section: policy instruments ---------------- */}
       <section className="act" id="policy" aria-label="Policy instruments">
         <hr className="act-rule" />
         <div className="column">
           <h2 className="act-title">What the state’s policy aims at</h2>
           <p>
             Last, the policy ledger: what support programmes for manufacturers appear in the
-            state documents we reviewed? Four kinds: extra capital subsidy for firms that grow
+            state documents we reviewed? Three kinds: extra capital subsidy for firms that grow
             into a larger official size category, reimbursement of the employer’s
-            provident-fund contribution for units employing more than 20 people, investment and
-            sector-development programmes, and credit for small enterprises. For each, the
+            provident-fund contribution for units employing more than 20 people, and credit
+            for small enterprises. For each, the
             cards below give the documented design, the documents’ own reported figures and how
             far the published evidence goes.
           </p>
@@ -1707,32 +1698,32 @@ export default function Home() {
         <div className="column" style={{ marginTop: "2rem" }}>
           <p>
             Set those programmes beside the measurements. Their stated designs support
-            investing, growing into a larger size category, hiring, and borrowing. In the
+            growing into a larger size category, hiring, and borrowing. In the
             documents we reviewed, we did not find value added per person, wage levels, or
             contract and benefit coverage stated as objectives. That is a finding about these
-            documents only — policy runs wider than what is published, and other targets may
+            documents only: policy runs wider than what is published, and other targets may
             exist in places we could not see. Timing matters too: the state’s general
-            Industrial Policy of 2021 expired on 31 March 2025. No enacted or notified
-            successor was found as of July 2026; a new policy has been announced but not
-            published. The MSME programmes above are as stated in the 2025-26 Policy Notes.
+            Industrial Policy of 2021 expired on 31 March 2025. When this evidence was
+            reviewed (July 2026), no enacted or notified successor had been found; a new
+            policy had been announced but not published. The capital-subsidy and payroll
+            programmes above are as stated in the MSME Policy Note 2025-26; the credit plan is
+            as stated in the 2025-26 Budget Speech.
           </p>
           <p className="definition">
-            To be precise about what this section claims: it reads stated objectives in
-            published documents, nothing more. It passes no verdict on whether any programme
-            works, because policy documents record what programmes aim at, disburse and build,
-            never what they cause. The observation is simply that the measured gaps sit in one
-            place and the stated objectives in another — a question about emphasis, not an
-            accusation of neglect. The reading is ours; the documents themselves draw no such
-            comparison.
+            This section reads stated objectives in published documents and passes no verdict
+            on whether any programme works. Policy documents record what programmes aim at,
+            disburse and build; they do not record what the programmes cause. Placing the
+            measured gaps beside the stated objectives is our reading, and the documents
+            themselves draw no such comparison.
           </p>
           <HowWeKnow>
             <p>
               <strong>Bounded evidence base.</strong> The document search covered the MSME Policy Note 2025-26 (subsidy design pp. 37-38,
-              disbursements p. 38), Industries Policy Note 2025-26, TN Economic Survey 2025-26,
-              Industrial Policy 2021 (expired 31.03.2025). Every instrument claim carries a
-              printed-page citation in the research repository’s Layer 6 ledger; expired
+              disbursements p. 38), the Budget Speech 2025-26 (§116, p. 54), TN Economic Survey 2025-26 and
+              Industrial Policy 2021 (expired 31.03.2025). The first two instruments cite printed
+              pages in the card text; expired
               targets are shown as historical, announced intentions as announcements. The evidence
-              ladder stops at “output reported” for every instrument: no reviewed
+              ladder stops at “output reported” at most: no reviewed
               document measures take-up against a counterfactual, so nothing here identifies
               causes or evaluates any policy.
             </p>
@@ -1740,7 +1731,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ---------------- Act VII — what we can't tell you ---------------- */}
+      {/* ---------------- Section: limits ---------------- */}
       <section className="act" id="methods" aria-label="Limits and methods">
         <hr className="act-rule" />
         <div className="column">
@@ -1754,16 +1745,17 @@ export default function Home() {
           </p>
           <p>
             One caution from the exploratory appendix: when workshop owners are asked what
-            problems they face, barely {pct(maxProblemShare, 0)} report any single one — and the
-            establishments that <em>do</em> report problems are the bigger, more formal ones.
-            Treat that as a warning against tidy constraint stories, not as evidence about
-            constraints themselves.
+            problems they face, no named problem is reported by more than {pct(maxNamedProblemShare, 0)} of
+            establishments (the most common is credit), and the establishments that report labour,
+            skills or technology problems are more often registered, online and in debt. Treat
+            that as a warning against tidy constraint stories: these are cross-sectional
+            associations that say nothing about what constrains growth.
           </p>
         </div>
         <div className="column">
           <Exhibit
-            title="Where our numbers have a direct official counterpart, they usually match within 2% — the exceptions are disclosed"
-            sub="We ran 28 pre-declared checks against the government's own published tables; all pass their stated tolerances. Not every number on this page has a published counterpart to check against, so this ledger does not mean every number was independently verified."
+            title="Where our numbers have a direct official counterpart, they usually match within 2%, and the exceptions are disclosed"
+            sub="We ran 28 checks against the government's own published tables; all pass their stated tolerances. Not every number on this page has a published counterpart to check against, so this ledger does not mean every number was independently verified."
           >
             <details className="howweknow" style={{ borderTop: "none" }}>
               <summary>Open the full 28-gate reconciliation ledger</summary>
@@ -1791,8 +1783,8 @@ export default function Home() {
             <p>
               <strong>Disclosure.</strong> {payload.meta.disclosure} Cells resting on fewer than 10
               sampled units, or dominated by one unit, or (PLFS) below effective-sample and weight
-              thresholds are {NOT_PUBLISHED} — and are rendered as visible hatched slots, never as
-              zero, and never reconstructable from published components.
+              thresholds are {NOT_PUBLISHED}, rendered as visible hatched slots with no zero printed, and cannot
+              be reconstructed from published components.
             </p>
             <p>
               <strong>Uncertainty.</strong> PLFS estimates carry design-based 95% intervals.
@@ -1802,9 +1794,9 @@ export default function Home() {
               no interval we cannot defend.
             </p>
             <p>
-              <strong>Reproducibility.</strong> The full pipeline — raw public-use files in,
-              canonical payload out, 28 gates enforced in tests — with every method document and
-              the external-validation register is public in the{" "}
+              <strong>Reproducibility.</strong> The full pipeline (raw public-use files in,
+              canonical payload out, 28 gates enforced in tests), with every method document and
+              the external-validation register, is public in the{" "}
               <a href="https://github.com/smar98/tamil-nadu-manufacturing-structure">research repository</a>.
               Raw unit records stay local per MoSPI terms; only aggregates are published.
             </p>

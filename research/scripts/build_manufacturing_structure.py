@@ -1201,7 +1201,7 @@ def peer_comparisons_adjusted(
 
 
 def validate_layer5_contract(structure_v1: dict, checks: list[dict]) -> None:
-    """Fail before publication if the locked Layer 5 contract drifts."""
+    """Fail before publication if the peer-comparison contract drifts."""
     raw_rows = structure_v1.get("peer_comparisons_raw")
     adjusted_rows = structure_v1.get("peer_comparisons_adjusted")
     if not isinstance(raw_rows, list) or len(raw_rows) != 78:

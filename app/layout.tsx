@@ -12,11 +12,6 @@ const serif = Newsreader({
   display: "swap",
 });
 
-// Archivo replaces Libre Franklin, which shipped no tabular figures at all -- so
-// the ledger's `font-variant-numeric: tabular-nums` was a silent no-op and the
-// exhibit columns never actually aligned. Archivo's tnum really does shape all
-// ten digits to one width (verified with HarfBuzz, not from the feature tag:
-// Golos Text advertises tnum and still returns five different widths).
 const ui = Archivo({
   subsets: ["latin"],
   style: ["normal", "italic"],
@@ -27,7 +22,7 @@ const ui = Archivo({
 const siteUrl = "https://smar98.github.io/tamil-nadu-manufacturing-structure/";
 const title = "India's Factory State: Tamil Nadu's Manufacturing Paradox, 2023-24";
 const description =
-  "Tamil Nadu employs more registered-factory workers than any Indian state, yet its factories add less value per person (GVA per person engaged) than any of the areas this page compares it with. Three official surveys, checked against 28 pre-declared published benchmarks, show what that gap is - and what it is not.";
+  "Tamil Nadu employs more registered-factory workers than any Indian state, yet its factories add less value per person (GVA per person engaged) than any of the areas this page compares it with. Three official surveys, checked against 28 published benchmarks, show what that gap is and what the data cannot say.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

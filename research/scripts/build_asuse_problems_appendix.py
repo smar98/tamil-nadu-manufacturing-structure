@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Build the ASUSE reported-problems exploratory appendix (Tamil Nadu manufacturing).
 
-Locked spec: research/docs/LAYER6_ASUSE_PROBLEMS_APPENDIX.md.
+Documentation: research/docs/ASUSE_PROBLEMS_APPENDIX.md.
 
-This is an optional exploratory appendix, not a Layer 3-6 estimand change. It
+This is an optional exploratory appendix that does not change the main estimands. It
 reads only the raw ASUSE 2023-24 CSV zip and writes an aggregate-only,
 disclosure-safe JSON payload. It is deterministic: no wall-clock timestamps,
 no random sampling. It never prints or exports respondent-level records or
@@ -14,8 +14,8 @@ establishments, NIC divisions 10-33, weight = mlt / 100. This mirrors the
 filter used in build_manufacturing_structure.py's main(): state == "33" and
 major_nic_2dig between 10 and 33.
 
-These are cross-sectional associations, not binding-constraint estimates.
-See the interpretation section of the linked doc before citing any number.
+These are hypothesis-generating cross-sectional associations.
+See the interpretation section of research/docs/ASUSE_PROBLEMS_APPENDIX.md before citing any number.
 """
 
 from __future__ import annotations
@@ -41,7 +41,7 @@ MAX_CONCENTRATION = 0.70
 AGE_REFERENCE_YEAR = 2024
 
 # Item 225/226 code list ("nature of problems faced by the establishment"),
-# research/data/raw/asuse_2023_24_report.txt around line 39797.
+# from the ASUSE 2023-24 questionnaire code structures (block C).
 PROBLEM_CATEGORIES = [
     {"code": 1, "id": "power", "label": "Erratic power supply / power cuts"},
     {"code": 2, "id": "raw_materials", "label": "Shortage of raw materials"},
@@ -61,7 +61,7 @@ SIZE_GROUPS = [
     {"id": "250+", "label": "250+ workers", "minimum": 250, "maximum": None},
 ]
 
-# Layer 1 published Tamil Nadu manufacturing establishment totals
+# Published Tamil Nadu manufacturing establishment totals
 # (PUBLISHED["asuse"] in build_manufacturing_structure.py).
 PUBLISHED_TN_TOTALS = {"oae_establishments": 1_118_993, "hwe_establishments": 272_663}
 PUBLISHED_TOLERANCE = 0.01
@@ -171,7 +171,7 @@ def size_group(total_workers: pd.Series) -> pd.Series:
 
 
 def weighted_cell(group: pd.DataFrame, numerator: str, denominator: str) -> dict:
-    """Weighted ratio of totals, with the Layer 3 outcome-cell disclosure rule.
+    """Weighted ratio of totals, with the establishment outcome-cell disclosure rule.
 
     Suppress when unweighted sample count < 10, or one observation
     contributes > 70% of the weighted denominator, or > 70% of the absolute
@@ -217,7 +217,7 @@ def null_suppressed_sibling(reporter_cell: dict, non_reporter_cell: dict) -> Non
 
     Reporters and non-reporters always sum to the same fixed universe total
     for a given outcome, and that universe total is public elsewhere in this
-    project (e.g. Layer 3's Tamil Nadu GVA-per-worker figure). Publishing one
+    project (for example, the Tamil Nadu GVA-per-worker figure). Publishing one
     stable side plus the known total would let a reader back out a suppressed
     sibling by subtraction, so both sides are nulled together.
     """
@@ -269,8 +269,8 @@ def build_reporting_shares(domain: pd.DataFrame) -> list[dict]:
 def build_gva_by_reporting(domain: pd.DataFrame) -> list[dict]:
     """Deliverable 2: weighted GVA per worker, reporters vs non-reporters.
 
-    Market establishments with valid (non-null) GVA only, matching the Layer
-    3 value-addition definition (research/docs/LAYER3_FIELD_MAP.md).
+    Market establishments with valid (non-null) GVA only, matching the
+    value-addition definition in research/docs/METHODOLOGY.md.
     """
     gva_domain = domain.loc[domain["market"] & domain["annual_gva"].notna()]
     rows = []
@@ -402,15 +402,15 @@ def main() -> int:
     payload = {
         "metadata": {
             "title": "ASUSE 2023-24 reported-problems exploratory appendix, Tamil Nadu manufacturing",
-            "status": "exploratory, hypothesis-generating correlations; not binding-constraint estimates",
+            "status": "exploratory, hypothesis-generating cross-sectional correlations",
             "universe": "Tamil Nadu unincorporated manufacturing establishments, NIC divisions 10-33, ASUSE 2023-24",
             "weight": "mlt / 100",
             "endogeneity_caveat": (
                 "These are cross-sectional associations only. Reverse causation and selection are "
                 "plausible: for example, more productive establishments may seek more finance, so a "
                 "positive association between reporting a credit problem and higher GVA per worker "
-                "would not imply that credit access constrains growth. The permitted wording is "
-                "'establishments reporting X differ on Y', never 'X constrains growth'."
+                "would not imply that credit access constrains growth. The results support the "
+                "statement 'establishments reporting X differ on Y'. They do not show that X constrains growth."
             ),
             "disclosure_rule": (
                 "Suppress when unweighted sample count < 10, or one observation contributes > 70% of "
@@ -419,7 +419,7 @@ def main() -> int:
                 "count. Reporter/non-reporter sibling pairs are nulled together if either side would "
                 "otherwise be suppressed."
             ),
-            "field_map_doc": "research/docs/LAYER6_ASUSE_PROBLEMS_APPENDIX.md",
+            "field_map_doc": "research/docs/ASUSE_PROBLEMS_APPENDIX.md",
         },
         "problem_categories": PROBLEM_CATEGORIES,
         "size_groups": SIZE_GROUPS,

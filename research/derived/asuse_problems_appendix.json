@@ -1,12 +1,12 @@
 {
   "metadata": {
     "title": "ASUSE 2023-24 reported-problems exploratory appendix, Tamil Nadu manufacturing",
-    "status": "exploratory, hypothesis-generating correlations; not binding-constraint estimates",
+    "status": "exploratory, hypothesis-generating cross-sectional correlations",
     "universe": "Tamil Nadu unincorporated manufacturing establishments, NIC divisions 10-33, ASUSE 2023-24",
     "weight": "mlt / 100",
-    "endogeneity_caveat": "These are cross-sectional associations only. Reverse causation and selection are plausible: for example, more productive establishments may seek more finance, so a positive association between reporting a credit problem and higher GVA per worker would not imply that credit access constrains growth. The permitted wording is 'establishments reporting X differ on Y', never 'X constrains growth'.",
+    "endogeneity_caveat": "These are cross-sectional associations only. Reverse causation and selection are plausible: for example, more productive establishments may seek more finance, so a positive association between reporting a credit problem and higher GVA per worker would not imply that credit access constrains growth. The results support the statement 'establishments reporting X differ on Y'. They do not show that X constrains growth.",
     "disclosure_rule": "Suppress when unweighted sample count < 10, or one observation contributes > 70% of the weighted denominator, or > 70% of the absolute weighted numerator. Suppressed values are null, never zero. Every published cell carries its unweighted sample count. Reporter/non-reporter sibling pairs are nulled together if either side would otherwise be suppressed.",
-    "field_map_doc": "research/docs/LAYER6_ASUSE_PROBLEMS_APPENDIX.md"
+    "field_map_doc": "research/docs/ASUSE_PROBLEMS_APPENDIX.md"
   },
   "problem_categories": [
     {

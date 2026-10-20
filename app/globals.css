@@ -1,4 +1,4 @@
-/* India's Factory State — design system per DESIGN.md.
+/* India's Factory State: site styles.
    One art-directed light theme. Ledger identity: ruled lines, tabular numerals,
    printed reconciliation marks. Protagonist color: madder (#9c2623), always and
    only Tamil Nadu. Survey identity hues: ASI steel, ASUSE green, PLFS violet. */
@@ -87,7 +87,7 @@ svg text { font-family: var(--ui); font-variant-numeric: tabular-nums lining-num
 
 .act { padding-block: clamp(3.5rem, 8vh, 6rem) 0; }
 
-/* Act separator: a single-hue Madras check — two crossing thread patterns,
+/* Section separator: a single-hue Madras check, two crossing thread patterns,
    madder on paper, the selvedge strip between sections. */
 .act-rule {
   border: 0;
@@ -113,7 +113,7 @@ svg text { font-family: var(--ui); font-variant-numeric: tabular-nums lining-num
 
 .column > p, .prose > p { margin-bottom: 1.15rem; }
 
-.handoff {
+.bridge {
   font-style: italic;
   color: var(--ink-2);
   font-size: 1.1875rem;
@@ -125,7 +125,7 @@ svg text { font-family: var(--ui); font-variant-numeric: tabular-nums lining-num
 .definition { color: var(--ink-2); }
 strong { font-weight: 600; }
 
-/* ---------- hero (Act I) — the one drenched moment ---------- */
+/* ---------- hero: the one drenched moment ---------- */
 
 .hero {
   background: var(--tn);
@@ -226,7 +226,7 @@ strong { font-weight: 600; }
 }
 .exhibit figure { margin-top: 1.4rem; }
 
-/* Survey identity tag — small colored square + name, never color alone. */
+/* Survey identity tag: small colored square plus name, so color is never the only cue. */
 .survey-tag {
   font-family: var(--ui);
   font-size: 0.8125rem;
@@ -254,7 +254,7 @@ strong { font-weight: 600; }
   font-style: italic;
 }
 
-/* "How we know" — full technical depth behind a native disclosure. */
+/* "How we know": full technical depth behind a native disclosure. */
 .howweknow {
   border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
@@ -415,7 +415,7 @@ figure svg { display: block; width: 100%; height: auto; }
 .ledger-table tr.tn-row td { color: var(--tn); font-weight: 600; }
 .table-scroll { overflow-x: auto; }
 
-/* ---------- policy ledger (Act VI) ---------- */
+/* ---------- policy instruments ---------- */
 
 .instrument-grid {
   display: grid;
